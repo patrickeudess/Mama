@@ -1,0 +1,703 @@
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes" />
+    <title>MAMA+ – Mon espace patiente</title>
+    <link rel="stylesheet" href="styles.css" />
+    <link rel="stylesheet" href="styles-icons.css" />
+    <link rel="stylesheet" href="styles-mobile-nav.css" />
+  </head>
+  <body>
+    <header role="banner" class="tools-header">
+      <div class="header-left">
+        <a href="index.html" style="color: #fff; text-decoration: none; font-size: 1.5rem; margin-right: 1rem; display: inline-flex; align-items: center;" title="Retour à l'accueil" id="home-icon-link-patriente"></a>
+        <span class="header-icon" id="header-icon-patriente"></span>
+      <h1>MAMA+ – Mon espace</h1>
+      </div>
+      <div id="auth-section" role="navigation">
+        <div id="user-info" class="hidden" aria-live="polite">
+          <span id="user-name" aria-label="Nom de l'utilisateur"></span>
+          <button id="logout-button" type="button" aria-label="Se déconnecter">Déconnexion</button>
+        </div>
+      </div>
+    </header>
+
+    <main role="main">
+      <!-- Formulaire d'inscription/complétion de profil -->
+      <section class="card registration-form-card hidden" id="registration-form-card">
+        <div class="card-header-with-icon">
+          <span class="card-icon">📝</span>
+          <h2>Bienvenue sur MAMA+</h2>
+        </div>
+        <div style="padding: 0 1.5rem; margin-top: -1rem; margin-bottom: 1rem;">
+          <p style="color: #6b7280; font-size: 0.9rem;">💡 <strong>Astuce:</strong> Activez le son en cliquant sur le bouton 🔊 en bas à droite pour entendre les instructions.</p>
+        </div>
+        <div class="registration-content">
+          <p class="registration-intro">Bonjour ! Pour commencer, remplissez ce formulaire avec vos informations. C'est simple et rapide. Si vous avez besoin d'aide, cliquez sur le bouton audio en bas à droite.</p>
+          <form id="patiente-registration-form" class="registration-form">
+            <div class="form-section">
+              <h3>Vos informations</h3>
+              <div class="form-row">
+                <label>
+                  Prénom <span class="required">*</span>
+                  <input type="text" id="reg-prenom" placeholder="Votre prénom" required />
+                </label>
+                <label>
+                  Nom <span class="required">*</span>
+                  <input type="text" id="reg-nom" placeholder="Votre nom" required />
+                </label>
+              </div>
+              <label>
+                Âge <span class="required">*</span>
+                <input type="number" id="reg-age" min="15" max="50" placeholder="Votre âge" required />
+              </label>
+              <div class="form-row">
+                <label>
+                  Nombre de grossesses
+                  <input type="number" id="reg-gestite" min="1" value="1" placeholder="Combien de fois vous êtes tombée enceinte" />
+                  <small style="color: #6b7280; font-size: 0.875rem;">Y compris cette grossesse</small>
+                </label>
+                <label>
+                  Nombre d'enfants nés
+                  <input type="number" id="reg-parite" min="0" value="0" placeholder="Combien d'enfants vous avez déjà eus" />
+                </label>
+              </div>
+              <label>
+                Niveau d'études
+                <select id="reg-niveau-instruction">
+                  <option value="">Choisir...</option>
+                  <option value="aucun">Pas d'école</option>
+                  <option value="primaire">École primaire</option>
+                  <option value="secondaire">École secondaire</option>
+                  <option value="superieur">Études supérieures</option>
+                </select>
+              </label>
+            </div>
+
+            <div class="form-section">
+              <h3>Votre grossesse</h3>
+              <label>
+                Date de vos dernières règles <span class="required">*</span>
+                <input type="date" id="reg-dernieres-regles" required />
+                <small style="color: #6b7280; font-size: 0.875rem;">Le premier jour de vos dernières règles</small>
+              </label>
+              <label>
+                Date prévue pour l'accouchement
+                <input type="date" id="reg-accouchement-prevue" />
+                <small style="color: #6b7280; font-size: 0.875rem;">Si vous ne connaissez pas cette date, elle sera calculée automatiquement</small>
+              </label>
+            </div>
+
+            <div class="form-section">
+              <h3>Où vous habitez</h3>
+              <label>
+                Ville
+                <input type="text" id="reg-ville" placeholder="Exemple: Abidjan" />
+              </label>
+              <label>
+                Adresse
+                <input type="text" id="reg-adresse" placeholder="Quartier, rue..." />
+              </label>
+              <div class="form-row">
+                <label>
+                  Distance du centre de santé (en kilomètres)
+                  <input type="number" id="reg-distance" step="0.1" min="0" placeholder="Exemple: 2.5" />
+                </label>
+                <label>
+                  Comment vous vous déplacez
+                  <select id="reg-transport">
+                    <option value="">Choisir...</option>
+                    <option value="pieds">À pied</option>
+                    <option value="velo">À vélo</option>
+                    <option value="moto">En moto</option>
+                    <option value="voiture">En voiture</option>
+                    <option value="transport_public">Bus ou taxi</option>
+                  </select>
+                </label>
+              </div>
+            </div>
+
+            <div class="form-section">
+              <h3>Votre santé (vous pouvez laisser vide si vous voulez)</h3>
+              <label>
+                Maladies passées ou actuelles
+                <textarea id="reg-antecedents-medicaux" rows="3" placeholder="Écrivez les maladies que vous avez eues ou avez actuellement"></textarea>
+              </label>
+              <label>
+                Problèmes lors des grossesses passées
+                <textarea id="reg-antecedents-obstetricaux" rows="3" placeholder="Écrivez s'il y a eu des problèmes lors de vos grossesses précédentes"></textarea>
+              </label>
+            </div>
+
+            <div class="form-section" style="background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%); padding: 1.5rem; border-radius: 0.75rem; border: 2px solid #0ea5e9; margin-bottom: 1.5rem;">
+              <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.75rem;">
+                <span style="font-size: 1.5rem;">👨‍⚕️</span>
+                <h3 style="margin: 0; color: #0369a1; font-size: 1rem; font-weight: 600;">Professionnels de santé</h3>
+              </div>
+              <p style="color: #64748b; font-size: 0.875rem; margin-bottom: 1rem; text-align: center;">
+                Vous pouvez vous connecter à plusieurs professionnels de santé. Ajoutez au moins un professionnel pour commencer.
+              </p>
+              
+              <!-- Liste des professionnels ajoutés -->
+              <div id="professionnels-list-patiente" style="margin-bottom: 1rem; max-height: 200px; overflow-y: auto;">
+                <!-- Les professionnels seront affichés ici dynamiquement -->
+              </div>
+              
+              <!-- Formulaire d'ajout de professionnel -->
+              <div id="add-professionnel-form-patiente" style="background: white; padding: 1rem; border-radius: 0.5rem; border: 1px dashed #0ea5e9;">
+                <label style="display: block; margin-bottom: 0.5rem;">
+                  <span style="font-size: 0.875rem; color: #374151; font-weight: 500;">Code de synchronisation ou téléphone du professionnel</span>
+                  <input 
+                    type="text" 
+                    id="reg-sync-code" 
+                    placeholder="MAMA-XXXX-XXXX ou téléphone" 
+                    style="font-family: 'Courier New', monospace; letter-spacing: 0.1em; text-transform: uppercase; font-size: 1rem; text-align: center; padding: 0.75rem; width: 100%; border: 2px solid #0ea5e9; border-radius: 0.5rem; background: white; color: #0369a1; margin-top: 0.25rem;" 
+                  />
+                </label>
+                <div id="sync-code-validation-message" style="margin-top: 0.5rem; text-align: center; min-height: 1.5rem; font-size: 0.875rem;"></div>
+                <button type="button" id="add-professionnel-btn-patiente" style="width: 100%; padding: 0.75rem; background: #0ea5e9; color: white; border: none; border-radius: 0.5rem; font-weight: 600; cursor: pointer; margin-top: 0.75rem;">
+                  ➕ Ajouter ce professionnel
+                </button>
+              </div>
+              
+              <small style="color: #64748b; font-size: 0.8rem; display: block; margin-top: 1rem; text-align: center;">
+                💡 <strong>Astuce :</strong> Demandez le code ou le numéro de téléphone à vos professionnels de santé. Vous pourrez basculer entre eux depuis votre tableau de bord.
+              </small>
+            </div>
+
+            <div class="form-actions">
+              <button type="submit" class="btn-primary" id="submit-patiente-profile-btn">Enregistrer mes informations</button>
+            </div>
+            <div id="registration-message" class="message"></div>
+          </form>
+        </div>
+      </section>
+
+      <!-- Sélecteur de professionnel actif -->
+      <section class="card" id="professionnel-selector-card" style="margin-bottom: 1rem; display: none;">
+        <div class="card-header-with-icon">
+          <span class="card-icon">👨‍⚕️</span>
+          <h2>Professionnel actif</h2>
+        </div>
+        <div style="padding: 1rem;">
+          <label style="display: flex; flex-direction: column; gap: 0.5rem;">
+            <span style="font-weight: 500; color: #374151; font-size: 0.875rem;">Sélectionner votre professionnel de santé actuel :</span>
+            <select id="current-professionnel-select" style="padding: 0.75rem; border: 2px solid #e5e7eb; border-radius: 0.5rem; font-size: 0.95rem; background: white; cursor: pointer;">
+              <option value="">Chargement...</option>
+            </select>
+          </label>
+          <div style="margin-top: 1rem; padding: 0.75rem; background: #f0f9ff; border-radius: 0.5rem; border-left: 4px solid #0ea5e9;">
+            <p style="margin: 0; font-size: 0.875rem; color: #0369a1;">
+              💡 <strong>Astuce :</strong> Vous pouvez basculer entre vos professionnels à tout moment. Les données affichées correspondent au professionnel sélectionné.
+            </p>
+          </div>
+          <div style="margin-top: 1rem;">
+            <a href="professionnels-patiente.html" class="btn-secondary" style="padding: 0.5rem 1rem; font-size: 0.875rem; text-decoration: none; display: inline-block;">
+              ➕ Gérer mes professionnels
+            </a>
+          </div>
+        </div>
+      </section>
+
+      <!-- Profil rapide -->
+      <section class="card profile-card" id="profile-card" aria-labelledby="profile-name">
+        <div class="profile-header">
+          <div class="profile-avatar" aria-hidden="true">👩</div>
+          <div class="profile-info">
+            <h2 id="profile-name">Chargement...</h2>
+            <div class="profile-details">
+              <span id="profile-age"></span>
+              <span class="separator">•</span>
+              <span id="profile-dossier"></span>
+              <span class="separator">•</span>
+              <span id="profile-week"></span>
+              <span class="separator" id="distance-separator" style="display: none;">•</span>
+              <span id="profile-distance" style="display: none;"></span>
+              <span class="separator" id="transport-separator" style="display: none;">•</span>
+              <span id="profile-transport" style="display: none;"></span>
+            </div>
+          </div>
+          <div style="margin-left: auto;">
+            <a href="profil-patiente.html" class="btn-primary" style="text-decoration: none; padding: 0.5rem 1rem; font-size: 0.875rem;">✏️ Modifier</a>
+          </div>
+        </div>
+      </section>
+
+      <!-- Mini carte interactive -->
+      <section class="card" style="margin-bottom: 1.5rem;">
+        <div class="card-header-with-icon">
+          <span class="card-icon">📍</span>
+          <h2>Localisation</h2>
+        </div>
+        <div id="mini-map-container" style="height: 200px; border-radius: 0.5rem; overflow: hidden; background: #f3f4f6; position: relative;">
+          <div id="mini-map" style="width: 100%; height: 100%; position: relative;">
+            <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); text-align: center; color: #6b7280;">
+              <span style="font-size: 2rem; display: block; margin-bottom: 0.5rem;">🗺️</span>
+              <p style="margin: 0; font-size: 0.875rem;">Carte interactive</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Grille d'outils -->
+      <section class="tools-grid-section">
+        <div class="tools-grid">
+          <!-- Mon dossier médical -->
+          <a href="dossier-medical.html" class="tool-card" id="tool-dossier">
+            <div class="tool-icon-wrapper">
+              <div class="tool-icon-circle" style="background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);">
+                <span class="tool-icon">📋</span>
+              </div>
+            </div>
+            <div class="tool-content">
+              <h3 class="tool-title">Mon dossier médical</h3>
+              <p class="tool-subtitle">Consulter mon dossier complet</p>
+            </div>
+            <div class="tool-audio-icon">🔊</div>
+          </a>
+
+          <!-- Chatbot IA -->
+          <a href="chatbot.html" class="tool-card" id="tool-chatbot">
+            <div class="tool-icon-wrapper">
+              <div class="tool-icon-circle" style="background: linear-gradient(135deg, #fa709a 0%, #fee140 100%);">
+                <span class="tool-icon">🤖</span>
+              </div>
+            </div>
+            <div class="tool-content">
+              <h3 class="tool-title">Aide intelligent</h3>
+              <p class="tool-subtitle">Réponses à vos questions</p>
+            </div>
+            <div class="tool-audio-icon">🔊</div>
+          </a>
+
+          <!-- Conseils -->
+          <a href="conseils.html" class="tool-card" id="tool-conseils">
+            <div class="tool-icon-wrapper">
+              <div class="tool-icon-circle" style="background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 100%);">
+                <span class="tool-icon">💡</span>
+              </div>
+            </div>
+            <div class="tool-content">
+              <h3 class="tool-title">Conseils</h3>
+              <p class="tool-subtitle">Nutrition et signes d'alerte</p>
+            </div>
+            <div class="tool-audio-icon">🔊</div>
+          </a>
+
+          <!-- Messagerie -->
+          <a href="messages.html" class="tool-card" id="tool-messages">
+            <div class="tool-icon-wrapper">
+              <div class="tool-icon-circle" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
+                <span class="tool-icon">💬</span>
+              </div>
+            </div>
+            <div class="tool-content">
+              <h3 class="tool-title">Messagerie</h3>
+              <p class="tool-subtitle">Échanger avec mon professionnel</p>
+            </div>
+            <div class="tool-audio-icon">🔊</div>
+          </a>
+
+          <!-- Mon Profil -->
+          <a href="profil-patiente.html" class="tool-card" id="tool-profile">
+            <div class="tool-icon-wrapper">
+              <div class="tool-icon-circle" style="background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);">
+                <span class="tool-icon">👤</span>
+              </div>
+            </div>
+            <div class="tool-content">
+              <h3 class="tool-title">Mon Profil</h3>
+              <p class="tool-subtitle">Gérer mes informations</p>
+            </div>
+            <div class="tool-audio-icon">🔊</div>
+          </a>
+
+          <!-- Urgence -->
+          <a href="tel:+22370000000" class="tool-card" id="tool-urgence">
+            <div class="tool-icon-wrapper">
+              <div class="tool-icon-circle" style="background: linear-gradient(135deg, #ff6b6b 0%, #ee5a6f 100%);">
+                <span class="tool-icon">📞</span>
+              </div>
+            </div>
+            <div class="tool-content">
+              <h3 class="tool-title">Urgence</h3>
+              <p class="tool-subtitle">Appeler maintenant</p>
+            </div>
+            <div class="tool-audio-icon">🔊</div>
+          </a>
+        </div>
+      </section>
+    </main>
+
+    <footer role="contentinfo">
+      <small>Prototype MAMA+ – Amélioration du suivi prénatal</small>
+    </footer>
+
+    <!-- Système de lecture audio -->
+    <script src="utils/audio-helper.js"></script>
+    <!-- Système d'icônes -->
+    <script src="utils/icons.js"></script>
+    <!-- Système multi-professionnels pour patientes -->
+    <script src="utils/multi-professionnels-patiente.js"></script>
+    <!-- Badge de messages non lus -->
+    <script src="utils/messages-badge.js"></script>
+    <script>
+      // Initialiser le sélecteur de professionnel dans le tableau de bord
+      function initProfessionnelSelectorPatiente() {
+        const selectorCard = document.getElementById('professionnel-selector-card');
+        const selectElement = document.getElementById('current-professionnel-select');
+        
+        if (!window.getPatienteProfessionnels) return;
+        
+        const professionnels = window.getPatienteProfessionnels();
+        const currentId = window.getCurrentPatienteProfessionnelId ? window.getCurrentPatienteProfessionnelId() : null;
+        
+        if (professionnels.length === 0) {
+          if (selectorCard) selectorCard.style.display = 'none';
+          return;
+        }
+        
+        if (professionnels.length === 1) {
+          // Un seul professionnel : masquer le sélecteur
+          if (selectorCard) selectorCard.style.display = 'none';
+          return;
+        }
+        
+        if (selectorCard) selectorCard.style.display = 'block';
+        
+        if (selectElement) {
+          selectElement.innerHTML = professionnels.map(prof => {
+            const profName = `${prof.prenom || ''} ${prof.nom || ''}`.trim() || 'Professionnel';
+            return `<option value="${prof.professionnelId}" ${prof.professionnelId === currentId ? 'selected' : ''}>
+              ${profName} ${prof.isActive ? '(Actif)' : ''}
+            </option>`;
+          }).join('');
+          
+          selectElement.addEventListener('change', function() {
+            const selectedId = this.value;
+            if (selectedId && window.setCurrentPatienteProfessionnel) {
+              window.setCurrentPatienteProfessionnel(selectedId);
+              // Rafraîchir les données si nécessaire
+              if (window.loadPatienteData) {
+                window.loadPatienteData();
+              }
+            }
+          });
+        }
+      }
+      
+      // Appeler lors du chargement
+      document.addEventListener('DOMContentLoaded', function() {
+        setTimeout(initProfessionnelSelectorPatiente, 500);
+      });
+    </script>
+    <script>
+      // Gestion des professionnels multiples pour les patientes
+      let patienteProfessionnels = [];
+      
+      // Charger les professionnels existants
+      function loadProfessionnelsListPatiente() {
+        if (window.getPatienteProfessionnels) {
+          patienteProfessionnels = window.getPatienteProfessionnels();
+          renderProfessionnelsListPatiente();
+        }
+      }
+      
+      // Afficher la liste des professionnels
+      function renderProfessionnelsListPatiente() {
+        const listDiv = document.getElementById('professionnels-list-patiente');
+        if (!listDiv) return;
+        
+        if (patienteProfessionnels.length === 0) {
+          listDiv.innerHTML = '<p style="text-align: center; color: #6b7280; font-size: 0.875rem; padding: 1rem;">Aucun professionnel ajouté. Ajoutez votre premier professionnel ci-dessous.</p>';
+          return;
+        }
+        
+        // Vider la liste
+        listDiv.innerHTML = '';
+        
+        // Créer les éléments DOM pour chaque professionnel
+        patienteProfessionnels.forEach((prof) => {
+          const profDiv = document.createElement('div');
+          profDiv.style.cssText = 'background: white; padding: 0.75rem; border-radius: 0.5rem; margin-bottom: 0.5rem; border: 2px solid ' + (prof.isActive ? '#059669' : '#e5e7eb') + '; display: flex; justify-content: space-between; align-items: center;';
+          
+          const infoDiv = document.createElement('div');
+          infoDiv.style.flex = '1';
+          
+          const nameDiv = document.createElement('div');
+          nameDiv.style.cssText = 'font-weight: 600; color: #1f2937; margin-bottom: 0.25rem;';
+          nameDiv.innerHTML = (prof.nom || prof.prenom + ' ' + prof.nom || 'Professionnel') + (prof.isActive ? ' <span style="background: #059669; color: white; padding: 0.125rem 0.5rem; border-radius: 0.25rem; font-size: 0.75rem; margin-left: 0.5rem;">ACTIF</span>' : '');
+          
+          const detailsDiv = document.createElement('div');
+          detailsDiv.style.cssText = 'font-size: 0.75rem; color: #6b7280;';
+          detailsDiv.textContent = (prof.profession || 'Professionnel') + (prof.telephone ? ' - ' + prof.telephone : '');
+          
+          infoDiv.appendChild(nameDiv);
+          infoDiv.appendChild(detailsDiv);
+          
+          const actionsDiv = document.createElement('div');
+          actionsDiv.style.cssText = 'display: flex; gap: 0.5rem;';
+          
+          if (!prof.isActive) {
+            const activateBtn = document.createElement('button');
+            activateBtn.textContent = '✓';
+            activateBtn.style.cssText = 'padding: 0.5rem; background: #3b82f6; color: white; border: none; border-radius: 0.25rem; cursor: pointer; font-size: 0.75rem;';
+            activateBtn.title = 'Définir comme actif';
+            activateBtn.onclick = function() { setActiveProfessionnelPatiente(prof.professionnelId); };
+            actionsDiv.appendChild(activateBtn);
+          }
+          
+          const removeBtn = document.createElement('button');
+          removeBtn.textContent = '🗑️';
+          removeBtn.style.cssText = 'padding: 0.5rem; background: #ef4444; color: white; border: none; border-radius: 0.25rem; cursor: pointer; font-size: 0.75rem;';
+          removeBtn.title = 'Supprimer';
+          removeBtn.onclick = function() { removeProfessionnelPatiente(prof.professionnelId); };
+          actionsDiv.appendChild(removeBtn);
+          
+          profDiv.appendChild(infoDiv);
+          profDiv.appendChild(actionsDiv);
+          
+          listDiv.appendChild(profDiv);
+        });
+      }
+      
+      // Ajouter un professionnel
+      function addProfessionnelPatiente() {
+        const syncCodeInput = document.getElementById('reg-sync-code');
+        const validationDiv = document.getElementById('sync-code-validation-message');
+        
+        if (!syncCodeInput) return;
+        
+        const codeOrPhone = syncCodeInput.value.trim();
+        
+        if (!codeOrPhone) {
+          validationDiv.innerHTML = '<span style="color: #dc2626;">Veuillez entrer un code ou un numéro de téléphone</span>';
+          validationDiv.style.display = 'block';
+          return;
+        }
+        
+        // Vérifier si c'est un code de synchronisation ou un téléphone
+        const isSyncCode = /^MAMA-[A-Z0-9]{4}-[A-Z0-9]{4}$/i.test(codeOrPhone.toUpperCase());
+        const isPhone = /^\+?[0-9]{8,15}$/.test(codeOrPhone.replace(/\s+/g, ''));
+        
+        if (!isSyncCode && !isPhone) {
+          validationDiv.innerHTML = '<span style="color: #dc2626;">Format invalide. Utilisez un code MAMA-XXXX-XXXX ou un numéro de téléphone</span>';
+          validationDiv.style.display = 'block';
+          return;
+        }
+        
+        // Chercher le professionnel
+        let professionnelInfo = null;
+        
+        if (isPhone) {
+          // Chercher par téléphone dans les professionnels
+          const professionnels = JSON.parse(localStorage.getItem('mama_establishment_professionnels') || '[]');
+          const found = professionnels.find(p => {
+            const phone = p.telephone || '';
+            return phone.replace(/\s+/g, '') === codeOrPhone.replace(/\s+/g, '') ||
+                   phone.replace(/\s+/g, '') === '+' + codeOrPhone.replace(/\s+/g, '') ||
+                   phone.replace(/\s+/g, '').replace(/^\+/, '') === codeOrPhone.replace(/\s+/g, '').replace(/^\+/, '');
+          });
+          
+          if (found) {
+            professionnelInfo = {
+              professionnelId: found.id,
+              prenom: found.prenom || '',
+              nom: found.nom || '',
+              telephone: found.telephone || codeOrPhone,
+              profession: found.profession || 'Professionnel',
+              etablissementId: found.etablissementId || null,
+              etablissementNom: found.etablissementNom || null
+            };
+          } else {
+            // Créer un professionnel temporaire
+            professionnelInfo = {
+              professionnelId: `temp_${Date.now()}`,
+              telephone: codeOrPhone,
+              nom: 'Professionnel (à valider)',
+              profession: 'unknown'
+            };
+          }
+        } else if (isSyncCode) {
+          // Pour les codes de synchronisation, on peut chercher dans les professionnels
+          // ou créer un professionnel temporaire
+          professionnelInfo = {
+            professionnelId: `temp_${Date.now()}`,
+            syncCode: codeOrPhone.toUpperCase(),
+            nom: 'Professionnel (à valider)',
+            profession: 'unknown'
+          };
+        }
+        
+        if (!professionnelInfo) {
+          validationDiv.innerHTML = '<span style="color: #dc2626;">Impossible de trouver le professionnel</span>';
+          validationDiv.style.display = 'block';
+          return;
+        }
+        
+        // Vérifier si déjà ajouté
+        const exists = patienteProfessionnels.find(p => 
+          p.professionnelId === professionnelInfo.professionnelId ||
+          (p.telephone && professionnelInfo.telephone && p.telephone === professionnelInfo.telephone)
+        );
+        
+        if (exists) {
+          validationDiv.innerHTML = '<span style="color: #dc2626;">Ce professionnel est déjà ajouté</span>';
+          validationDiv.style.display = 'block';
+          return;
+        }
+        
+        // Ajouter le professionnel
+        if (window.addPatienteProfessionnel) {
+          const result = window.addPatienteProfessionnel(professionnelInfo);
+          
+          if (result.success) {
+            loadProfessionnelsListPatiente();
+            syncCodeInput.value = '';
+            validationDiv.innerHTML = '<span style="color: #059669;">✅ Professionnel ajouté !</span>';
+            validationDiv.style.display = 'block';
+            setTimeout(() => {
+              validationDiv.style.display = 'none';
+            }, 2000);
+          } else {
+            validationDiv.innerHTML = `<span style="color: #dc2626;">${result.message}</span>`;
+            validationDiv.style.display = 'block';
+          }
+        }
+      }
+      
+      // Supprimer un professionnel
+      window.removeProfessionnelPatiente = function(professionnelId) {
+        if (confirm('Êtes-vous sûr de vouloir supprimer ce professionnel ?')) {
+          if (window.removePatienteProfessionnel) {
+            window.removePatienteProfessionnel(professionnelId);
+            loadProfessionnelsListPatiente();
+          }
+        }
+      };
+      
+      // Définir le professionnel actif
+      window.setActiveProfessionnelPatiente = function(professionnelId) {
+        if (window.setCurrentPatienteProfessionnel) {
+          window.setCurrentPatienteProfessionnel(professionnelId);
+          loadProfessionnelsListPatiente();
+        }
+      };
+      
+      // Initialisation
+      document.addEventListener('DOMContentLoaded', function() {
+        loadProfessionnelsListPatiente();
+        
+        const syncCodeInput = document.getElementById('reg-sync-code');
+        const validationDiv = document.getElementById('sync-code-validation-message');
+        const addBtn = document.getElementById('add-professionnel-btn-patiente');
+        
+        if (addBtn) {
+          addBtn.addEventListener('click', addProfessionnelPatiente);
+        }
+        
+        if (syncCodeInput) {
+          // Validation en temps réel
+          syncCodeInput.addEventListener('input', function() {
+            const codeOrPhone = this.value.trim();
+            
+            if (codeOrPhone.length === 0) {
+              validationDiv.style.display = 'none';
+              this.style.borderColor = '#0ea5e9';
+              return;
+            }
+            
+            const isSyncCode = /^MAMA-[A-Z0-9]{4}-[A-Z0-9]{4}$/i.test(codeOrPhone.toUpperCase());
+            const isPhone = /^\+?[0-9]{8,15}$/.test(codeOrPhone.replace(/\s+/g, ''));
+            
+            if (!isSyncCode && !isPhone) {
+              validationDiv.innerHTML = '<span style="color: #dc2626;">Format invalide</span>';
+              validationDiv.style.display = 'block';
+              this.style.borderColor = '#dc2626';
+              return;
+            }
+            
+            // Vérifier si déjà ajouté
+            const exists = patienteProfessionnels.find(p => 
+              (p.telephone && codeOrPhone.replace(/\s+/g, '') === p.telephone.replace(/\s+/g, '')) ||
+              (p.syncCode && codeOrPhone.toUpperCase() === p.syncCode.toUpperCase())
+            );
+            
+            if (exists) {
+              validationDiv.innerHTML = '<span style="color: #f59e0b;">⚠️ Déjà ajouté</span>';
+              validationDiv.style.display = 'block';
+              this.style.borderColor = '#f59e0b';
+              return;
+            }
+            
+            validationDiv.innerHTML = '<span style="color: #0ea5e9;">✓ Format correct</span>';
+            validationDiv.style.display = 'block';
+            this.style.borderColor = '#0ea5e9';
+          });
+          
+          // Permettre l'ajout avec Enter
+          syncCodeInput.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+              e.preventDefault();
+              addProfessionnelPatiente();
+            }
+          });
+        }
+        
+        // Activer/désactiver le bouton de soumission selon le nombre de professionnels
+        const submitBtn = document.getElementById('submit-patiente-profile-btn');
+        if (submitBtn) {
+          const checkSubmitButton = function() {
+            if (window.getPatienteProfessionnels) {
+              const professionnels = window.getPatienteProfessionnels();
+              submitBtn.disabled = professionnels.length === 0;
+              if (professionnels.length === 0) {
+                submitBtn.title = 'Veuillez ajouter au moins un professionnel';
+                submitBtn.style.opacity = '0.5';
+                submitBtn.style.cursor = 'not-allowed';
+              } else {
+                submitBtn.title = '';
+                submitBtn.style.opacity = '1';
+                submitBtn.style.cursor = 'pointer';
+              }
+            }
+          };
+          
+          // Vérifier toutes les 500ms
+          setInterval(checkSubmitButton, 500);
+          checkSubmitButton();
+        }
+      });
+    </script>
+    <script>
+      // Initialiser les icônes au chargement
+      document.addEventListener('DOMContentLoaded', function() {
+        if (window.getIcon) {
+          const homeIconLink = document.querySelector('#home-icon-link-patriente');
+          if (homeIconLink) {
+            homeIconLink.innerHTML = window.getIcon('home', 24, 'white');
+          }
+          
+          const headerIcon = document.querySelector('#header-icon-patriente');
+          if (headerIcon) {
+            headerIcon.innerHTML = window.getIcon('pregnant-woman', 28, 'white');
+          }
+        }
+      });
+    </script>
+    <!-- Système d'authentification -->
+    <script src="utils/auth.js"></script>
+    <script>
+      // Protéger la page - vérifier la connexion
+      if (!window.protectPage || !window.protectPage('patiente')) {
+        // Redirection en cours
+      }
+    </script>
+    <!-- Navigation mobile -->
+    <script src="utils/mobile-nav.js" defer></script>
+    <!-- Améliorations interface patiente -->
+    <script src="utils/patiente-enhancements.js"></script>
+    <script src="app-patriente.js" defer></script>
+  </body>
+</html>

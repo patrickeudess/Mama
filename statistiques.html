@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes" />
+    <title>MAMA+ – Statistiques et Performance</title>
+    <link rel="stylesheet" href="styles.css" />
+    <link rel="stylesheet" href="styles-icons.css" />
+    <link rel="stylesheet" href="styles-mobile-nav.css" />
+  </head>
+  <body>
+    <header role="banner" class="tools-header">
+      <div class="header-left">
+        <a href="index-professionnel.html" style="color: #fff; text-decoration: none; font-size: 1.5rem; margin-right: 1rem;">←</a>
+        <span class="header-icon">📈</span>
+        <h1>MAMA+ – Statistiques et Performance</h1>
+      </div>
+      <div id="auth-section" role="navigation">
+        <div id="user-info" class="hidden" aria-live="polite">
+          <span id="user-name" aria-label="Nom de l'utilisateur"></span>
+          <button id="logout-button" type="button" aria-label="Se déconnecter">Déconnexion</button>
+        </div>
+      </div>
+    </header>
+
+    <main role="main" style="padding: 2rem;">
+      <!-- Onglets pour basculer entre Statistiques et Performance -->
+      <div class="tabs-container" style="margin-bottom: 1.5rem;" role="tablist" aria-label="Navigation entre Statistiques et Performance">
+        <button 
+          class="tab-btn active" 
+          id="tab-stats" 
+          onclick="switchTab('stats')"
+          role="tab"
+          aria-selected="true"
+          aria-controls="stats-section"
+          tabindex="0"
+        >
+          📈 Statistiques
+        </button>
+        <button 
+          class="tab-btn" 
+          id="tab-performance" 
+          onclick="switchTab('performance')"
+          role="tab"
+          aria-selected="false"
+          aria-controls="performance-section"
+          tabindex="-1"
+        >
+          📊 Performance
+        </button>
+      </div>
+
+      <!-- Section Statistiques -->
+      <section class="card tab-content active" id="stats-section" role="tabpanel" aria-labelledby="tab-stats" aria-live="polite" aria-label="Statistiques du tableau de bord">
+        <div class="card-header-with-icon">
+          <span class="card-icon">📈</span>
+          <h2>Statistiques - Graphiques et tendances</h2>
+        </div>
+        <div id="stats-content" style="padding: 1rem;">
+          <div class="loading-state">
+            <div class="spinner"></div>
+            <p>Chargement des statistiques...</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Section Performance -->
+      <section class="card tab-content" id="performance-section" role="tabpanel" aria-labelledby="tab-performance" aria-live="polite" aria-label="Statistiques de performance" aria-hidden="true">
+        <div class="card-header-with-icon">
+          <span class="card-icon">📊</span>
+          <h2>Statistiques de performance</h2>
+        </div>
+        <div id="performance-content" style="padding: 1rem;">
+          <div class="loading-state">
+            <div class="spinner"></div>
+            <p>Chargement des statistiques de performance...</p>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer role="contentinfo">
+      <small>Prototype MAMA+ – Amélioration du suivi prénatal</small>
+    </footer>
+
+    <!-- Version simplifiée - Fonctionne sans serveur backend -->
+    <!-- Navigation mobile -->
+    <script src="utils/icons.js"></script>
+    <script src="utils/mobile-nav.js" defer></script>
+    <!-- Système de filtres globaux -->
+    <script src="utils/global-filters.js"></script>
+    <!-- Améliorations du tableau de bord -->
+    <script src="utils/dashboard-enhancements.js"></script>
+    <script src="app-professionnel-simple.js" defer></script>
+    <script>
+      // Fonction pour basculer entre les onglets
+      function switchTab(tabName) {
+        // Désactiver tous les onglets
+        document.querySelectorAll('.tab-btn').forEach(btn => {
+          btn.classList.remove('active');
+          btn.setAttribute('aria-selected', 'false');
+          btn.setAttribute('tabindex', '-1');
+        });
+        document.querySelectorAll('.tab-content').forEach(content => {
+          content.classList.remove('active');
+          content.setAttribute('aria-hidden', 'true');
+        });
+        
+        // Activer l'onglet sélectionné
+        const tabBtn = document.getElementById(`tab-${tabName}`);
+        const tabContent = document.getElementById(`${tabName}-section`);
+        
+        if (tabBtn) {
+          tabBtn.classList.add('active');
+          tabBtn.setAttribute('aria-selected', 'true');
+          tabBtn.setAttribute('tabindex', '0');
+          tabBtn.focus();
+        }
+        if (tabContent) {
+          tabContent.classList.add('active');
+          tabContent.setAttribute('aria-hidden', 'false');
+        }
+      }
+
+      // Navigation au clavier pour les onglets
+      document.querySelectorAll('.tab-btn').forEach(btn => {
+        btn.addEventListener('keydown', (e) => {
+          const tabs = Array.from(document.querySelectorAll('.tab-btn'));
+          const currentIndex = tabs.indexOf(btn);
+          
+          if (e.key === 'ArrowLeft' && currentIndex > 0) {
+            e.preventDefault();
+            switchTab(tabs[currentIndex - 1].id.replace('tab-', ''));
+          } else if (e.key === 'ArrowRight' && currentIndex < tabs.length - 1) {
+            e.preventDefault();
+            switchTab(tabs[currentIndex + 1].id.replace('tab-', ''));
+          } else if (e.key === 'Home') {
+            e.preventDefault();
+            switchTab(tabs[0].id.replace('tab-', ''));
+          } else if (e.key === 'End') {
+            e.preventDefault();
+            switchTab(tabs[tabs.length - 1].id.replace('tab-', ''));
+          }
+        });
+      });
+      
+      // Vérifier si on arrive depuis la page performance (via hash)
+      document.addEventListener("DOMContentLoaded", () => {
+        // Charger les filtres sauvegardés
+        if (window.loadSavedFilters) {
+          window.loadSavedFilters();
+        }
+        
+        // Initialiser les filtres globaux
+        if (window.initGlobalFilters && window.getPatientes) {
+          const allPatientes = window.getPatientes();
+          window.initGlobalFilters(allPatientes);
+        }
+        
+        // Écouter les changements de filtres globaux
+        window.addEventListener('filtersChanged', () => {
+          if (window.renderStatsPage) {
+            window.renderStatsPage();
+          }
+          if (window.renderPerformancePage) {
+            window.renderPerformancePage();
+          }
+        });
+        
+        // Vérifier l'URL pour voir si on doit afficher l'onglet performance
+        if (window.location.hash === '#performance') {
+          switchTab('performance');
+        }
+        
+        // Charger les statistiques
+        if (window.renderStatsPage) {
+          window.renderStatsPage();
+        }
+        if (window.renderPerformancePage) {
+          window.renderPerformancePage();
+        }
+      });
+    </script>
+  </body>
+</html>
+

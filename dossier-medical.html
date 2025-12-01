@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes" />
+    <title>MAMA+ – Mon dossier médical complet</title>
+    <link rel="stylesheet" href="styles.css" />
+    <link rel="stylesheet" href="styles-icons.css" />
+    <link rel="stylesheet" href="styles-mobile-nav.css" />
+  </head>
+  <body>
+    <header role="banner" class="tools-header">
+      <div class="header-left">
+        <a href="index-patriente.html" style="color: #fff; text-decoration: none; font-size: 1.5rem; margin-right: 0.75rem; display: inline-flex; align-items: center; min-width: 44px; min-height: 44px; justify-content: center; -webkit-tap-highlight-color: transparent;" title="Retour à l'accueil" id="back-icon-link-dossier"></a>
+        <span class="header-icon" id="header-dossier-icon"></span>
+        <h1 style="margin: 0; font-size: 1.125rem; line-height: 1.4;">MAMA+ – Mon dossier médical complet</h1>
+      </div>
+      <div id="auth-section" role="navigation">
+        <div id="user-info" class="hidden" aria-live="polite">
+          <span id="user-name" aria-label="Nom de l'utilisateur"></span>
+          <button id="logout-button" type="button" aria-label="Se déconnecter">Déconnexion</button>
+        </div>
+      </div>
+    </header>
+
+    <main role="main">
+      <!-- Profil rapide -->
+      <section class="card profile-card" id="profile-card" aria-labelledby="profile-name">
+        <div class="profile-header">
+          <div class="profile-avatar" id="profile-avatar-icon" aria-hidden="true" style="display: inline-flex; align-items: center; justify-content: center; width: 64px; height: 64px; border-radius: 50%; background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);"></div>
+          <div class="profile-info">
+            <h2 id="profile-name">Chargement...</h2>
+            <div class="profile-details">
+              <span id="profile-age"></span>
+              <span class="separator">•</span>
+              <span id="profile-dossier"></span>
+              <span class="separator">•</span>
+              <span id="profile-week"></span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Dossier médical complet -->
+      <section class="card dossier-card-enhanced" id="dossier-card">
+        <div class="card-header-with-icon">
+          <span class="card-icon" id="dossier-card-icon"></span>
+          <h2>Mon dossier médical complet</h2>
+        </div>
+        
+        <!-- Navigation par onglets -->
+        <div class="tabs-container-enhanced" id="dossier-tabs" role="tablist" aria-label="Navigation entre les sections du dossier médical" style="margin-top: 1rem; margin-bottom: 1.5rem;">
+          <button class="tab-btn-enhanced active" data-tab="consultations" role="tab" aria-selected="true" aria-controls="consultations-section" tabindex="0">
+            <span id="tab-consultations-icon"></span> Consultations
+          </button>
+          <button class="tab-btn-enhanced" data-tab="cpn" role="tab" aria-selected="false" aria-controls="cpn-section" tabindex="-1">
+            <span id="tab-cpn-icon"></span> CPN
+          </button>
+          <button class="tab-btn-enhanced" data-tab="vaccinations" role="tab" aria-selected="false" aria-controls="vaccinations-section" tabindex="-1">
+            <span id="tab-vaccinations-icon"></span> Vaccinations
+          </button>
+          <button class="tab-btn-enhanced" data-tab="facilities" role="tab" aria-selected="false" aria-controls="facilities-section" tabindex="-1">
+            <span id="tab-facilities-icon"></span> Établissements
+          </button>
+        </div>
+        
+        <div id="dossier-content" class="loading-state">
+          <div class="spinner"></div>
+          <p>Chargement...</p>
+        </div>
+      </section>
+    </main>
+
+    <footer role="contentinfo">
+      <small>Prototype MAMA+ – Amélioration du suivi prénatal</small>
+    </footer>
+
+    <!-- Navigation mobile -->
+    <script src="utils/icons.js"></script>
+    <script src="utils/health-facilities.js"></script>
+    <script>
+      // Initialiser les icônes au chargement
+      document.addEventListener('DOMContentLoaded', function() {
+        if (window.getIcon) {
+          // Header
+          const backIconLink = document.querySelector('#back-icon-link-dossier');
+          if (backIconLink) {
+            backIconLink.innerHTML = window.getIcon('back', 24, 'white');
+          }
+          
+          const headerDossierIcon = document.querySelector('#header-dossier-icon');
+          if (headerDossierIcon) {
+            headerDossierIcon.innerHTML = window.getIcon('dossier', 28, 'white');
+          }
+          
+          // Card icon
+          const dossierCardIcon = document.querySelector('#dossier-card-icon');
+          if (dossierCardIcon) {
+            dossierCardIcon.innerHTML = window.getIcon('dossier', 24, '#3b82f6');
+          }
+          
+          // Profile avatar
+          const profileAvatarIcon = document.querySelector('#profile-avatar-icon');
+          if (profileAvatarIcon) {
+            profileAvatarIcon.innerHTML = window.getIcon('pregnant-woman', 40, 'white');
+          }
+          
+          // Tab icons
+          const tabConsultationsIcon = document.querySelector('#tab-consultations-icon');
+          if (tabConsultationsIcon) {
+            tabConsultationsIcon.innerHTML = window.getIcon('consultation', 16, 'currentColor');
+            tabConsultationsIcon.style.display = 'inline-flex';
+            tabConsultationsIcon.style.marginRight = '0.5rem';
+          }
+          
+          const tabCpnIcon = document.querySelector('#tab-cpn-icon');
+          if (tabCpnIcon) {
+            tabCpnIcon.innerHTML = window.getIcon('calendar', 16, 'currentColor');
+            tabCpnIcon.style.display = 'inline-flex';
+            tabCpnIcon.style.marginRight = '0.5rem';
+          }
+          
+          const tabVaccinationsIcon = document.querySelector('#tab-vaccinations-icon');
+          if (tabVaccinationsIcon) {
+            tabVaccinationsIcon.innerHTML = window.getIcon('success', 16, 'currentColor');
+            tabVaccinationsIcon.style.display = 'inline-flex';
+            tabVaccinationsIcon.style.marginRight = '0.5rem';
+          }
+          
+          const tabFacilitiesIcon = document.querySelector('#tab-facilities-icon');
+          if (tabFacilitiesIcon) {
+            tabFacilitiesIcon.innerHTML = window.getIcon('location', 16, 'currentColor');
+            tabFacilitiesIcon.style.display = 'inline-flex';
+            tabFacilitiesIcon.style.marginRight = '0.5rem';
+          }
+        }
+      });
+    </script>
+    <script src="utils/mobile-nav.js" defer></script>
+    <script src="app-dossier.js" defer></script>
+  </body>
+</html>
+

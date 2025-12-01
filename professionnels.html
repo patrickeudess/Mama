@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes" />
+    <title>MAMA+ – Gestion des Professionnels</title>
+    <link rel="stylesheet" href="styles.css" />
+    <link rel="stylesheet" href="styles-icons.css" />
+    <link rel="stylesheet" href="styles-mobile-nav.css" />
+  </head>
+  <body>
+    <header role="banner" class="tools-header">
+      <div class="header-left">
+        <a href="index-etablissement.html" style="color: #fff; text-decoration: none; font-size: 1.5rem; margin-right: 1rem; display: inline-flex; align-items: center;" title="Retour au tableau de bord" id="back-icon-link"></a>
+        <span class="header-icon" id="header-icon"></span>
+        <h1>MAMA+ – Professionnels de santé</h1>
+      </div>
+      <div id="auth-section" role="navigation">
+        <div id="user-info" aria-live="polite">
+          <span id="user-name" aria-label="Nom de l'utilisateur"></span>
+          <button id="logout-button" type="button" aria-label="Se déconnecter" class="btn-secondary" style="margin-left: 1rem; padding: 0.5rem 1rem;">Déconnexion</button>
+        </div>
+      </div>
+    </header>
+
+    <main role="main" style="padding: 2rem;">
+      <div class="card">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+          <div>
+            <h2 style="margin: 0;">Professionnels de l'établissement</h2>
+            <p id="establishment-name-display" style="margin: 0.5rem 0 0 0; color: #6b7280; font-size: 0.9rem;"></p>
+          </div>
+          <button id="add-professionnel-btn" type="button" class="btn-primary" aria-label="Ajouter un professionnel">+ Ajouter un professionnel</button>
+        </div>
+
+        <div class="search-container" style="margin-bottom: 1rem;">
+          <input 
+            type="text" 
+            id="search-input" 
+            class="search-input" 
+            placeholder="Rechercher un professionnel (nom, profession...)"
+            aria-label="Rechercher un professionnel"
+          />
+          <span class="search-icon" id="search-icon-placeholder"></span>
+        </div>
+
+        <div class="table-container">
+          <table id="professionnels-table" role="table" aria-label="Liste des professionnels">
+            <thead>
+              <tr>
+                <th scope="col">Nom</th>
+                <th scope="col">Profession</th>
+                <th scope="col">Téléphone</th>
+                <th scope="col">Patientes suivies</th>
+                <th scope="col">Actions</th>
+              </tr>
+            </thead>
+            <tbody role="rowgroup">
+              <tr>
+                <td colspan="5" style="text-align: center; padding: 2rem; color: #6b7280;">
+                  Aucun professionnel enregistré pour le moment
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </main>
+
+    <!-- Modal pour ajouter un professionnel -->
+    <div id="add-professionnel-modal" class="modal hidden">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h2>Ajouter un professionnel</h2>
+          <button id="close-modal-btn" type="button" class="close-btn" aria-label="Fermer">&times;</button>
+        </div>
+        <form id="add-professionnel-form">
+          <div class="form-section">
+            <h3>Informations personnelles</h3>
+            <div class="form-row">
+              <label>
+                Prénom <span class="required">*</span>
+                <input type="text" id="prof-prenom" required />
+              </label>
+              <label>
+                Nom <span class="required">*</span>
+                <input type="text" id="prof-nom" required />
+              </label>
+            </div>
+            <label>
+              Profession <span class="required">*</span>
+              <select id="prof-profession" required>
+                <option value="">Sélectionner...</option>
+                <option value="sage_femme">Sage-femme</option>
+                <option value="medecin">Médecin</option>
+                <option value="infirmier">Infirmier/Infirmière</option>
+                <option value="superviseur">Superviseur</option>
+              </select>
+            </label>
+            <label>
+              Téléphone <span class="required">*</span>
+              <input type="tel" id="prof-telephone" placeholder="Ex: +2250700000000" required />
+            </label>
+            <label>
+              Email
+              <input type="email" id="prof-email" />
+            </label>
+          </div>
+
+          <div class="form-actions">
+            <button type="button" id="cancel-prof-btn" class="btn-secondary">Annuler</button>
+            <button type="submit" class="btn-primary">Ajouter</button>
+          </div>
+          <div id="prof-message" class="message"></div>
+        </form>
+      </div>
+    </div>
+
+    <footer role="contentinfo">
+      <small>Prototype MAMA+ – Amélioration du suivi prénatal</small>
+    </footer>
+
+    <!-- Système d'authentification -->
+    <script src="utils/auth.js"></script>
+    <script>
+      // Protéger la page - vérifier la connexion et le profil
+      if (!window.protectPage || !window.protectPage('etablissement')) {
+        // Redirection en cours
+      }
+      
+      // Vérifier que le profil établissement existe
+      document.addEventListener('DOMContentLoaded', function() {
+        const profile = localStorage.getItem('mama_establishment_profile');
+        if (!profile) {
+          window.location.href = 'creer-profil-etablissement.html';
+        }
+      });
+    </script>
+    <!-- Système d'icônes -->
+    <script src="utils/icons.js"></script>
+    <script>
+      document.addEventListener('DOMContentLoaded', function() {
+        if (window.getIcon) {
+          const backIconLink = document.querySelector('#back-icon-link');
+          if (backIconLink) {
+            backIconLink.innerHTML = window.getIcon('back', 24, 'white');
+          }
+          
+          const headerIcon = document.querySelector('#header-icon');
+          if (headerIcon) {
+            headerIcon.innerHTML = window.getIcon('doctor', 28, 'white');
+          }
+        }
+      });
+    </script>
+    <script src="app-professionnels.js" defer></script>
+  </body>
+</html>
+

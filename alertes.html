@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes" />
+    <title>MAMA+ – Alertes prioritaires</title>
+    <link rel="stylesheet" href="styles.css" />
+    <link rel="stylesheet" href="styles-icons.css" />
+    <link rel="stylesheet" href="styles-mobile-nav.css" />
+  </head>
+  <body>
+    <header role="banner" class="tools-header">
+      <div class="header-left">
+        <a href="index-professionnel.html" style="color: #fff; text-decoration: none; font-size: 1.5rem; margin-right: 1rem;">←</a>
+        <span class="header-icon">⚠️</span>
+        <h1>MAMA+ – Alertes prioritaires</h1>
+      </div>
+      <div id="auth-section" role="navigation">
+        <div id="user-info" class="hidden" aria-live="polite">
+          <span id="user-name" aria-label="Nom de l'utilisateur"></span>
+          <button id="logout-button" type="button" aria-label="Se déconnecter">Déconnexion</button>
+        </div>
+      </div>
+    </header>
+
+    <main role="main" style="padding: 2rem;">
+      <!-- Filtres globaux -->
+      <section class="card" id="global-filters-section" style="margin-bottom: 1rem; padding: 1rem; background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%); border: 1px solid #e2e8f0;">
+        <div style="margin-bottom: 0.75rem;">
+          <h3 style="margin: 0; font-size: 1rem; font-weight: 600; color: #1e293b; display: flex; align-items: center; gap: 0.5rem;">
+            <span>🔍</span>
+            <span>Filtres de contexte</span>
+          </h3>
+          <p style="margin: 0.25rem 0 0 0; font-size: 0.875rem; color: #64748b;">Filtrez les alertes selon votre zone d'intervention</p>
+        </div>
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; margin-bottom: 1rem;">
+          <label style="display: flex; flex-direction: column; gap: 0.5rem;">
+            <span style="font-weight: 500; color: #374151; font-size: 0.875rem;">Pays:</span>
+            <select id="global-filter-pays" style="padding: 0.625rem; border: 1px solid #d1d5db; border-radius: 0.375rem; font-size: 0.875rem; background: white;">
+              <option value="all">Tous les pays</option>
+            </select>
+          </label>
+          <label style="display: flex; flex-direction: column; gap: 0.5rem;">
+            <span style="font-weight: 500; color: #374151; font-size: 0.875rem;">Ville:</span>
+            <select id="global-filter-ville" style="padding: 0.625rem; border: 1px solid #d1d5db; border-radius: 0.375rem; font-size: 0.875rem; background: white;">
+              <option value="all">Toutes les villes</option>
+            </select>
+          </label>
+          <label style="display: flex; flex-direction: column; gap: 0.5rem;">
+            <span style="font-weight: 500; color: #374151; font-size: 0.875rem;">Centre de santé:</span>
+            <select id="global-filter-centre" style="padding: 0.625rem; border: 1px solid #d1d5db; border-radius: 0.375rem; font-size: 0.875rem; background: white;">
+              <option value="all">Tous les centres</option>
+            </select>
+          </label>
+          <label style="display: flex; flex-direction: column; gap: 0.5rem;">
+            <span style="font-weight: 500; color: #374151; font-size: 0.875rem;">Période:</span>
+            <select id="global-filter-periode" style="padding: 0.625rem; border: 1px solid #d1d5db; border-radius: 0.375rem; font-size: 0.875rem; background: white;">
+              <option value="week">Cette semaine</option>
+              <option value="month" selected>Ce mois</option>
+              <option value="quarter">Ce trimestre</option>
+              <option value="year">Cette année</option>
+              <option value="all">Toutes les périodes</option>
+            </select>
+          </label>
+        </div>
+        <div style="display: flex; gap: 0.75rem; align-items: center; justify-content: flex-end; padding-top: 0.75rem; border-top: 1px solid #e2e8f0;">
+          <button id="reset-global-filters" class="btn-secondary" style="padding: 0.5rem 1rem; font-size: 0.875rem;">
+            🔄 Réinitialiser
+          </button>
+          <div id="filter-summary" style="font-size: 0.875rem; color: #64748b; font-style: italic;">
+            <span id="filter-summary-text">Aucun filtre actif</span>
+          </div>
+        </div>
+      </section>
+
+      <section class="card alerts-card" id="alerts-card">
+        <div class="card-header-with-icon">
+          <span class="card-icon" style="font-size: 2rem;">⚠️</span>
+          <h2>Alertes prioritaires</h2>
+        </div>
+        <div id="alertes-prioritaires-content" style="padding: 1rem;">
+          <div class="loading-state" style="text-align: center; padding: 2rem; color: #6b7280;">
+            <p>Chargement des alertes...</p>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer role="contentinfo">
+      <small>Prototype MAMA+ – Amélioration du suivi prénatal</small>
+    </footer>
+
+    <!-- Script pour les alertes prioritaires (version simplifiée) -->
+    <!-- Navigation mobile -->
+    <script src="utils/icons.js"></script>
+    <script src="utils/mobile-nav.js" defer></script>
+    <!-- Système de filtres globaux -->
+    <script src="utils/global-filters.js"></script>
+    <!-- Améliorations du tableau de bord -->
+    <script src="utils/dashboard-enhancements.js"></script>
+    <script src="app-alertes-simple.js" defer></script>
+  </body>
+</html>
+

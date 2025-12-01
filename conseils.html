@@ -1,0 +1,572 @@
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes" />
+    <title>MAMA+ – Sensibilisation et Informations</title>
+    <link rel="stylesheet" href="styles.css" />
+    <link rel="stylesheet" href="styles-icons.css" />
+    <link rel="stylesheet" href="styles-mobile-nav.css" />
+  </head>
+  <body>
+    <header role="banner" class="tools-header">
+      <div class="header-left">
+        <a href="index-patriente.html" style="color: #fff; text-decoration: none; font-size: 1.5rem; margin-right: 1rem;">←</a>
+        <span class="header-icon">💡</span>
+        <h1>MAMA+ – Sensibilisation et Informations</h1>
+      </div>
+      <div id="auth-section" role="navigation">
+        <div id="user-info" class="hidden" aria-live="polite">
+          <span id="user-name" aria-label="Nom de l'utilisateur"></span>
+          <button id="logout-button" type="button" aria-label="Se déconnecter">Déconnexion</button>
+        </div>
+      </div>
+    </header>
+
+    <main role="main" style="padding: 2rem;">
+      <!-- Message d'introduction -->
+      <section class="card info-banner" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: #fff; margin-bottom: 2rem;">
+        <div style="display: flex; align-items: center; gap: 1rem;">
+          <span style="font-size: 3rem;">📚</span>
+          <div>
+            <h2 style="margin: 0 0 0.5rem 0; color: #fff;">Bienvenue dans votre espace d'information</h2>
+            <p style="margin: 0; opacity: 0.95;">Accédez à des informations essentielles pour votre santé et celle de votre bébé. Ces conseils vous aideront à mieux comprendre votre grossesse et à prendre soin de vous.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Navigation par onglets -->
+      <section class="card" style="padding: 0; margin-bottom: 2rem;">
+        <div class="tabs-container-enhanced" role="tablist" aria-label="Navigation entre les sections de conseils">
+          <button class="tab-btn-enhanced active" data-tab="suivi" role="tab" aria-selected="true" aria-controls="suivi-tab" tabindex="0">📅 Suivi Prénatal</button>
+          <button class="tab-btn-enhanced" data-tab="nutrition" role="tab" aria-selected="false" aria-controls="nutrition-tab" tabindex="-1">🍎 Nutrition</button>
+          <button class="tab-btn-enhanced" data-tab="bienetre" role="tab" aria-selected="false" aria-controls="bienetre-tab" tabindex="-1">💪 Bien-être</button>
+          <button class="tab-btn-enhanced" data-tab="signes" role="tab" aria-selected="false" aria-controls="signes-tab" tabindex="-1">⚠️ Signes d'alerte</button>
+          <button class="tab-btn-enhanced" data-tab="preparation" role="tab" aria-selected="false" aria-controls="preparation-tab" tabindex="-1">👶 Préparation</button>
+          <button class="tab-btn-enhanced" data-tab="faq" role="tab" aria-selected="false" aria-controls="faq-tab" tabindex="-1">❓ Questions fréquentes</button>
+        </div>
+      </section>
+
+      <!-- Contenu Suivi Prénatal -->
+      <section id="suivi-tab" class="tab-content active" role="tabpanel" aria-labelledby="suivi-tab" aria-hidden="false">
+        <div class="card">
+          <div class="card-header-with-icon">
+            <span class="card-icon">📅</span>
+            <h2>L'importance du suivi prénatal (CPN)</h2>
+          </div>
+          <div class="conseils-content">
+            <div class="info-box important">
+              <div class="info-box-header">
+                <span class="info-icon">💡</span>
+                <h3>Pourquoi le suivi prénatal est essentiel ?</h3>
+              </div>
+              <p>Le suivi prénatal (Consultation Prénatale - CPN) est crucial pour votre santé et celle de votre bébé. Il permet de :</p>
+              <ul class="conseil-list">
+                <li><strong>Détecter précocement</strong> les complications potentielles</li>
+                <li><strong>Surveiller la croissance</strong> et le développement de votre bébé</li>
+                <li><strong>Prévenir les risques</strong> de complications pendant la grossesse</li>
+                <li><strong>Vous informer</strong> sur les bonnes pratiques et les signes d'alerte</li>
+                <li><strong>Planifier l'accouchement</strong> dans les meilleures conditions</li>
+              </ul>
+            </div>
+
+            <div class="conseil-section">
+              <h3>📋 Calendrier recommandé des CPN</h3>
+              <div class="timeline">
+                <div class="timeline-item">
+                  <div class="timeline-marker">1</div>
+                  <div class="timeline-content">
+                    <strong>CPN 1 :</strong> Avant 12 semaines de grossesse
+                    <p>Première consultation, établissement du dossier médical, examens de base</p>
+                  </div>
+                </div>
+                <div class="timeline-item">
+                  <div class="timeline-marker">2</div>
+                  <div class="timeline-content">
+                    <strong>CPN 2 :</strong> Entre 16 et 20 semaines
+                    <p>Suivi de la croissance, dépistage d'anomalies, conseils nutritionnels</p>
+                  </div>
+                </div>
+                <div class="timeline-item">
+                  <div class="timeline-marker">3</div>
+                  <div class="timeline-content">
+                    <strong>CPN 3 :</strong> Entre 24 et 28 semaines
+                    <p>Test de diabète gestationnel, évaluation du bien-être fœtal</p>
+                  </div>
+                </div>
+                <div class="timeline-item">
+                  <div class="timeline-marker">4</div>
+                  <div class="timeline-content">
+                    <strong>CPN 4 :</strong> Entre 32 et 36 semaines
+                    <p>Préparation à l'accouchement, planification, dernières recommandations</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="conseil-section highlight">
+              <h3>✅ Ce qui est vérifié lors d'une CPN</h3>
+              <div class="checklist-grid">
+                <div class="checklist-item">
+                  <span class="check-icon">✓</span>
+                  <span>Poids et tension artérielle</span>
+                </div>
+                <div class="checklist-item">
+                  <span class="check-icon">✓</span>
+                  <span>Hauteur utérine et position du bébé</span>
+                </div>
+                <div class="checklist-item">
+                  <span class="check-icon">✓</span>
+                  <span>Battements cardiaques du bébé</span>
+                </div>
+                <div class="checklist-item">
+                  <span class="check-icon">✓</span>
+                  <span>Analyses de sang et d'urine</span>
+                </div>
+                <div class="checklist-item">
+                  <span class="check-icon">✓</span>
+                  <span>Vaccinations nécessaires</span>
+                </div>
+                <div class="checklist-item">
+                  <span class="check-icon">✓</span>
+                  <span>Conseils personnalisés</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="conseil-section warning-box">
+              <h3>⚠️ N'oubliez pas</h3>
+              <p><strong>Respectez vos rendez-vous CPN !</strong> Chaque consultation est importante pour votre santé et celle de votre bébé. Si vous ne pouvez pas vous rendre à un rendez-vous, contactez votre centre de santé pour le reprogrammer.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Contenu Nutrition -->
+      <section id="nutrition-tab" class="tab-content" role="tabpanel" aria-labelledby="nutrition-tab" aria-hidden="true">
+        <div class="card">
+          <div class="card-header-with-icon">
+            <span class="card-icon">🍎</span>
+            <h2>Nutrition pendant la grossesse</h2>
+          </div>
+          <div class="conseils-content">
+            <div class="info-box">
+              <p style="margin: 0; font-size: 1.1rem; line-height: 1.6;"><strong>Une alimentation équilibrée</strong> est essentielle pendant la grossesse. Elle contribue au bon développement de votre bébé et à votre propre santé.</p>
+            </div>
+
+            <div class="conseil-section">
+              <h3>✅ Aliments recommandés</h3>
+              <div class="food-grid">
+                <div class="food-card">
+                  <span class="food-icon">🍎</span>
+                  <h4>Fruits et légumes</h4>
+                  <p>Au moins 5 portions par jour pour les vitamines (A, C, acide folique) et minéraux essentiels. Privilégiez les légumes verts foncés (épinards, brocolis) riches en acide folique.</p>
+                </div>
+                <div class="food-card">
+                  <span class="food-icon">🥩</span>
+                  <h4>Protéines</h4>
+                  <p>Viande maigre, poisson cuit, œufs, légumineuses (haricots, lentilles). Essentiels pour le développement des muscles et organes du bébé. Consommez-en à chaque repas.</p>
+                </div>
+                <div class="food-card">
+                  <span class="food-icon">🥛</span>
+                  <h4>Calcium</h4>
+                  <p>Produits laitiers (lait, yaourt, fromage pasteurisé), légumes verts, amandes. Important pour la formation des os et des dents du bébé. 3 portions par jour recommandées.</p>
+                </div>
+                <div class="food-card">
+                  <span class="food-icon">🌾</span>
+                  <h4>Fer</h4>
+                  <p>Viande rouge, légumineuses, épinards, céréales enrichies. Prévient l'anémie, fréquente pendant la grossesse. Consommez avec des aliments riches en vitamine C pour une meilleure absorption.</p>
+                </div>
+                <div class="food-card">
+                  <span class="food-icon">🌿</span>
+                  <h4>Acide folique</h4>
+                  <p>Légumes verts, fruits, céréales enrichies, noix. Crucial pour le développement du système nerveux du bébé, surtout au premier trimestre.</p>
+                </div>
+                <div class="food-card">
+                  <span class="food-icon">🌾</span>
+                  <h4>Céréales complètes</h4>
+                  <p>Riz complet, pain complet, pâtes complètes. Fournissent de l'énergie durable et des fibres pour éviter la constipation.</p>
+                </div>
+              </div>
+            </div>
+
+            <div class="conseil-section warning">
+              <h3>❌ Aliments à éviter</h3>
+              <ul class="conseil-list warning">
+                <li>
+                  <strong>Alcool :</strong> À éviter complètement pendant toute la grossesse. Peut causer des malformations et des troubles du développement.
+                </li>
+                <li>
+                  <strong>Caféine :</strong> Limitez à 200 mg par jour (environ 2 tasses de café). La caféine peut affecter le rythme cardiaque du bébé.
+                </li>
+                <li>
+                  <strong>Poissons crus et fumés :</strong> Évitez les sushis, sashimis, poissons fumés (risque de listériose).
+                </li>
+                <li>
+                  <strong>Viandes crues :</strong> Évitez les viandes saignantes, tartares, charcuteries non cuites (risque de toxoplasmose).
+                </li>
+                <li>
+                  <strong>Fromages au lait cru :</strong> Préférez les fromages pasteurisés pour éviter la listériose.
+                </li>
+                <li>
+                  <strong>Œufs crus :</strong> Évitez les préparations contenant des œufs crus (mayonnaise maison, mousses).
+                </li>
+              </ul>
+            </div>
+
+            <div class="conseil-section">
+              <h3>💧 Hydratation</h3>
+              <div class="conseil-box highlight">
+                <p><strong>Buvez au moins 1,5 à 2 litres d'eau par jour.</strong> L'hydratation est essentielle pour :</p>
+                <ul style="margin-top: 0.5rem;">
+                  <li>Maintenir le volume de liquide amniotique</li>
+                  <li>Prévenir les infections urinaires</li>
+                  <li>Éviter la constipation</li>
+                  <li>Réduire les risques de contractions prématurées</li>
+                </ul>
+                <p style="margin-top: 1rem;"><strong>Astuce :</strong> Gardez toujours une bouteille d'eau à portée de main et buvez régulièrement tout au long de la journée.</p>
+              </div>
+            </div>
+
+            <div class="conseil-section">
+              <h3>🍽️ Exemple de repas équilibré</h3>
+              <div class="meal-plan">
+                <div class="meal-item">
+                  <span class="meal-time">🌅 Petit-déjeuner</span>
+                  <p>Fruits frais, céréales complètes, produits laitiers, œuf ou fromage</p>
+                </div>
+                <div class="meal-item">
+                  <span class="meal-time">☀️ Déjeuner</span>
+                  <p>Légumes variés, protéines (viande/poisson/legumineuses), féculents complets</p>
+                </div>
+                <div class="meal-item">
+                  <span class="meal-time">🌙 Dîner</span>
+                  <p>Légumes, protéines légères, soupe ou salade</p>
+                </div>
+                <div class="meal-item">
+                  <span class="meal-time">🍎 Collations</span>
+                  <p>Fruits, yaourts, noix (en quantité modérée), barres de céréales</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Contenu Bien-être -->
+      <section id="bienetre-tab" class="tab-content" role="tabpanel" aria-labelledby="bienetre-tab" aria-hidden="true">
+        <div class="card">
+          <div class="card-header-with-icon">
+            <span class="card-icon">💪</span>
+            <h2>Bien-être et santé</h2>
+          </div>
+          <div class="conseils-content">
+            <div class="conseil-section">
+              <h3>😴 Repos et sommeil</h3>
+              <ul class="conseil-list">
+                <li><strong>Dormez suffisamment :</strong> 7 à 9 heures par nuit. La fatigue est normale pendant la grossesse.</li>
+                <li><strong>Faites des siestes :</strong> Si possible, faites une sieste de 20-30 minutes dans la journée.</li>
+                <li><strong>Position de sommeil :</strong> Dormez sur le côté gauche pour améliorer la circulation sanguine vers le bébé.</li>
+                <li><strong>Évitez la position sur le dos :</strong> Surtout après le 2ème trimestre, cela peut comprimer les vaisseaux sanguins.</li>
+              </ul>
+            </div>
+
+            <div class="conseil-section">
+              <h3>🚶 Activité physique</h3>
+              <div class="conseil-box">
+                <p><strong>L'exercice modéré est bénéfique pendant la grossesse :</strong></p>
+                <ul style="margin-top: 0.5rem;">
+                  <li><strong>Marche :</strong> 30 minutes par jour, excellent pour la circulation</li>
+                  <li><strong>Natation :</strong> Très recommandée, soulage les douleurs et maintient la forme</li>
+                  <li><strong>Yoga prénatal :</strong> Améliore la flexibilité et la relaxation</li>
+                  <li><strong>Évitez :</strong> Les sports de contact, la plongée, les activités à haut risque de chute</li>
+                </ul>
+                <p style="margin-top: 1rem;"><strong>Important :</strong> Consultez votre médecin avant de commencer une nouvelle activité physique.</p>
+              </div>
+            </div>
+
+            <div class="conseil-section">
+              <h3>🧘 Gestion du stress</h3>
+              <ul class="conseil-list">
+                <li><strong>Techniques de relaxation :</strong> Respiration profonde, méditation, écoute de musique douce</li>
+                <li><strong>Parlez de vos préoccupations :</strong> Avec votre partenaire, votre famille, ou votre professionnel de santé</li>
+                <li><strong>Prenez du temps pour vous :</strong> Activités que vous aimez, lecture, bain relaxant</li>
+                <li><strong>Évitez les situations stressantes :</strong> Autant que possible, limitez les sources de stress</li>
+              </ul>
+            </div>
+
+            <div class="conseil-section">
+              <h3>🚭 Substances à éviter</h3>
+              <div class="warning-box">
+                <ul class="conseil-list warning">
+                  <li><strong>Tabac :</strong> Arrêtez complètement. Le tabac augmente les risques de fausse couche, de naissance prématurée et de faible poids à la naissance.</li>
+                  <li><strong>Drogues :</strong> Toutes les drogues sont dangereuses pour le bébé. Demandez de l'aide si nécessaire.</li>
+                  <li><strong>Médicaments :</strong> Ne prenez aucun médicament sans l'avis de votre médecin, même ceux en vente libre.</li>
+                </ul>
+              </div>
+            </div>
+
+            <div class="conseil-section">
+              <h3>🦷 Hygiène et santé bucco-dentaire</h3>
+              <ul class="conseil-list">
+                <li><strong>Brossez-vous les dents :</strong> Au moins 2 fois par jour avec un dentifrice fluoré</li>
+                <li><strong>Consultez un dentiste :</strong> Les problèmes dentaires peuvent affecter la grossesse</li>
+                <li><strong>Hygiène personnelle :</strong> Douches régulières, vêtements confortables et amples</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Contenu Signes d'alerte -->
+      <section id="signes-tab" class="tab-content" role="tabpanel" aria-labelledby="signes-tab" aria-hidden="true">
+        <div class="card">
+          <div class="card-header-with-icon">
+            <span class="card-icon">⚠️</span>
+            <h2>Signes d'alerte à surveiller</h2>
+          </div>
+          <div class="conseils-content">
+            <div class="conseil-section urgent">
+              <h3>🚨 Consultation immédiate (URGENCE)</h3>
+              <p style="margin-bottom: 1rem; font-weight: 600;">Si vous présentez l'un de ces signes, consultez immédiatement ou appelez les urgences :</p>
+              <ul class="conseil-list urgent">
+                <li>
+                  <strong>Saignements vaginaux :</strong> Tout saignement, même léger, nécessite une consultation immédiate. Peut indiquer une fausse couche, un décollement placentaire, ou un accouchement prématuré.
+                </li>
+                <li>
+                  <strong>Douleurs abdominales intenses :</strong> Douleurs persistantes, crampes sévères, ou contractions régulières avant 37 semaines.
+                </li>
+                <li>
+                  <strong>Perte de liquide :</strong> Écoulement de liquide amniotique (rupture de la poche des eaux). Le liquide est généralement clair et inodore.
+                </li>
+                <li>
+                  <strong>Absence de mouvements du bébé :</strong> Si vous ne sentez plus votre bébé bouger après 24 semaines, surtout si c'était actif avant. Comptez les mouvements : au moins 10 mouvements en 2 heures.
+                </li>
+                <li>
+                  <strong>Maux de tête sévères :</strong> Maux de tête intenses accompagnés de troubles visuels (vision floue, taches), nausées, ou sensibilité à la lumière. Peut indiquer une pré-éclampsie.
+                </li>
+                <li>
+                  <strong>Fièvre élevée :</strong> Température supérieure à 38°C, surtout si accompagnée de frissons ou de douleurs.
+                </li>
+                <li>
+                  <strong>Gonflement soudain :</strong> Gonflement important du visage, des mains ou des pieds, surtout s'il apparaît soudainement.
+                </li>
+              </ul>
+            </div>
+
+            <div class="conseil-section warning">
+              <h3>⚠️ Consultation dans les 24 heures</h3>
+              <ul class="conseil-list warning">
+                <li>
+                  <strong>Contractions régulières :</strong> Plus de 4 contractions par heure avant 37 semaines, ou contractions douloureuses et régulières.
+                </li>
+                <li>
+                  <strong>Vomissements persistants :</strong> Vomissements qui durent plus de 24h, empêchant de s'alimenter ou de boire.
+                </li>
+                <li>
+                  <strong>Brûlures urinaires :</strong> Douleurs ou brûlures en urinant, besoin fréquent d'uriner, urine trouble ou sanglante. Peut indiquer une infection urinaire.
+                </li>
+                <li>
+                  <strong>Essoufflement important :</strong> Difficultés respiratoires au repos, sensation d'étouffement.
+                </li>
+                <li>
+                  <strong>Douleurs lors de la miction :</strong> Peut indiquer une infection urinaire qui nécessite un traitement.
+                </li>
+                <li>
+                  <strong>Pertes vaginales anormales :</strong> Pertes avec mauvaise odeur, couleur anormale, ou démangeaisons.
+                </li>
+              </ul>
+            </div>
+
+            <div class="conseil-section info">
+              <h3>ℹ️ Signes normaux de la grossesse</h3>
+              <p>Ces signes sont normaux et ne nécessitent pas de consultation d'urgence :</p>
+              <ul class="conseil-list">
+                <li><strong>Nausées matinales :</strong> Surtout au premier trimestre, généralement s'améliorent après 12-14 semaines</li>
+                <li><strong>Fatigue accrue :</strong> Très fréquente, surtout au premier et troisième trimestre</li>
+                <li><strong>Besoin fréquent d'uriner :</strong> Normal, dû à la pression de l'utérus sur la vessie</li>
+                <li><strong>Douleurs légères dans le bas-ventre :</strong> Ligaments qui s'étirent, normal</li>
+                <li><strong>Gonflement léger des jambes :</strong> En fin de journée, surtout par temps chaud</li>
+                <li><strong>Constipation :</strong> Fréquente, due aux hormones de grossesse</li>
+                <li><strong>Brûlures d'estomac :</strong> Fréquentes, surtout en fin de grossesse</li>
+              </ul>
+            </div>
+
+            <div class="conseil-section emergency">
+              <h3>📞 En cas d'urgence</h3>
+              <div class="emergency-box">
+                <p style="font-size: 1.2rem; margin-bottom: 1rem;"><strong>Appelez immédiatement :</strong></p>
+                <a href="tel:+22370000000" class="emergency-phone">📞 +223 70 00 00 00</a>
+                <p style="margin-top: 1rem;">Ou rendez-vous directement au centre de santé le plus proche ou aux urgences.</p>
+                <p style="margin-top: 0.5rem; font-size: 0.9rem; opacity: 0.9;"><strong>N'hésitez jamais à consulter</strong> si vous avez un doute. Il vaut mieux prévenir que guérir.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Contenu Préparation -->
+      <section id="preparation-tab" class="tab-content" role="tabpanel" aria-labelledby="preparation-tab" aria-hidden="true">
+        <div class="card">
+          <div class="card-header-with-icon">
+            <span class="card-icon">👶</span>
+            <h2>Préparation à l'accouchement</h2>
+          </div>
+          <div class="conseils-content">
+            <div class="conseil-section">
+              <h3>📦 Préparation de la valise</h3>
+              <p><strong>Préparez votre valise dès 32 semaines</strong> pour être prête en cas d'accouchement prématuré :</p>
+              <div class="preparation-grid">
+                <div class="prep-item">
+                  <h4>Pour vous :</h4>
+                  <ul>
+                    <li>Vêtements confortables</li>
+                    <li>Serviettes hygiéniques</li>
+                    <li>Articles de toilette</li>
+                    <li>Documents (carte d'identité, dossier médical)</li>
+                    <li>Téléphone et chargeur</li>
+                  </ul>
+                </div>
+                <div class="prep-item">
+                  <h4>Pour le bébé :</h4>
+                  <ul>
+                    <li>Vêtements de naissance</li>
+                    <li>Couches</li>
+                    <li>Couvertures</li>
+                    <li>Biberon (si nécessaire)</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+
+            <div class="conseil-section">
+              <h3>🚗 Planification du transport</h3>
+              <ul class="conseil-list">
+                <li><strong>Identifiez le moyen de transport :</strong> Voiture, taxi, ou transport public disponible 24/7</li>
+                <li><strong>Testez le trajet :</strong> Faites le trajet jusqu'au centre de santé pour connaître le temps nécessaire</li>
+                <li><strong>Préparez un plan B :</strong> Ayez un moyen de transport alternatif en cas de besoin</li>
+                <li><strong>Informez votre entourage :</strong> Assurez-vous que quelqu'un peut vous accompagner</li>
+              </ul>
+            </div>
+
+            <div class="conseil-section">
+              <h3>💉 Vaccinations importantes</h3>
+              <div class="conseil-box">
+                <p><strong>Les vaccinations pendant la grossesse protègent vous et votre bébé :</strong></p>
+                <ul style="margin-top: 0.5rem;">
+                  <li><strong>Vaccin contre le tétanos :</strong> Recommandé pendant la grossesse pour protéger le bébé</li>
+                  <li><strong>Vaccin contre la grippe :</strong> Saisonnière, recommandée pendant la grossesse</li>
+                  <li><strong>Vaccin contre la coqueluche :</strong> Peut être recommandé selon votre situation</li>
+                </ul>
+                <p style="margin-top: 1rem;"><strong>Parlez-en avec votre professionnel de santé</strong> lors de vos consultations CPN.</p>
+              </div>
+            </div>
+
+            <div class="conseil-section">
+              <h3>📋 Documents à préparer</h3>
+              <ul class="conseil-list">
+                <li>Carte d'identité ou pièce d'identité</li>
+                <li>Dossier médical de grossesse</li>
+                <li>Résultats d'analyses récentes</li>
+                <li>Carnet de santé (si disponible)</li>
+                <li>Informations de contact d'urgence</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Contenu FAQ -->
+      <section id="faq-tab" class="tab-content" role="tabpanel" aria-labelledby="faq-tab" aria-hidden="true">
+        <div class="card">
+          <div class="card-header-with-icon">
+            <span class="card-icon">❓</span>
+            <h2>Questions fréquentes</h2>
+          </div>
+          <div class="conseils-content">
+            <div class="faq-container">
+              <div class="faq-item">
+                <div class="faq-question">
+                  <span class="faq-icon">❓</span>
+                  <h3>Combien de CPN dois-je faire pendant ma grossesse ?</h3>
+                </div>
+                <div class="faq-answer">
+                  <p>L'OMS recommande au minimum 4 consultations prénatales (CPN) pendant la grossesse : une avant 12 semaines, une entre 16-20 semaines, une entre 24-28 semaines, et une entre 32-36 semaines. Votre professionnel de santé peut recommander plus de consultations selon votre situation.</p>
+                </div>
+              </div>
+
+              <div class="faq-item">
+                <div class="faq-question">
+                  <span class="faq-icon">❓</span>
+                  <h3>Puis-je voyager pendant la grossesse ?</h3>
+                </div>
+                <div class="faq-answer">
+                  <p>Les voyages sont généralement possibles jusqu'à 36 semaines, mais consultez votre médecin avant de voyager. Évitez les longs trajets en fin de grossesse. Si vous voyagez, buvez beaucoup d'eau, faites des pauses régulières, et portez des vêtements confortables.</p>
+                </div>
+              </div>
+
+              <div class="faq-item">
+                <div class="faq-question">
+                  <span class="faq-icon">❓</span>
+                  <h3>Quand dois-je commencer à sentir mon bébé bouger ?</h3>
+                </div>
+                <div class="faq-answer">
+                  <p>Les premiers mouvements sont généralement ressentis entre 18 et 24 semaines. Si c'est votre première grossesse, cela peut être plus tard (vers 20-24 semaines). Si c'est votre deuxième ou plus, vous pouvez les sentir dès 16-18 semaines. Après 28 semaines, vous devriez sentir votre bébé bouger régulièrement.</p>
+                </div>
+              </div>
+
+              <div class="faq-item">
+                <div class="faq-question">
+                  <span class="faq-icon">❓</span>
+                  <h3>Puis-je avoir des relations sexuelles pendant la grossesse ?</h3>
+                </div>
+                <div class="faq-answer">
+                  <p>Oui, généralement les relations sexuelles sont sans danger pendant la grossesse, sauf si votre médecin vous a conseillé de les éviter (en cas de risque d'accouchement prématuré, de saignements, ou d'autres complications). Parlez-en avec votre professionnel de santé si vous avez des doutes.</p>
+                </div>
+              </div>
+
+              <div class="faq-item">
+                <div class="faq-question">
+                  <span class="faq-icon">❓</span>
+                  <h3>Que faire si j'ai des nausées constantes ?</h3>
+                </div>
+                <div class="faq-answer">
+                  <p>Les nausées sont normales au premier trimestre. Pour les soulager : mangez de petits repas fréquents, évitez les aliments gras ou épicés, buvez du gingembre, et reposez-vous. Si les nausées sont sévères et vous empêchent de manger ou boire, consultez votre médecin.</p>
+                </div>
+              </div>
+
+              <div class="faq-item">
+                <div class="faq-question">
+                  <span class="faq-icon">❓</span>
+                  <h3>Quels sont mes droits pendant la grossesse ?</h3>
+                </div>
+                <div class="faq-answer">
+                  <p>Vous avez droit à des soins prénatals de qualité, à l'information sur votre santé et celle de votre bébé, à prendre des décisions éclairées concernant vos soins, et à être traitée avec respect et dignité. Les soins prénatals devraient être accessibles et abordables.</p>
+                </div>
+              </div>
+
+              <div class="faq-item">
+                <div class="faq-question">
+                  <span class="faq-icon">❓</span>
+                  <h3>Comment puis-je calculer ma date d'accouchement ?</h3>
+                </div>
+                <div class="faq-answer">
+                  <p>La date d'accouchement est généralement calculée à partir de la date de vos dernières règles, en ajoutant 280 jours (40 semaines). Votre professionnel de santé peut aussi utiliser une échographie pour déterminer plus précisément la date. La plupart des bébés naissent entre 38 et 42 semaines.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer role="contentinfo">
+      <small>Prototype MAMA+ – Amélioration du suivi prénatal</small>
+    </footer>
+
+    <!-- Navigation mobile -->
+    <script src="utils/icons.js"></script>
+    <script src="utils/mobile-nav.js" defer></script>
+    <script src="app-conseils.js" defer></script>
+  </body>
+</html>

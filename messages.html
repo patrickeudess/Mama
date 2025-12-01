@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes" />
+    <title>MAMA+ – Messagerie</title>
+    <link rel="stylesheet" href="styles.css" />
+    <link rel="stylesheet" href="styles-icons.css" />
+    <link rel="stylesheet" href="styles-mobile-nav.css" />
+  </head>
+  <body>
+    <header role="banner" class="tools-header">
+      <div class="header-left">
+        <a href="#" id="back-link" style="color: #fff; text-decoration: none; font-size: 1.5rem; margin-right: 1rem; display: inline-flex; align-items: center;" title="Retour"></a>
+        <span class="header-icon" id="header-icon"></span>
+        <h1>MAMA+ – Messagerie</h1>
+      </div>
+      <div id="auth-section" role="navigation">
+        <div id="user-info" aria-live="polite">
+          <span id="user-name" aria-label="Nom de l'utilisateur"></span>
+          <button id="logout-button" type="button" aria-label="Se déconnecter" class="btn-secondary" style="margin-left: 1rem; padding: 0.5rem 1rem;">Déconnexion</button>
+        </div>
+      </div>
+    </header>
+
+    <main role="main" style="padding: 1rem; max-width: 1200px; margin: 0 auto;">
+      <!-- Sélection de conversation (pour professionnel) -->
+      <section class="card" id="conversation-selector-card" style="margin-bottom: 1rem; display: none;">
+        <div class="card-header-with-icon">
+          <span class="card-icon">💬</span>
+          <h2>Conversations</h2>
+        </div>
+        <div id="conversations-list" class="conversations-list">
+          <!-- Liste des conversations -->
+        </div>
+      </section>
+
+      <!-- Interface de chat -->
+      <section class="card" id="chat-card">
+        <div class="card-header-with-icon" id="chat-header">
+          <span class="card-icon">💬</span>
+          <h2 id="chat-title">Messagerie</h2>
+          <div id="chat-participant-info" style="margin-left: auto; font-size: 0.875rem; color: #6b7280;"></div>
+        </div>
+        
+        <!-- Zone de messages -->
+        <div id="messages-container" class="messages-container">
+          <div id="messages-list" class="messages-list">
+            <div class="empty-state" style="text-align: center; padding: 3rem; color: #6b7280;">
+              <div style="font-size: 3rem; margin-bottom: 1rem;">💬</div>
+              <p style="font-size: 1.1rem; margin-bottom: 0.5rem;">Aucun message</p>
+              <p style="font-size: 0.9rem;">Commencez une conversation en envoyant un message</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Zone de saisie -->
+        <div id="message-input-container" class="message-input-container">
+          <div class="message-input-wrapper">
+            <textarea 
+              id="message-input" 
+              class="message-input" 
+              placeholder="Tapez votre message..."
+              rows="2"
+              maxlength="500"
+            ></textarea>
+            <button id="send-button" class="send-button" type="button" aria-label="Envoyer le message">
+              <span>📤</span>
+            </button>
+          </div>
+          <div id="message-status" class="message-status"></div>
+        </div>
+      </section>
+    </main>
+
+    <footer role="contentinfo">
+      <small>Prototype MAMA+ – Amélioration du suivi prénatal</small>
+    </footer>
+
+    <!-- Système d'authentification -->
+    <script src="utils/auth.js"></script>
+    <script src="utils/icons.js"></script>
+    <!-- Système multi-professionnels pour patientes -->
+    <script src="utils/multi-professionnels-patiente.js"></script>
+    <!-- Système multi-établissements pour professionnels -->
+    <script src="utils/multi-establishment.js"></script>
+    <script src="app-messages.js" defer></script>
+    <script src="utils/mobile-nav.js" defer></script>
+    <style>
+      /* Styles pour la messagerie */
+      .conversations-list {
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+        max-height: 400px;
+        overflow-y: auto;
+      }
+
+      .conversation-item {
+        padding: 1rem;
+        border: 1px solid #e5e7eb;
+        border-radius: 0.5rem;
+        cursor: pointer;
+        transition: all 0.2s;
+        background: white;
+      }
+
+      .conversation-item:hover {
+        background: #f9fafb;
+        border-color: #3b82f6;
+        transform: translateX(4px);
+      }
+
+      .conversation-item.active {
+        background: #eff6ff;
+        border-color: #3b82f6;
+        border-left: 4px solid #3b82f6;
+      }
+
+      .conversation-item.has-unread {
+        border-left: 3px solid #3b82f6;
+        font-weight: 500;
+      }
+
+      .conversation-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 0.5rem;
+      }
+
+      .conversation-name {
+        font-weight: 600;
+        color: #1f2937;
+        font-size: 0.95rem;
+      }
+
+      .conversation-time {
+        font-size: 0.75rem;
+        color: #6b7280;
+      }
+
+      .conversation-preview {
+        font-size: 0.875rem;
+        color: #6b7280;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+
+      .conversation-unread {
+        display: inline-block;
+        background: #3b82f6;
+        color: white;
+        border-radius: 50%;
+        width: 20px;
+        height: 20px;
+        font-size: 0.75rem;
+        text-align: center;
+        line-height: 20px;
+        font-weight: 600;
+        margin-left: 0.5rem;
+      }
+
+      .messages-container {
+        height: 500px;
+        overflow-y: auto;
+        border: 1px solid #e5e7eb;
+        border-radius: 0.5rem;
+        background: #f9fafb;
+        padding: 1rem;
+        margin-bottom: 1rem;
+      }
+
+      .messages-list {
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+        min-height: 100%;
+      }
+
+      .message {
+        display: flex;
+        flex-direction: column;
+        max-width: 75%;
+        animation: fadeIn 0.3s ease;
+      }
+
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+          transform: translateY(10px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      .message.sent {
+        align-self: flex-end;
+        align-items: flex-end;
+      }
+
+      .message.received {
+        align-self: flex-start;
+        align-items: flex-start;
+      }
+
+      .message-bubble {
+        padding: 0.75rem 1rem;
+        border-radius: 1rem;
+        word-wrap: break-word;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      }
+
+      .message.sent .message-bubble {
+        background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+        color: white;
+        border-bottom-right-radius: 0.25rem;
+      }
+
+      .message.received .message-bubble {
+        background: white;
+        color: #1f2937;
+        border: 1px solid #e5e7eb;
+        border-bottom-left-radius: 0.25rem;
+      }
+
+      .message-info {
+        display: flex;
+        gap: 0.5rem;
+        margin-top: 0.25rem;
+        font-size: 0.75rem;
+        color: #6b7280;
+      }
+
+      .message-time {
+        font-size: 0.7rem;
+      }
+
+      .message-status {
+        font-size: 0.7rem;
+      }
+
+      .message-status.sent {
+        color: #059669;
+      }
+
+      .message-status.pending {
+        color: #6b7280;
+      }
+
+      .message-input-container {
+        border-top: 1px solid #e5e7eb;
+        padding-top: 1rem;
+      }
+
+      .message-input-wrapper {
+        display: flex;
+        gap: 0.75rem;
+        align-items: flex-end;
+      }
+
+      .message-input {
+        flex: 1;
+        padding: 0.75rem;
+        border: 1px solid #d1d5db;
+        border-radius: 0.75rem;
+        font-size: 0.95rem;
+        font-family: inherit;
+        resize: none;
+        min-height: 50px;
+        max-height: 120px;
+      }
+
+      .message-input:focus {
+        outline: none;
+        border-color: #3b82f6;
+        box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+      }
+
+      .send-button {
+        padding: 0.75rem 1.25rem;
+        background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+        color: white;
+        border: none;
+        border-radius: 0.75rem;
+        cursor: pointer;
+        font-size: 1.25rem;
+        transition: all 0.2s;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        min-width: 50px;
+        height: 50px;
+      }
+
+      .send-button:hover:not(:disabled) {
+        background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
+        transform: scale(1.05);
+      }
+
+      .send-button:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+      }
+
+      .message-status {
+        margin-top: 0.5rem;
+        font-size: 0.75rem;
+        color: #6b7280;
+        min-height: 1rem;
+      }
+
+      @media (max-width: 768px) {
+        .messages-container {
+          height: 400px;
+        }
+
+        .message {
+          max-width: 85%;
+        }
+
+        .conversations-list {
+          max-height: 300px;
+        }
+      }
+    </style>
+  </body>
+</html>
+

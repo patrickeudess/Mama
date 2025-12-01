@@ -1,0 +1,513 @@
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes" />
+    <title>MAMA+ – Mes patientes</title>
+    <link rel="stylesheet" href="styles.css" />
+    <link rel="stylesheet" href="styles-ux.css" />
+    <link rel="stylesheet" href="styles-icons.css" />
+    <link rel="stylesheet" href="styles-mobile-nav.css" />
+  </head>
+  <body>
+    <header role="banner" class="tools-header">
+      <div class="header-left">
+        <a href="#" style="color: #fff; text-decoration: none; font-size: 1.5rem; margin-right: 1rem; display: inline-flex; align-items: center;" id="back-icon-link" onclick="goBack(); return false;"></a>
+        <span class="header-icon" id="header-patientes-icon"></span>
+        <h1>MAMA+ – Mes patientes</h1>
+      </div>
+      <div id="auth-section" role="navigation">
+        <div id="user-info" class="hidden" aria-live="polite">
+          <span id="user-name" aria-label="Nom de l'utilisateur"></span>
+          <button id="logout-button" type="button" aria-label="Se déconnecter">Déconnexion</button>
+        </div>
+      </div>
+    </header>
+
+    <main role="main" style="padding: 2rem;">
+      <div class="card" id="patients-card">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+          <h2 style="margin: 0;">Patientes suivies</h2>
+          <div style="display: flex; gap: 0.5rem; align-items: center;">
+            <button id="add-patiente-btn-section" type="button" class="btn-primary" aria-label="Ouvrir le formulaire pour ajouter une nouvelle patiente">+ Ajouter une patiente</button>
+          </div>
+        </div>
+        
+        <!-- Recherche en temps réel -->
+        <div class="search-container" style="margin-bottom: 1rem;">
+          <input 
+            type="text" 
+            id="search-input" 
+            class="search-input" 
+            placeholder="Rechercher une patiente (nom, ville, téléphone...)"
+            aria-label="Rechercher une patiente"
+          />
+          <span class="search-icon" id="search-icon-placeholder"></span>
+          <div class="search-results-count" id="search-results-count" style="display: none;"></div>
+        </div>
+        
+        <!-- Tri personnalisable -->
+        <div class="sort-container" style="margin-bottom: 1rem;">
+          <span class="sort-label">Trier par:</span>
+          <select id="sort-select" class="sort-select" aria-label="Trier les patientes">
+            <option value="nom-asc">Nom (A-Z)</option>
+            <option value="nom-desc">Nom (Z-A)</option>
+            <option value="age-asc">Âge (croissant)</option>
+            <option value="age-desc">Âge (décroissant)</option>
+            <option value="distance-asc">Distance (proche)</option>
+            <option value="distance-desc">Distance (loin)</option>
+            <option value="risque">Risque (élevé → faible)</option>
+            <option value="derniere-venue">Dernière venue (récent)</option>
+          </select>
+        </div>
+        
+        <div class="table-controls-advanced">
+          <div class="filters-row">
+            <label>
+              Risque:
+              <select id="risk-filter">
+                <option value="all">Tous</option>
+                <option value="élevé">🔴 Élevé</option>
+                <option value="moyen">🟠 Modéré</option>
+                <option value="faible">🟢 Faible</option>
+              </select>
+            </label>
+            <label>
+              Localité:
+              <select id="location-filter">
+                <option value="all">Toutes</option>
+              </select>
+            </label>
+            <label>
+              Semaine grossesse:
+              <select id="week-filter">
+                <option value="all">Toutes</option>
+                <option value="0-12">0-12 semaines</option>
+                <option value="13-24">13-24 semaines</option>
+                <option value="25-36">25-36 semaines</option>
+                <option value="37-42">37-42 semaines</option>
+              </select>
+            </label>
+            <label>
+              Statut CPN:
+              <select id="cpn-status-filter">
+                <option value="all">Tous</option>
+                <option value="complete">Complétées</option>
+                <option value="manque">Manquées</option>
+                <option value="planifie">Planifiées</option>
+              </select>
+            </label>
+            <label>
+              Âge:
+              <select id="age-filter">
+                <option value="all">Tous</option>
+                <option value="15-20">15-20 ans</option>
+                <option value="21-25">21-25 ans</option>
+                <option value="26-30">26-30 ans</option>
+                <option value="31-35">31-35 ans</option>
+                <option value="36-40">36-40 ans</option>
+                <option value="41+">41 ans et plus</option>
+              </select>
+            </label>
+            <label>
+              Distance:
+              <select id="distance-filter">
+                <option value="all">Toutes</option>
+                <option value="0-2">0-2 km</option>
+                <option value="2-5">2-5 km</option>
+                <option value="5-10">5-10 km</option>
+                <option value="10+">Plus de 10 km</option>
+              </select>
+            </label>
+            <label>
+              Dernière venue:
+              <select id="last-visit-filter">
+                <option value="all">Toutes</option>
+                <option value="today">Aujourd'hui</option>
+                <option value="week">Cette semaine</option>
+                <option value="month">Ce mois</option>
+                <option value="3months">3 derniers mois</option>
+                <option value="never">Jamais</option>
+              </select>
+            </label>
+            <div style="display: flex; gap: 0.5rem; align-items: flex-end;">
+              <button id="reset-filters-btn" type="button" class="btn-secondary" style="padding: 0.5rem 1rem; font-size: 0.875rem;">🔄 Réinitialiser</button>
+              <button id="export-btn" type="button" class="btn-secondary">📊 Exporter</button>
+            </div>
+          </div>
+        </div>
+        <div class="table-container">
+          <table id="patient-table" role="table" aria-label="Liste des patientes suivies">
+            <thead>
+              <tr>
+                <th scope="col">Nom</th>
+                <th scope="col">Âge</th>
+                <th scope="col">Distance</th>
+                <th scope="col">Risque</th>
+                <th scope="col">Dernière venue</th>
+                <th scope="col">Prochaine CPN</th>
+                <th scope="col">Actions</th>
+              </tr>
+            </thead>
+            <tbody role="rowgroup"></tbody>
+          </table>
+        </div>
+      </div>
+    </main>
+
+    <!-- Modal pour ajouter une patiente -->
+    <div id="add-patiente-modal" class="modal hidden">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h2>Ajouter une nouvelle patiente</h2>
+          <button id="close-modal-btn" type="button" class="close-btn" aria-label="Fermer">&times;</button>
+        </div>
+        <form id="add-patiente-form">
+          <div class="form-section">
+            <h3>Pour se connecter</h3>
+            <label>
+              Numéro d'identification <span class="required">*</span>
+              <input type="number" id="patiente-id" placeholder="Exemple: 1001" min="1" required />
+              <small style="color: #6b7280; font-size: 0.875rem;">Un numéro unique pour identifier la patiente. C'est obligatoire.</small>
+            </label>
+            <label>
+              Numéro de téléphone <span class="required">*</span>
+              <input type="tel" id="patiente-telephone" placeholder="Exemple: +2250700000000" required />
+            </label>
+            <label>
+              Mot de passe <span class="required">*</span>
+              <input type="password" id="patiente-password" minlength="6" placeholder="Au moins 6 lettres ou chiffres" required />
+            </label>
+          </div>
+
+          <div class="form-section">
+            <h3>Vos informations</h3>
+            <div class="form-row">
+              <label>
+                Prénom
+                <input type="text" id="patiente-prenom" placeholder="Votre prénom" />
+              </label>
+              <label>
+                Nom
+                <input type="text" id="patiente-nom" placeholder="Votre nom" />
+              </label>
+            </div>
+            <label>
+              Âge <span class="required">*</span>
+              <input type="number" id="patiente-age" min="1" max="60" placeholder="Votre âge" required />
+            </label>
+            <div class="form-row">
+              <label>
+                Nombre de grossesses
+                <input type="number" id="patiente-gestite" min="1" value="1" placeholder="Combien de fois vous êtes tombée enceinte" />
+                <small style="color: #6b7280; font-size: 0.875rem;">Y compris cette grossesse</small>
+              </label>
+              <label>
+                Nombre d'enfants nés
+                <input type="number" id="patiente-parite" min="0" value="0" placeholder="Combien d'enfants vous avez déjà eus" />
+              </label>
+            </div>
+            <label>
+              Niveau d'études
+              <select id="patiente-niveau-instruction">
+                <option value="">Choisir...</option>
+                <option value="aucun">Pas d'école</option>
+                <option value="primaire">École primaire</option>
+                <option value="secondaire">École secondaire</option>
+                <option value="superieur">Études supérieures</option>
+              </select>
+            </label>
+            <label>
+              Langue que vous parlez le mieux
+              <select id="patiente-langue">
+                <option value="fr">Français</option>
+                <option value="bambara">Bambara</option>
+                <option value="wolof">Wolof</option>
+              </select>
+            </label>
+          </div>
+
+          <div class="form-section">
+            <h3>Où vous habitez</h3>
+            <label>
+              Pays <span class="required">*</span>
+              <select id="patiente-pays" required>
+                <option value="">Choisir un pays...</option>
+                <option value="Côte d'Ivoire" selected>Côte d'Ivoire</option>
+                <option value="Mali">Mali</option>
+                <option value="Burkina Faso">Burkina Faso</option>
+                <option value="Sénégal">Sénégal</option>
+                <option value="Guinée">Guinée</option>
+                <option value="Niger">Niger</option>
+                <option value="Bénin">Bénin</option>
+                <option value="Togo">Togo</option>
+                <option value="Ghana">Ghana</option>
+              </select>
+            </label>
+            <label>
+              Ville <span class="required">*</span>
+              <select id="patiente-ville" required>
+                <option value="">Choisir une ville...</option>
+                <!-- Les options seront remplies dynamiquement selon le pays sélectionné -->
+              </select>
+              <small style="color: #6b7280; font-size: 0.875rem;">Sélectionnez d'abord le pays pour voir les villes disponibles</small>
+            </label>
+            <label>
+              Centre de santé <span class="required">*</span>
+              <select id="patiente-centre-sante" required>
+                <option value="">Choisir un centre de santé...</option>
+                <!-- Les options seront remplies dynamiquement selon la ville sélectionnée -->
+              </select>
+              <small style="color: #6b7280; font-size: 0.875rem;">Sélectionnez d'abord la ville pour voir les centres disponibles</small>
+            </label>
+            <label>
+              Adresse
+              <input type="text" id="patiente-adresse" placeholder="Quartier, rue, numéro" />
+            </label>
+            <div class="form-row">
+              <label>
+                Distance du centre de santé (en kilomètres)
+                <input type="number" id="patiente-distance" step="0.1" min="0" placeholder="Exemple: 2.5" />
+              </label>
+              <label>
+                Comment vous vous déplacez
+                <select id="patiente-transport">
+                  <option value="">Choisir...</option>
+                  <option value="pieds">À pied</option>
+                  <option value="velo">À vélo</option>
+                  <option value="moto">En moto</option>
+                  <option value="voiture">En voiture</option>
+                  <option value="transport_public">Bus ou taxi</option>
+                </select>
+              </label>
+            </div>
+          </div>
+
+          <div class="form-section">
+            <h3>Période de suivi</h3>
+            <label>
+              Période de suivi <span class="required">*</span>
+              <select id="patiente-periode" required>
+                <option value="">Choisir une période...</option>
+                <option value="week">Semaine</option>
+                <option value="month" selected>Mois</option>
+                <option value="quarter">Trimestre</option>
+                <option value="year">Année</option>
+              </select>
+              <small style="color: #6b7280; font-size: 0.875rem;">Période de suivi prénatal de la patiente</small>
+            </label>
+          </div>
+
+          <div class="form-section">
+            <h3>Génération automatique des CPN</h3>
+            <label>
+              Date de 1ère CPN
+              <input type="date" id="patiente-premiere-cpn" />
+              <small style="color: #6b7280; font-size: 0.875rem;">Date de la première consultation prénatale (CPN1)</small>
+            </label>
+            <label>
+              Semaine de grossesse (au moment de la 1ère CPN)
+              <input type="number" id="patiente-semaine-grossesse" min="1" max="42" placeholder="Ex: 12" />
+              <small style="color: #6b7280; font-size: 0.875rem;">Semaine de grossesse au moment de la CPN1 (pour calculer les suivantes)</small>
+            </label>
+            <label>
+              Nombre de CPN à générer
+              <select id="patiente-nombre-cpn">
+                <option value="4" selected>4 CPN (standard)</option>
+                <option value="8">8 CPN (suivi complet)</option>
+              </select>
+              <small style="color: #6b7280; font-size: 0.875rem;">Le système générera automatiquement les prochaines consultations</small>
+            </label>
+            <div id="cpn-preview" style="margin-top: 1rem; padding: 1rem; background: #f3f4f6; border-radius: 0.5rem; display: none;">
+              <p style="margin: 0 0 0.5rem 0; font-weight: 600; color: #374151;">Aperçu des CPN à générer :</p>
+              <div id="cpn-preview-list" style="font-size: 0.875rem; color: #6b7280;"></div>
+            </div>
+          </div>
+
+          <div class="form-section">
+            <h3>Lien professionnel</h3>
+            <label>
+              Centre / Professionnel référent
+              <input type="text" id="patiente-pro-referent" placeholder="Nom du centre ou professionnel référent" />
+              <small style="color: #6b7280; font-size: 0.875rem;">Laissez vide si la patiente n'a pas encore de référent</small>
+            </label>
+          </div>
+
+          <div class="form-section">
+            <h3>Votre santé</h3>
+            <label>
+              Date de vos dernières règles
+              <input type="date" id="patiente-dernieres-regles" />
+              <small style="color: #6b7280; font-size: 0.875rem;">Le premier jour de vos dernières règles</small>
+            </label>
+            <label>
+              Date prévue pour l'accouchement
+              <input type="date" id="patiente-accouchement-prevue" />
+            </label>
+            <label>
+              Maladies passées ou actuelles
+              <textarea id="patiente-antecedents-medicaux" rows="3" placeholder="Écrivez les maladies que vous avez eues ou avez actuellement"></textarea>
+            </label>
+            <label>
+              Problèmes lors des grossesses passées
+              <textarea id="patiente-antecedents-obstetricaux" rows="3" placeholder="Écrivez s'il y a eu des problèmes lors de vos grossesses précédentes"></textarea>
+            </label>
+            <label>
+              Allergies
+              <textarea id="patiente-allergies" rows="2" placeholder="Écrivez les choses auxquelles vous êtes allergique"></textarea>
+            </label>
+          </div>
+
+          <div class="form-section">
+            <h3>Personne à appeler en cas de problème</h3>
+            <label>
+              Nom de la personne
+              <input type="text" id="patiente-contact-nom" placeholder="Nom de la personne à contacter" />
+            </label>
+            <label>
+              Numéro de téléphone d'urgence
+              <input type="tel" id="patiente-contact-telephone" placeholder="Numéro à appeler en cas d'urgence" />
+            </label>
+          </div>
+
+          <div class="form-actions">
+            <button type="button" id="cancel-patiente-btn" class="btn-secondary">Annuler</button>
+            <button type="submit" class="btn-primary">Enregistrer la patiente</button>
+          </div>
+          <div id="patiente-message" class="message"></div>
+        </form>
+      </div>
+    </div>
+
+    <footer role="contentinfo">
+      <small>Prototype MAMA+ – Amélioration du suivi prénatal</small>
+    </footer>
+
+    <!-- Système d'authentification -->
+    <script src="utils/auth.js"></script>
+    <script>
+      // Protéger la page - vérifier la connexion
+      if (!window.protectPage || !window.protectPage('professionnel')) {
+        // Redirection en cours
+      }
+    </script>
+    <!-- Système de lecture audio -->
+    <script src="utils/audio-helper.js"></script>
+    <!-- Système d'icônes -->
+    <script src="utils/icons.js"></script>
+    <!-- Liste des centres de santé de Côte d'Ivoire -->
+    <script src="utils/health-centers-ci.js"></script>
+    <!-- Générateur de CPN -->
+    <script src="utils/cpn-generator.js"></script>
+    <script>
+      // Logique pour l'aperçu des CPN en temps réel
+      document.addEventListener('DOMContentLoaded', function() {
+        const premiereCPNInput = document.querySelector("#patiente-premiere-cpn");
+        const semaineGrossesseInput = document.querySelector("#patiente-semaine-grossesse");
+        const nombreCPNSelect = document.querySelector("#patiente-nombre-cpn");
+        const cpnPreview = document.querySelector("#cpn-preview");
+        const cpnPreviewList = document.querySelector("#cpn-preview-list");
+
+        function updateCPNPreview() {
+          if (!premiereCPNInput || !semaineGrossesseInput || !nombreCPNSelect || !cpnPreview || !cpnPreviewList) {
+            return;
+          }
+
+          const datePremiereCPN = premiereCPNInput.value;
+          const semaineGrossesse = parseInt(semaineGrossesseInput.value) || null;
+          const nombreCPN = parseInt(nombreCPNSelect.value) || 4;
+
+          if (datePremiereCPN && semaineGrossesse && window.generateCPNCalendar && window.formatCPNPreview) {
+            const cpnList = window.generateCPNCalendar(datePremiereCPN, semaineGrossesse, nombreCPN);
+            if (cpnList && cpnList.length > 0) {
+              cpnPreviewList.innerHTML = window.formatCPNPreview(cpnList);
+              cpnPreview.style.display = "block";
+            } else {
+              cpnPreview.style.display = "none";
+            }
+          } else {
+            cpnPreview.style.display = "none";
+          }
+        }
+
+        if (premiereCPNInput) {
+          premiereCPNInput.addEventListener('change', updateCPNPreview);
+          premiereCPNInput.addEventListener('input', updateCPNPreview);
+        }
+        if (semaineGrossesseInput) {
+          semaineGrossesseInput.addEventListener('change', updateCPNPreview);
+          semaineGrossesseInput.addEventListener('input', updateCPNPreview);
+        }
+        if (nombreCPNSelect) {
+          nombreCPNSelect.addEventListener('change', updateCPNPreview);
+        }
+      });
+    </script>
+    <script>
+      // Initialiser les icônes au chargement
+      document.addEventListener('DOMContentLoaded', function() {
+        if (window.getIcon) {
+          const backIconLink = document.querySelector('#back-icon-link');
+          if (backIconLink) {
+            backIconLink.innerHTML = window.getIcon('back', 24, 'white');
+          }
+          
+          const headerPatientesIcon = document.querySelector('#header-patientes-icon');
+          if (headerPatientesIcon) {
+            headerPatientesIcon.innerHTML = window.getIcon('pregnant-woman', 28, 'white');
+          }
+        }
+      });
+    </script>
+    <!-- Composants UX -->
+    <script src="utils/ux-components.js"></script>
+    <!-- Navigation mobile -->
+    <script src="utils/mobile-nav.js" defer></script>
+    <!-- Version simplifiée - Fonctionne sans serveur backend -->
+    <script src="app-professionnel-simple.js" defer></script>
+    <script>
+      // Fonction pour retourner selon le type d'utilisateur
+      function goBack() {
+        const userType = localStorage.getItem('mama_user_type') || 'professionnel';
+        if (userType === 'etablissement') {
+          window.location.href = 'index-etablissement.html';
+        } else {
+          window.location.href = 'index-professionnel.html';
+        }
+      }
+    </script>
+    <!-- Version complète avec backend (décommenter si vous avez un serveur backend) -->
+    <!-- <script src="app-professionnel.js" defer></script> -->
+    <script>
+      // Event listeners pour le modal de consultation
+      document.addEventListener('DOMContentLoaded', function() {
+        const consultationForm = document.querySelector("#add-consultation-form");
+        const closeConsultationModalBtn = document.querySelector("#close-consultation-modal-btn");
+        const cancelConsultationBtn = document.querySelector("#cancel-consultation-btn");
+        const consultationModal = document.querySelector("#add-consultation-modal");
+        
+        if (consultationForm) {
+          consultationForm.addEventListener("submit", window.handleConsultationSubmit);
+        }
+        
+        if (closeConsultationModalBtn) {
+          closeConsultationModalBtn.addEventListener("click", window.closeConsultationModal);
+        }
+        
+        if (cancelConsultationBtn) {
+          cancelConsultationBtn.addEventListener("click", window.closeConsultationModal);
+        }
+        
+        // Fermer le modal en cliquant en dehors
+        if (consultationModal) {
+          consultationModal.addEventListener("click", (e) => {
+            if (e.target === consultationModal) {
+              window.closeConsultationModal();
+            }
+          });
+        }
+      });
+    </script>
+  </body>
+</html>
+

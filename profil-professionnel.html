@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MAMA+ – Mon Profil Professionnel</title>
+    <link rel="stylesheet" href="styles.css" />
+    <link rel="stylesheet" href="styles-icons.css" />
+    <link rel="stylesheet" href="styles-mobile-nav.css" />
+    <style>
+        .profile-container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+        .profile-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+        }
+        .profile-actions {
+            display: flex;
+            gap: 1rem;
+        }
+        .btn-edit {
+            background: #3b82f6;
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.5rem;
+            cursor: pointer;
+            font-weight: 500;
+        }
+        .btn-edit:hover {
+            background: #2563eb;
+        }
+        .btn-delete {
+            background: #ef4444;
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.5rem;
+            cursor: pointer;
+            font-weight: 500;
+        }
+        .btn-delete:hover {
+            background: #dc2626;
+        }
+        .profile-info {
+            background: white;
+            border-radius: 1rem;
+            padding: 2rem;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            margin-bottom: 1.5rem;
+        }
+        .info-section {
+            margin-bottom: 2rem;
+        }
+        .info-section:last-child {
+            margin-bottom: 0;
+        }
+        .info-section h3 {
+            color: #3b82f6;
+            margin-bottom: 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid #e5e7eb;
+        }
+        .info-row {
+            display: grid;
+            grid-template-columns: 200px 1fr;
+            gap: 1rem;
+            padding: 0.75rem 0;
+            border-bottom: 1px solid #f3f4f6;
+        }
+        .info-row:last-child {
+            border-bottom: none;
+        }
+        .info-label {
+            font-weight: 600;
+            color: #6b7280;
+        }
+        .info-value {
+            color: #1f2937;
+        }
+        .info-value.empty {
+            color: #9ca3af;
+            font-style: italic;
+        }
+        .form-section {
+            margin-bottom: 2rem;
+        }
+        .form-section h3 {
+            color: #3b82f6;
+            margin-bottom: 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid #e5e7eb;
+        }
+        .form-actions {
+            display: flex;
+            gap: 1rem;
+            justify-content: flex-end;
+            margin-top: 2rem;
+        }
+        .btn-cancel {
+            background: #6b7280;
+            color: white;
+        }
+        .btn-cancel:hover {
+            background: #4b5563;
+        }
+        .message {
+            padding: 1rem;
+            border-radius: 0.5rem;
+            margin-bottom: 1rem;
+        }
+        .message.success {
+            background: #d1fae5;
+            color: #065f46;
+            border: 1px solid #10b981;
+        }
+        .message.error {
+            background: #fee2e2;
+            color: #991b1b;
+            border: 1px solid #ef4444;
+        }
+        .hidden {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <header role="banner" class="tools-header">
+        <div class="header-left">
+            <a href="index-professionnel.html" style="color: #fff; text-decoration: none; font-size: 1.5rem; margin-right: 1rem; display: inline-flex; align-items: center;" title="Retour au tableau de bord" id="home-icon-link"></a>
+            <span class="header-icon" id="header-icon"></span>
+            <h1>Mon Profil Professionnel</h1>
+        </div>
+    </header>
+
+    <main role="main">
+        <div class="profile-container">
+            <!-- Message de notification -->
+            <div id="profile-message" class="message hidden"></div>
+
+            <!-- Affichage du profil -->
+            <div id="profile-display" class="profile-info">
+                <div class="profile-header">
+                    <h2>Mes Informations</h2>
+                    <div class="profile-actions">
+                        <button class="btn-edit" onclick="enableEditMode()">✏️ Modifier</button>
+                        <button class="btn-delete" onclick="deleteProfile()">🗑️ Supprimer le profil</button>
+                    </div>
+                </div>
+
+                <div id="profile-content">
+                    <!-- Le contenu sera généré dynamiquement -->
+                </div>
+            </div>
+
+            <!-- Formulaire d'édition -->
+            <div id="profile-edit-form" class="profile-info hidden">
+                <h2>Modifier mon profil</h2>
+                <form id="edit-profile-form">
+                    <div class="form-section">
+                        <h3>Informations personnelles</h3>
+                        <div class="form-row">
+                            <label>
+                                Prénom <span class="required">*</span>
+                                <input type="text" id="edit-prenom" placeholder="Votre prénom" required />
+                            </label>
+                            <label>
+                                Nom <span class="required">*</span>
+                                <input type="text" id="edit-nom" placeholder="Votre nom" required />
+                            </label>
+                        </div>
+                        <label>
+                            Téléphone <span class="required">*</span>
+                            <input type="tel" id="edit-telephone" placeholder="Ex: +22370000000" required />
+                        </label>
+                        <label>
+                            Email
+                            <input type="email" id="edit-email" placeholder="votre.email@example.com" />
+                        </label>
+                    </div>
+
+                    <div class="form-section">
+                        <h3>Informations professionnelles</h3>
+                        <label>
+                            Profession <span class="required">*</span>
+                            <select id="edit-profession" required>
+                                <option value="">Sélectionner...</option>
+                                <option value="sage_femme">Sage-femme</option>
+                                <option value="medecin">Médecin</option>
+                                <option value="superviseur">Superviseur</option>
+                                <option value="infirmier">Infirmier/Infirmière</option>
+                            </select>
+                        </label>
+                        <label>
+                            Centre de santé <span class="required">*</span>
+                            <input type="text" id="edit-centre" placeholder="Nom du centre de santé" required />
+                        </label>
+                        <label>
+                            Adresse du centre
+                            <input type="text" id="edit-adresse-centre" placeholder="Adresse complète" />
+                        </label>
+                        <label>
+                            Ville
+                            <input type="text" id="edit-ville" placeholder="Ex: Abidjan" />
+                        </label>
+                        <label>
+                            Pays
+                            <select id="edit-pays">
+                                <option value="">Sélectionner...</option>
+                                <option value="Côte d'Ivoire">Côte d'Ivoire</option>
+                                <option value="Mali">Mali</option>
+                                <option value="Burkina Faso">Burkina Faso</option>
+                                <option value="Sénégal">Sénégal</option>
+                                <option value="Guinée">Guinée</option>
+                                <option value="Niger">Niger</option>
+                                <option value="Bénin">Bénin</option>
+                                <option value="Togo">Togo</option>
+                                <option value="Ghana">Ghana</option>
+                            </select>
+                        </label>
+                    </div>
+
+                    <div class="form-section">
+                        <h3>Informations supplémentaires</h3>
+                        <label>
+                            Spécialité
+                            <input type="text" id="edit-specialite" placeholder="Votre spécialité (optionnel)" />
+                        </label>
+                        <label>
+                            Numéro d'ordre / Licence
+                            <input type="text" id="edit-numero-ordre" placeholder="Numéro d'ordre professionnel (optionnel)" />
+                        </label>
+                        <label>
+                            Notes personnelles
+                            <textarea id="edit-notes" rows="4" placeholder="Notes personnelles (optionnel)"></textarea>
+                        </label>
+                    </div>
+
+                    <div class="form-actions">
+                        <button type="button" class="btn-cancel" onclick="cancelEdit()">Annuler</button>
+                        <button type="submit" class="btn-primary">Enregistrer les modifications</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </main>
+
+    <!-- Navigation mobile -->
+    <script src="utils/mobile-nav.js" defer></script>
+    <!-- Système d'icônes -->
+    <script src="utils/icons.js"></script>
+    <script>
+        // Initialiser les icônes au chargement
+        document.addEventListener('DOMContentLoaded', function() {
+            if (window.getIcon) {
+                const homeIconLink = document.querySelector('#home-icon-link');
+                if (homeIconLink) {
+                    homeIconLink.innerHTML = window.getIcon('home', 24, 'white');
+                }
+                
+                const headerIcon = document.querySelector('#header-icon');
+                if (headerIcon) {
+                    headerIcon.innerHTML = window.getIcon('doctor', 28, 'white');
+                }
+            }
+        });
+    </script>
+    <script src="app-profil-professionnel.js" defer></script>
+</body>
+</html>
+

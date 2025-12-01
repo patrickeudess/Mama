@@ -1,0 +1,482 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tests de l'application MAMA+</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        .test-section {
+            background: white;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .test-section h2 {
+            color: #3b82f6;
+            margin-top: 0;
+        }
+        .test-item {
+            padding: 10px;
+            margin: 10px 0;
+            border-left: 4px solid #ddd;
+            background: #f9f9f9;
+        }
+        .test-item.pass {
+            border-left-color: #10b981;
+            background: #f0fdf4;
+        }
+        .test-item.fail {
+            border-left-color: #ef4444;
+            background: #fef2f2;
+        }
+        .test-item.warning {
+            border-left-color: #f59e0b;
+            background: #fffbeb;
+        }
+        button {
+            background: #3b82f6;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            margin: 5px;
+        }
+        button:hover {
+            background: #2563eb;
+        }
+        .results {
+            margin-top: 20px;
+            padding: 15px;
+            background: #f9f9f9;
+            border-radius: 4px;
+        }
+        pre {
+            background: #1e1e1e;
+            color: #d4d4d4;
+            padding: 15px;
+            border-radius: 4px;
+            overflow-x: auto;
+        }
+    </style>
+</head>
+<body>
+    <h1>🧪 Tests de l'application MAMA+</h1>
+    
+    <div class="test-section">
+        <h2>1. Test de la génération de CPN</h2>
+        <div id="test-cpn-results"></div>
+        <button onclick="testCPNGeneration()">Tester la génération de CPN</button>
+    </div>
+    
+    <div class="test-section">
+        <h2>2. Test de la création de patiente</h2>
+        <div id="test-patiente-results"></div>
+        <button onclick="testPatienteCreation()">Tester la création de patiente</button>
+    </div>
+    
+    <div class="test-section">
+        <h2>3. Test de la synchronisation des données</h2>
+        <div id="test-sync-results"></div>
+        <button onclick="testDataSynchronization()">Tester la synchronisation</button>
+    </div>
+    
+    <div class="test-section">
+        <h2>4. Test des filtres globaux</h2>
+        <div id="test-filters-results"></div>
+        <button onclick="testGlobalFilters()">Tester les filtres</button>
+    </div>
+    
+    <div class="test-section">
+        <h2>5. Test de la création de consultation</h2>
+        <div id="test-consultation-results"></div>
+        <button onclick="testConsultationCreation()">Tester la création de consultation</button>
+    </div>
+    
+    <div class="test-section">
+        <h2>6. Test complet du flux</h2>
+        <div id="test-complete-results"></div>
+        <button onclick="testCompleteFlow()">Lancer le test complet</button>
+    </div>
+    
+    <div class="test-section">
+        <h2>7. Nettoyage des données de test</h2>
+        <button onclick="cleanupTestData()">Nettoyer les données de test</button>
+    </div>
+
+    <script src="utils/cpn-generator.js"></script>
+    <script src="utils/health-centers-ci.js"></script>
+    <script src="utils/global-filters.js"></script>
+    <script>
+        const STORAGE_KEY = "mama_patientes";
+        const TEST_PATIENTE_ID = 99999; // ID de test unique
+        
+        function getPatientes() {
+            const stored = localStorage.getItem(STORAGE_KEY);
+            return stored ? JSON.parse(stored) : [];
+        }
+        
+        function savePatientes(patientes) {
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(patientes));
+        }
+        
+        function addResult(containerId, message, status = 'info') {
+            const container = document.getElementById(containerId);
+            const div = document.createElement('div');
+            div.className = `test-item ${status}`;
+            div.textContent = message;
+            container.appendChild(div);
+        }
+        
+        function clearResults(containerId) {
+            document.getElementById(containerId).innerHTML = '';
+        }
+        
+        // Test 1: Génération de CPN
+        function testCPNGeneration() {
+            clearResults('test-cpn-results');
+            addResult('test-cpn-results', 'Démarrage du test de génération de CPN...', 'info');
+            
+            try {
+                if (!window.generateCPNCalendar) {
+                    addResult('test-cpn-results', '❌ La fonction generateCPNCalendar n\'est pas disponible', 'fail');
+                    return;
+                }
+                
+                const datePremiereCPN = '2024-01-15';
+                const semaineGrossesse = 12;
+                const nombreCPN = 4;
+                
+                const cpnList = window.generateCPNCalendar(datePremiereCPN, semaineGrossesse, nombreCPN);
+                
+                if (!cpnList || cpnList.length === 0) {
+                    addResult('test-cpn-results', '❌ Aucune CPN générée', 'fail');
+                    return;
+                }
+                
+                if (cpnList.length !== nombreCPN) {
+                    addResult('test-cpn-results', `❌ Nombre de CPN incorrect: ${cpnList.length} au lieu de ${nombreCPN}`, 'fail');
+                    return;
+                }
+                
+                addResult('test-cpn-results', `✅ ${cpnList.length} CPN générées avec succès`, 'pass');
+                addResult('test-cpn-results', `   CPN1: ${cpnList[0].date_rdv}`, 'pass');
+                addResult('test-cpn-results', `   CPN2: ${cpnList[1].date_rdv}`, 'pass');
+                addResult('test-cpn-results', `   CPN3: ${cpnList[2].date_rdv}`, 'pass');
+                addResult('test-cpn-results', `   CPN4: ${cpnList[3].date_rdv}`, 'pass');
+                
+            } catch (error) {
+                addResult('test-cpn-results', `❌ Erreur: ${error.message}`, 'fail');
+            }
+        }
+        
+        // Test 2: Création de patiente
+        function testPatienteCreation() {
+            clearResults('test-patiente-results');
+            addResult('test-patiente-results', 'Démarrage du test de création de patiente...', 'info');
+            
+            try {
+                const patientes = getPatientes();
+                const existingTest = patientes.find(p => p.id === TEST_PATIENTE_ID);
+                
+                if (existingTest) {
+                    addResult('test-patiente-results', '⚠️ Patiente de test déjà existante, suppression...', 'warning');
+                    const filtered = patientes.filter(p => p.id !== TEST_PATIENTE_ID);
+                    savePatientes(filtered);
+                }
+                
+                const datePremiereCPN = '2024-01-15';
+                const semaineGrossesse = 12;
+                const nombreCPN = 4;
+                
+                let cpnList = [];
+                if (window.generateCPNCalendar) {
+                    cpnList = window.generateCPNCalendar(datePremiereCPN, semaineGrossesse, nombreCPN);
+                }
+                
+                const nouvellePatiente = {
+                    id: TEST_PATIENTE_ID,
+                    prenom: "Test",
+                    nom: "Patiente",
+                    age: 28,
+                    pays: "Côte d'Ivoire",
+                    ville: "Abidjan",
+                    centre_sante: "CHU de Cocody",
+                    periode: "month",
+                    telephone: "+2250700000000",
+                    date_premiere_cpn: datePremiereCPN,
+                    semaine_grossesse: semaineGrossesse,
+                    nombre_cpn: nombreCPN,
+                    cpn_list: cpnList,
+                    data_source: "validated_by_professional",
+                    consultations: []
+                };
+                
+                patientes.push(nouvellePatiente);
+                savePatientes(patientes);
+                
+                // Vérifier que la patiente a été créée
+                const saved = getPatientes();
+                const found = saved.find(p => p.id === TEST_PATIENTE_ID);
+                
+                if (!found) {
+                    addResult('test-patiente-results', '❌ La patiente n\'a pas été sauvegardée', 'fail');
+                    return;
+                }
+                
+                if (!found.cpn_list || found.cpn_list.length === 0) {
+                    addResult('test-patiente-results', '❌ Les CPN n\'ont pas été sauvegardées', 'fail');
+                    return;
+                }
+                
+                addResult('test-patiente-results', '✅ Patiente créée avec succès', 'pass');
+                addResult('test-patiente-results', `   ID: ${found.id}`, 'pass');
+                addResult('test-patiente-results', `   Nom: ${found.prenom} ${found.nom}`, 'pass');
+                addResult('test-patiente-results', `   CPN générées: ${found.cpn_list.length}`, 'pass');
+                addResult('test-patiente-results', `   Source: ${found.data_source}`, 'pass');
+                
+            } catch (error) {
+                addResult('test-patiente-results', `❌ Erreur: ${error.message}`, 'fail');
+            }
+        }
+        
+        // Test 3: Synchronisation des données
+        function testDataSynchronization() {
+            clearResults('test-sync-results');
+            addResult('test-sync-results', 'Démarrage du test de synchronisation...', 'info');
+            
+            try {
+                const patientes = getPatientes();
+                const testPatiente = patientes.find(p => p.id === TEST_PATIENTE_ID);
+                
+                if (!testPatiente) {
+                    addResult('test-sync-results', '⚠️ Patiente de test non trouvée. Lancez d\'abord le test de création.', 'warning');
+                    return;
+                }
+                
+                // Vérifier que les données sont accessibles
+                if (!testPatiente.cpn_list) {
+                    addResult('test-sync-results', '❌ Les CPN ne sont pas accessibles', 'fail');
+                    return;
+                }
+                
+                if (!testPatiente.consultations) {
+                    addResult('test-sync-results', '⚠️ Aucune consultation trouvée (normal si aucune n\'a été créée)', 'warning');
+                }
+                
+                // Vérifier la structure des données
+                const isValid = testPatiente.cpn_list.every(cpn => 
+                    cpn.numero_cpn && cpn.date_rdv && cpn.statut
+                );
+                
+                if (!isValid) {
+                    addResult('test-sync-results', '❌ Structure des CPN invalide', 'fail');
+                    return;
+                }
+                
+                addResult('test-sync-results', '✅ Synchronisation des données OK', 'pass');
+                addResult('test-sync-results', `   CPN disponibles: ${testPatiente.cpn_list.length}`, 'pass');
+                addResult('test-sync-results', `   Consultations: ${testPatiente.consultations?.length || 0}`, 'pass');
+                addResult('test-sync-results', `   Source: ${testPatiente.data_source}`, 'pass');
+                
+            } catch (error) {
+                addResult('test-sync-results', `❌ Erreur: ${error.message}`, 'fail');
+            }
+        }
+        
+        // Test 4: Filtres globaux
+        function testGlobalFilters() {
+            clearResults('test-filters-results');
+            addResult('test-filters-results', 'Démarrage du test des filtres globaux...', 'info');
+            
+            try {
+                if (!window.filterPatientesByGlobalFilters) {
+                    addResult('test-filters-results', '❌ La fonction filterPatientesByGlobalFilters n\'est pas disponible', 'fail');
+                    return;
+                }
+                
+                if (!window.getAllCountries) {
+                    addResult('test-filters-results', '❌ La fonction getAllCountries n\'est pas disponible', 'fail');
+                    return;
+                }
+                
+                const patientes = getPatientes();
+                const countries = window.getAllCountries();
+                
+                if (!countries || countries.length === 0) {
+                    addResult('test-filters-results', '❌ Aucun pays disponible', 'fail');
+                    return;
+                }
+                
+                // Tester le filtre par pays
+                window.setGlobalFilter('pays', 'Côte d\'Ivoire');
+                const filtered = window.filterPatientesByGlobalFilters(patientes);
+                
+                addResult('test-filters-results', '✅ Filtres globaux fonctionnels', 'pass');
+                addResult('test-filters-results', `   Pays disponibles: ${countries.length}`, 'pass');
+                addResult('test-filters-results', `   Patientes filtrées: ${filtered.length}`, 'pass');
+                
+                // Réinitialiser les filtres
+                window.resetGlobalFilters();
+                
+            } catch (error) {
+                addResult('test-filters-results', `❌ Erreur: ${error.message}`, 'fail');
+            }
+        }
+        
+        // Test 5: Création de consultation
+        function testConsultationCreation() {
+            clearResults('test-consultation-results');
+            addResult('test-consultation-results', 'Démarrage du test de création de consultation...', 'info');
+            
+            try {
+                const patientes = getPatientes();
+                const testPatiente = patientes.find(p => p.id === TEST_PATIENTE_ID);
+                
+                if (!testPatiente) {
+                    addResult('test-consultation-results', '⚠️ Patiente de test non trouvée. Lancez d\'abord le test de création.', 'warning');
+                    return;
+                }
+                
+                const consultationData = {
+                    id: Date.now(),
+                    patiente_id: TEST_PATIENTE_ID,
+                    type: "consultation",
+                    date_consultation: new Date().toISOString(),
+                    poids: 65.5,
+                    temperature: 36.8,
+                    tension_arterielle_systolique: 120,
+                    tension_arterielle_diastolique: 80,
+                    data_source: "validated_by_professional",
+                    created_at: new Date().toISOString()
+                };
+                
+                if (!testPatiente.consultations) {
+                    testPatiente.consultations = [];
+                }
+                
+                testPatiente.consultations.push(consultationData);
+                testPatiente.derniere_venue = new Date().toISOString().split('T')[0];
+                
+                // Sauvegarder
+                const index = patientes.findIndex(p => p.id === TEST_PATIENTE_ID);
+                patientes[index] = testPatiente;
+                savePatientes(patientes);
+                
+                // Vérifier
+                const saved = getPatientes();
+                const updated = saved.find(p => p.id === TEST_PATIENTE_ID);
+                
+                if (!updated.consultations || updated.consultations.length === 0) {
+                    addResult('test-consultation-results', '❌ La consultation n\'a pas été sauvegardée', 'fail');
+                    return;
+                }
+                
+                addResult('test-consultation-results', '✅ Consultation créée avec succès', 'pass');
+                addResult('test-consultation-results', `   Nombre de consultations: ${updated.consultations.length}`, 'pass');
+                addResult('test-consultation-results', `   Dernière venue: ${updated.derniere_venue}`, 'pass');
+                addResult('test-consultation-results', `   Source: ${updated.consultations[0].data_source}`, 'pass');
+                
+            } catch (error) {
+                addResult('test-consultation-results', `❌ Erreur: ${error.message}`, 'fail');
+            }
+        }
+        
+        // Test 6: Test complet du flux
+        function testCompleteFlow() {
+            clearResults('test-complete-results');
+            addResult('test-complete-results', '🚀 Démarrage du test complet...', 'info');
+            
+            let passed = 0;
+            let failed = 0;
+            
+            // Test 1: Génération CPN
+            try {
+                if (window.generateCPNCalendar) {
+                    const cpnList = window.generateCPNCalendar('2024-01-15', 12, 4);
+                    if (cpnList && cpnList.length === 4) {
+                        passed++;
+                        addResult('test-complete-results', '✅ Test 1: Génération CPN', 'pass');
+                    } else {
+                        failed++;
+                        addResult('test-complete-results', '❌ Test 1: Génération CPN', 'fail');
+                    }
+                }
+            } catch (e) {
+                failed++;
+                addResult('test-complete-results', '❌ Test 1: Génération CPN - Erreur', 'fail');
+            }
+            
+            // Test 2: Création patiente
+            try {
+                const patientes = getPatientes();
+                const testPatiente = patientes.find(p => p.id === TEST_PATIENTE_ID);
+                if (testPatiente && testPatiente.cpn_list && testPatiente.cpn_list.length > 0) {
+                    passed++;
+                    addResult('test-complete-results', '✅ Test 2: Patiente avec CPN', 'pass');
+                } else {
+                    failed++;
+                    addResult('test-complete-results', '❌ Test 2: Patiente avec CPN', 'fail');
+                }
+            } catch (e) {
+                failed++;
+                addResult('test-complete-results', '❌ Test 2: Patiente avec CPN - Erreur', 'fail');
+            }
+            
+            // Test 3: Filtres
+            try {
+                if (window.filterPatientesByGlobalFilters && window.getAllCountries) {
+                    const countries = window.getAllCountries();
+                    if (countries && countries.length > 0) {
+                        passed++;
+                        addResult('test-complete-results', '✅ Test 3: Filtres globaux', 'pass');
+                    } else {
+                        failed++;
+                        addResult('test-complete-results', '❌ Test 3: Filtres globaux', 'fail');
+                    }
+                }
+            } catch (e) {
+                failed++;
+                addResult('test-complete-results', '❌ Test 3: Filtres globaux - Erreur', 'fail');
+            }
+            
+            // Test 4: Consultations
+            try {
+                const patientes = getPatientes();
+                const testPatiente = patientes.find(p => p.id === TEST_PATIENTE_ID);
+                if (testPatiente && testPatiente.consultations && testPatiente.consultations.length > 0) {
+                    passed++;
+                    addResult('test-complete-results', '✅ Test 4: Consultations', 'pass');
+                } else {
+                    addResult('test-complete-results', '⚠️ Test 4: Consultations (non testé - créer une consultation d\'abord)', 'warning');
+                }
+            } catch (e) {
+                failed++;
+                addResult('test-complete-results', '❌ Test 4: Consultations - Erreur', 'fail');
+            }
+            
+            // Résumé
+            addResult('test-complete-results', `\n📊 Résumé: ${passed} réussis, ${failed} échoués`, passed > 0 && failed === 0 ? 'pass' : 'info');
+        }
+        
+        // Nettoyage
+        function cleanupTestData() {
+            if (confirm('Voulez-vous supprimer toutes les données de test ?')) {
+                const patientes = getPatientes();
+                const filtered = patientes.filter(p => p.id !== TEST_PATIENTE_ID);
+                savePatientes(filtered);
+                alert('Données de test supprimées !');
+            }
+        }
+    </script>
+</body>
+</html>
+

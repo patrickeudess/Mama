@@ -1,0 +1,757 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+venv/
+env/
+ENV/
+.venv
+*.egg-info/
+dist/
+build/
+
+# Base de données
+*.db
+*.sqlite
+*.sqlite3
+mamaplus.db
+
+# Fichiers de modèle ML
+*.joblib
+*.pkl
+*.h5
+*.model
+
+# Variables d'environnement
+.env
+.env.local
+.env.*.local
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+
+# Logs
+*.log
+logs/
+
+# Fichiers temporaires
+*.tmp
+*.temp
+.cache/
+
+# Fichiers Excel
+*.xlsx
+*.xls
+Mama+.xlsx
+
+# Fichiers de documentation temporaires
+*.md.bak
+*.txt.bak
+
+# Node modules (si utilisé plus tard)
+node_modules/
+package-lock.json
+yarn.lock
+
+# Fichiers système
+Thumbs.db
+desktop.ini
+
+# Fichiers de sauvegarde
+*.bak
+*.backup
+
+# Fichiers de test
+test-*.html
+*_test.html
+
+# Fichiers de configuration locaux
+config.local.json
+settings.local.json
+
+
+desktop.ini
+
+
+
+# Logs
+
+*.log
+
+logs/
+
+
+
+# Fichiers temporaires
+
+*.tmp
+
+*.temp
+
+*.bak
+
+*.backup
+
+
+
+# Modèles ML (trop volumineux pour GitHub)
+
+*.joblib
+
+*.pkl
+
+*.h5
+
+*.hdf5
+
+
+
+# Fichiers Excel volumineux
+
+*.xlsx
+
+*.xls
+
+
+
+# Node modules (si utilisé plus tard)
+
+node_modules/
+
+package-lock.json
+
+yarn.lock
+
+
+
+# Fichiers de test
+
+test-*.html
+
+*.test.js
+
+
+
+# Documentation de développement (optionnel - à garder si utile)
+
+# *.md (décommenter si vous voulez ignorer tous les fichiers markdown)
+
+
+desktop.ini
+
+
+
+# Logs
+
+*.log
+
+logs/
+
+
+
+# Fichiers temporaires
+
+*.tmp
+
+*.temp
+
+*.bak
+
+*.backup
+
+
+
+# Modèles ML (trop volumineux pour GitHub)
+
+*.joblib
+
+*.pkl
+
+*.h5
+
+*.hdf5
+
+
+
+# Fichiers Excel volumineux
+
+*.xlsx
+
+*.xls
+
+
+
+# Node modules (si utilisé plus tard)
+
+node_modules/
+
+package-lock.json
+
+yarn.lock
+
+
+
+# Fichiers de test
+
+test-*.html
+
+*.test.js
+
+
+
+# Documentation de développement (optionnel - à garder si utile)
+
+# *.md (décommenter si vous voulez ignorer tous les fichiers markdown)
+
+
+
+desktop.ini
+
+
+
+# Logs
+
+*.log
+
+logs/
+
+
+
+# Fichiers temporaires
+
+*.tmp
+
+*.temp
+
+*.bak
+
+*.backup
+
+
+
+# Modèles ML (trop volumineux pour GitHub)
+
+*.joblib
+
+*.pkl
+
+*.h5
+
+*.hdf5
+
+
+
+# Fichiers Excel volumineux
+
+*.xlsx
+
+*.xls
+
+
+
+# Node modules (si utilisé plus tard)
+
+node_modules/
+
+package-lock.json
+
+yarn.lock
+
+
+
+# Fichiers de test
+
+test-*.html
+
+*.test.js
+
+
+
+# Documentation de développement (optionnel - à garder si utile)
+
+# *.md (décommenter si vous voulez ignorer tous les fichiers markdown)
+
+
+
+desktop.ini
+
+
+
+# Logs
+
+*.log
+
+logs/
+
+
+
+# Fichiers temporaires
+
+*.tmp
+
+*.temp
+
+*.bak
+
+*.backup
+
+
+
+# Modèles ML (trop volumineux pour GitHub)
+
+*.joblib
+
+*.pkl
+
+*.h5
+
+*.hdf5
+
+
+
+# Fichiers Excel volumineux
+
+*.xlsx
+
+*.xls
+
+
+
+# Node modules (si utilisé plus tard)
+
+node_modules/
+
+package-lock.json
+
+yarn.lock
+
+
+
+# Fichiers de test
+
+test-*.html
+
+*.test.js
+
+
+
+# Documentation de développement (optionnel - à garder si utile)
+
+# *.md (décommenter si vous voulez ignorer tous les fichiers markdown)
+
+
+
+desktop.ini
+
+
+
+# Logs
+
+*.log
+
+logs/
+
+
+
+# Fichiers temporaires
+
+*.tmp
+
+*.temp
+
+*.bak
+
+*.backup
+
+
+
+# Modèles ML (trop volumineux pour GitHub)
+
+*.joblib
+
+*.pkl
+
+*.h5
+
+*.hdf5
+
+
+
+# Fichiers Excel volumineux
+
+*.xlsx
+
+*.xls
+
+
+
+# Node modules (si utilisé plus tard)
+
+node_modules/
+
+package-lock.json
+
+yarn.lock
+
+
+
+# Fichiers de test
+
+test-*.html
+
+*.test.js
+
+
+
+# Documentation de développement (optionnel - à garder si utile)
+
+# *.md (décommenter si vous voulez ignorer tous les fichiers markdown)
+
+
+
+desktop.ini
+
+
+
+# Logs
+
+*.log
+
+logs/
+
+
+
+# Fichiers temporaires
+
+*.tmp
+
+*.temp
+
+*.bak
+
+*.backup
+
+
+
+# Modèles ML (trop volumineux pour GitHub)
+
+*.joblib
+
+*.pkl
+
+*.h5
+
+*.hdf5
+
+
+
+# Fichiers Excel volumineux
+
+*.xlsx
+
+*.xls
+
+
+
+# Node modules (si utilisé plus tard)
+
+node_modules/
+
+package-lock.json
+
+yarn.lock
+
+
+
+# Fichiers de test
+
+test-*.html
+
+*.test.js
+
+
+
+# Documentation de développement (optionnel - à garder si utile)
+
+# *.md (décommenter si vous voulez ignorer tous les fichiers markdown)
+
+
+
+desktop.ini
+
+
+
+# Logs
+
+*.log
+
+logs/
+
+
+
+# Fichiers temporaires
+
+*.tmp
+
+*.temp
+
+*.bak
+
+*.backup
+
+
+
+# Modèles ML (trop volumineux pour GitHub)
+
+*.joblib
+
+*.pkl
+
+*.h5
+
+*.hdf5
+
+
+
+# Fichiers Excel volumineux
+
+*.xlsx
+
+*.xls
+
+
+
+# Node modules (si utilisé plus tard)
+
+node_modules/
+
+package-lock.json
+
+yarn.lock
+
+
+
+# Fichiers de test
+
+test-*.html
+
+*.test.js
+
+
+
+# Documentation de développement (optionnel - à garder si utile)
+
+# *.md (décommenter si vous voulez ignorer tous les fichiers markdown)
+
+
+
+desktop.ini
+
+
+
+# Logs
+
+*.log
+
+logs/
+
+
+
+# Fichiers temporaires
+
+*.tmp
+
+*.temp
+
+*.bak
+
+*.backup
+
+
+
+# Modèles ML (trop volumineux pour GitHub)
+
+*.joblib
+
+*.pkl
+
+*.h5
+
+*.hdf5
+
+
+
+# Fichiers Excel volumineux
+
+*.xlsx
+
+*.xls
+
+
+
+# Node modules (si utilisé plus tard)
+
+node_modules/
+
+package-lock.json
+
+yarn.lock
+
+
+
+# Fichiers de test
+
+test-*.html
+
+*.test.js
+
+
+
+# Documentation de développement (optionnel - à garder si utile)
+
+# *.md (décommenter si vous voulez ignorer tous les fichiers markdown)
+
+
+
+desktop.ini
+
+
+
+# Logs
+
+*.log
+
+logs/
+
+
+
+# Fichiers temporaires
+
+*.tmp
+
+*.temp
+
+*.bak
+
+*.backup
+
+
+
+# Modèles ML (trop volumineux pour GitHub)
+
+*.joblib
+
+*.pkl
+
+*.h5
+
+*.hdf5
+
+
+
+# Fichiers Excel volumineux
+
+*.xlsx
+
+*.xls
+
+
+
+# Node modules (si utilisé plus tard)
+
+node_modules/
+
+package-lock.json
+
+yarn.lock
+
+
+
+# Fichiers de test
+
+test-*.html
+
+*.test.js
+
+
+
+# Documentation de développement (optionnel - à garder si utile)
+
+# *.md (décommenter si vous voulez ignorer tous les fichiers markdown)
+
+
+
+desktop.ini
+
+
+
+# Logs
+
+*.log
+
+logs/
+
+
+
+# Fichiers temporaires
+
+*.tmp
+
+*.temp
+
+*.bak
+
+*.backup
+
+
+
+# Modèles ML (trop volumineux pour GitHub)
+
+*.joblib
+
+*.pkl
+
+*.h5
+
+*.hdf5
+
+
+
+# Fichiers Excel volumineux
+
+*.xlsx
+
+*.xls
+
+
+
+# Node modules (si utilisé plus tard)
+
+node_modules/
+
+package-lock.json
+
+yarn.lock
+
+
+
+# Fichiers de test
+
+test-*.html
+
+*.test.js
+
+
+
+# Documentation de développement (optionnel - à garder si utile)
+
+# *.md (décommenter si vous voulez ignorer tous les fichiers markdown)
+
+

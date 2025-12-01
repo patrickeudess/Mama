@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MAMA+ – Mon Profil</title>
+    <link rel="stylesheet" href="styles.css" />
+    <link rel="stylesheet" href="styles-icons.css" />
+    <link rel="stylesheet" href="styles-mobile-nav.css" />
+    <style>
+        .profile-container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+        .profile-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+        }
+        .profile-actions {
+            display: flex;
+            gap: 1rem;
+        }
+        .btn-edit {
+            background: #3b82f6;
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.5rem;
+            cursor: pointer;
+            font-weight: 500;
+        }
+        .btn-edit:hover {
+            background: #2563eb;
+        }
+        .btn-delete {
+            background: #ef4444;
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.5rem;
+            cursor: pointer;
+            font-weight: 500;
+        }
+        .btn-delete:hover {
+            background: #dc2626;
+        }
+        .profile-info {
+            background: white;
+            border-radius: 1rem;
+            padding: 2rem;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            margin-bottom: 1.5rem;
+        }
+        .info-section {
+            margin-bottom: 2rem;
+        }
+        .info-section:last-child {
+            margin-bottom: 0;
+        }
+        .info-section h3 {
+            color: #3b82f6;
+            margin-bottom: 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid #e5e7eb;
+        }
+        .info-row {
+            display: grid;
+            grid-template-columns: 200px 1fr;
+            gap: 1rem;
+            padding: 0.75rem 0;
+            border-bottom: 1px solid #f3f4f6;
+        }
+        .info-row:last-child {
+            border-bottom: none;
+        }
+        .info-label {
+            font-weight: 600;
+            color: #6b7280;
+        }
+        .info-value {
+            color: #1f2937;
+        }
+        .info-value.empty {
+            color: #9ca3af;
+            font-style: italic;
+        }
+        .form-section {
+            margin-bottom: 2rem;
+        }
+        .form-section h3 {
+            color: #3b82f6;
+            margin-bottom: 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid #e5e7eb;
+        }
+        .form-actions {
+            display: flex;
+            gap: 1rem;
+            justify-content: flex-end;
+            margin-top: 2rem;
+        }
+        .btn-cancel {
+            background: #6b7280;
+            color: white;
+        }
+        .btn-cancel:hover {
+            background: #4b5563;
+        }
+        .message {
+            padding: 1rem;
+            border-radius: 0.5rem;
+            margin-bottom: 1rem;
+        }
+        .message.success {
+            background: #d1fae5;
+            color: #065f46;
+            border: 1px solid #10b981;
+        }
+        .message.error {
+            background: #fee2e2;
+            color: #991b1b;
+            border: 1px solid #ef4444;
+        }
+        .hidden {
+            display: none;
+        }
+        @media (max-width: 768px) {
+            .info-row {
+                grid-template-columns: 1fr;
+                gap: 0.5rem;
+            }
+            .profile-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header role="banner" class="tools-header">
+        <div class="header-left">
+            <a href="index-patriente.html" style="color: #fff; text-decoration: none; font-size: 1.5rem; margin-right: 1rem; display: inline-flex; align-items: center;" title="Retour au tableau de bord" id="home-icon-link"></a>
+            <span class="header-icon" id="header-icon"></span>
+            <h1>Mon Profil</h1>
+        </div>
+    </header>
+
+    <main role="main">
+        <div class="profile-container">
+            <!-- Message de notification -->
+            <div id="profile-message" class="message hidden"></div>
+
+            <!-- Affichage du profil -->
+            <div id="profile-display" class="profile-info">
+                <div class="profile-header">
+                    <h2>Mes Informations</h2>
+                    <div class="profile-actions">
+                        <button class="btn-edit" onclick="enableEditMode()">✏️ Modifier</button>
+                        <button class="btn-delete" onclick="deleteProfile()">🗑️ Supprimer le profil</button>
+                    </div>
+                </div>
+
+                <div id="profile-content">
+                    <!-- Le contenu sera généré dynamiquement -->
+                </div>
+            </div>
+
+            <!-- Formulaire d'édition -->
+            <div id="profile-edit-form" class="profile-info hidden">
+                <h2>Modifier mon profil</h2>
+                <form id="edit-profile-form">
+                    <div class="form-section">
+                        <h3>Informations personnelles</h3>
+                        <div class="form-row">
+                            <label>
+                                Prénom <span class="required">*</span>
+                                <input type="text" id="edit-prenom" placeholder="Votre prénom" required />
+                            </label>
+                            <label>
+                                Nom <span class="required">*</span>
+                                <input type="text" id="edit-nom" placeholder="Votre nom" required />
+                            </label>
+                        </div>
+                        <label>
+                            Âge <span class="required">*</span>
+                            <input type="number" id="edit-age" min="15" max="50" placeholder="Votre âge" required />
+                        </label>
+                        <div class="form-row">
+                            <label>
+                                Nombre de grossesses
+                                <input type="number" id="edit-gestite" min="1" value="1" placeholder="Combien de fois vous êtes tombée enceinte" />
+                                <small style="color: #6b7280; font-size: 0.875rem;">Y compris cette grossesse</small>
+                            </label>
+                            <label>
+                                Nombre d'enfants nés
+                                <input type="number" id="edit-parite" min="0" value="0" placeholder="Combien d'enfants vous avez déjà eus" />
+                            </label>
+                        </div>
+                        <label>
+                            Niveau d'études
+                            <select id="edit-niveau-instruction">
+                                <option value="">Choisir...</option>
+                                <option value="aucun">Pas d'école</option>
+                                <option value="primaire">École primaire</option>
+                                <option value="secondaire">École secondaire</option>
+                                <option value="superieur">Études supérieures</option>
+                            </select>
+                        </label>
+                        <label>
+                            Langue préférée
+                            <select id="edit-langue-preferee">
+                                <option value="fr">Français</option>
+                                <option value="bambara">Bambara</option>
+                                <option value="wolof">Wolof</option>
+                                <option value="dioula">Dioula</option>
+                                <option value="autre">Autre</option>
+                            </select>
+                        </label>
+                    </div>
+
+                    <div class="form-section">
+                        <h3>Votre grossesse</h3>
+                        <label>
+                            Date de vos dernières règles
+                            <input type="date" id="edit-dernieres-regles" />
+                            <small style="color: #6b7280; font-size: 0.875rem;">Le premier jour de vos dernières règles</small>
+                        </label>
+                        <label>
+                            Date prévue pour l'accouchement
+                            <input type="date" id="edit-accouchement-prevue" />
+                            <small style="color: #6b7280; font-size: 0.875rem;">Si vous ne connaissez pas cette date, elle sera calculée automatiquement</small>
+                        </label>
+                    </div>
+
+                    <div class="form-section">
+                        <h3>Où vous habitez</h3>
+                        <label>
+                            Pays
+                            <select id="edit-pays">
+                                <option value="">Sélectionner...</option>
+                                <option value="Côte d'Ivoire">Côte d'Ivoire</option>
+                                <option value="Mali">Mali</option>
+                                <option value="Burkina Faso">Burkina Faso</option>
+                                <option value="Sénégal">Sénégal</option>
+                                <option value="Guinée">Guinée</option>
+                                <option value="Niger">Niger</option>
+                                <option value="Bénin">Bénin</option>
+                                <option value="Togo">Togo</option>
+                                <option value="Ghana">Ghana</option>
+                            </select>
+                        </label>
+                        <label>
+                            Ville
+                            <input type="text" id="edit-ville" placeholder="Exemple: Abidjan" />
+                        </label>
+                        <label>
+                            Adresse
+                            <input type="text" id="edit-adresse" placeholder="Quartier, rue..." />
+                        </label>
+                        <label>
+                            Distance au centre de santé (km)
+                            <input type="number" id="edit-distance-centre" min="0" step="0.1" placeholder="Distance en kilomètres" />
+                        </label>
+                        <label>
+                            Moyen de transport
+                            <select id="edit-moyen-transport">
+                                <option value="">Choisir...</option>
+                                <option value="pieds">À pied</option>
+                                <option value="velo">À vélo</option>
+                                <option value="moto">En moto</option>
+                                <option value="voiture">En voiture</option>
+                                <option value="transport_public">Transport public</option>
+                            </select>
+                        </label>
+                    </div>
+
+                    <div class="form-section">
+                        <h3>Contact et urgence</h3>
+                        <label>
+                            Téléphone
+                            <input type="tel" id="edit-telephone" placeholder="Ex: +2250700000000" />
+                        </label>
+                        <label>
+                            Nom du contact d'urgence
+                            <input type="text" id="edit-nom-contact-urgence" placeholder="Nom de la personne à contacter en cas d'urgence" />
+                        </label>
+                        <label>
+                            Téléphone d'urgence
+                            <input type="tel" id="edit-telephone-urgence" placeholder="Ex: +2250700000000" />
+                        </label>
+                    </div>
+
+                    <div class="form-section">
+                        <h3>Antécédents médicaux</h3>
+                        <label>
+                            Antécédents médicaux
+                            <textarea id="edit-antecedents-medicaux" rows="3" placeholder="Maladies chroniques, opérations, etc. (optionnel)"></textarea>
+                        </label>
+                        <label>
+                            Antécédents obstétricaux
+                            <textarea id="edit-antecedents-obstetricaux" rows="3" placeholder="Complications lors de grossesses précédentes, etc. (optionnel)"></textarea>
+                        </label>
+                        <label>
+                            Allergies
+                            <textarea id="edit-allergies" rows="2" placeholder="Allergies connues (optionnel)"></textarea>
+                        </label>
+                    </div>
+
+                    <div class="form-actions">
+                        <button type="button" class="btn-cancel" onclick="cancelEdit()">Annuler</button>
+                        <button type="submit" class="btn-primary">Enregistrer les modifications</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </main>
+
+    <!-- Navigation mobile -->
+    <script src="utils/mobile-nav.js" defer></script>
+    <!-- Système d'icônes -->
+    <script src="utils/icons.js"></script>
+    <script>
+        // Initialiser les icônes au chargement
+        document.addEventListener('DOMContentLoaded', function() {
+            if (window.getIcon) {
+                const homeIconLink = document.querySelector('#home-icon-link');
+                if (homeIconLink) {
+                    homeIconLink.innerHTML = window.getIcon('home', 24, 'white');
+                }
+                
+                const headerIcon = document.querySelector('#header-icon');
+                if (headerIcon) {
+                    headerIcon.innerHTML = window.getIcon('user', 28, 'white');
+                }
+            }
+        });
+    </script>
+    <script src="app-profil-patiente.js" defer></script>
+</body>
+</html>
+

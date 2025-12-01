@@ -1,0 +1,952 @@
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes" />
+    <title>MAMA+ Tableau de bord - Professionnel</title>
+    <link rel="stylesheet" href="styles.css" />
+    <link rel="stylesheet" href="styles-icons.css" />
+    <link rel="stylesheet" href="styles-mobile-nav.css" />
+  </head>
+  <body>
+    <header role="banner" class="tools-header">
+      <div class="header-left">
+        <a href="index.html" id="home-icon-link" style="color: #fff; text-decoration: none; font-size: 1.5rem; margin-right: 1rem; display: inline-flex; align-items: center;" title="Retour à l'accueil"></a>
+        <span class="header-icon" id="header-icon-placeholder">👨‍⚕️</span>
+      <h1>MAMA+ – Tableau de bord professionnel</h1>
+      </div>
+      <div id="auth-section" role="navigation">
+        <div id="user-info" aria-live="polite">
+          <span id="user-name" aria-label="Nom de l'utilisateur"></span>
+          <button id="logout-button" type="button" aria-label="Se déconnecter" class="btn-secondary" style="margin-left: 1rem; padding: 0.5rem 1rem;">Déconnexion</button>
+        </div>
+      </div>
+    </header>
+
+    <main role="main">
+      <!-- Alerte critique -->
+      <section id="critical-alert-section" class="critical-alert hidden" style="margin: 1rem 0; padding: 1rem; background: linear-gradient(135deg, #fee2e2 0%, #fecaca 100%); border-left: 4px solid #dc2626; border-radius: 0.5rem; box-shadow: 0 2px 8px rgba(220, 38, 38, 0.2);">
+        <div style="display: flex; align-items: center; gap: 1rem;">
+          <span style="font-size: 1.5rem;">⚠️</span>
+          <div style="flex: 1;">
+            <strong style="color: #991b1b; font-size: 1rem; display: block; margin-bottom: 0.25rem;" id="critical-alert-text"></strong>
+            <button id="critical-alert-action" class="btn-primary" style="margin-top: 0.5rem; padding: 0.5rem 1rem; font-size: 0.875rem; background: #dc2626; border: none; color: white; border-radius: 0.375rem; cursor: pointer;">
+              Voir les patientes concernées
+            </button>
+          </div>
+          <button id="dismiss-alert" style="background: none; border: none; font-size: 1.5rem; cursor: pointer; color: #991b1b; padding: 0.25rem;">&times;</button>
+        </div>
+      </section>
+
+      <!-- Sélecteur d'établissement actif -->
+      <section class="card" id="establishment-selector-card" style="margin-bottom: 1rem; display: none;">
+        <div class="card-header-with-icon">
+          <span class="card-icon">🏥</span>
+          <h2>Établissement actif</h2>
+        </div>
+        <div style="padding: 1rem;">
+          <label style="display: flex; flex-direction: column; gap: 0.5rem;">
+            <span style="font-weight: 500; color: #374151; font-size: 0.875rem;">Sélectionner l'établissement pour lequel vous travaillez actuellement :</span>
+            <select id="current-establishment-select" style="padding: 0.75rem; border: 2px solid #e5e7eb; border-radius: 0.5rem; font-size: 0.95rem; background: white; cursor: pointer;">
+              <option value="">Chargement...</option>
+            </select>
+          </label>
+          <div style="margin-top: 1rem; padding: 0.75rem; background: #f0f9ff; border-radius: 0.5rem; border-left: 4px solid #0ea5e9;">
+            <p style="margin: 0; font-size: 0.875rem; color: #0369a1;">
+              💡 <strong>Astuce :</strong> Vous pouvez basculer entre vos établissements à tout moment. Les données affichées correspondent à l'établissement sélectionné.
+            </p>
+          </div>
+          <div style="margin-top: 1rem;">
+            <a href="etablissements-professionnel.html" class="btn-secondary" style="padding: 0.5rem 1rem; font-size: 0.875rem; text-decoration: none; display: inline-block;">
+              ➕ Gérer mes établissements
+            </a>
+          </div>
+        </div>
+      </section>
+
+      <!-- Filtres globaux du tableau de bord -->
+      <section class="card" id="global-filters-section" style="margin-bottom: 1rem; padding: 1rem; background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%); border: 1px solid #e2e8f0;">
+        <div style="margin-bottom: 0.75rem;">
+          <h3 style="margin: 0; font-size: 1rem; font-weight: 600; color: #1e293b; display: flex; align-items: center; gap: 0.5rem;">
+            <span>🔍</span>
+            <span>Filtres de contexte</span>
+          </h3>
+          <p style="margin: 0.25rem 0 0 0; font-size: 0.875rem; color: #64748b;">Affinez les données selon votre zone d'intervention</p>
+        </div>
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; margin-bottom: 1rem;">
+          <label style="display: flex; flex-direction: column; gap: 0.5rem;">
+            <span style="font-weight: 500; color: #374151; font-size: 0.875rem;">Pays:</span>
+            <select id="global-filter-pays" style="padding: 0.625rem; border: 1px solid #d1d5db; border-radius: 0.375rem; font-size: 0.875rem; background: white;">
+              <option value="all">Tous les pays</option>
+            </select>
+          </label>
+          <label style="display: flex; flex-direction: column; gap: 0.5rem;">
+            <span style="font-weight: 500; color: #374151; font-size: 0.875rem;">Ville:</span>
+            <select id="global-filter-ville" style="padding: 0.625rem; border: 1px solid #d1d5db; border-radius: 0.375rem; font-size: 0.875rem; background: white;">
+              <option value="all">Toutes les villes</option>
+            </select>
+          </label>
+          <label style="display: flex; flex-direction: column; gap: 0.5rem;">
+            <span style="font-weight: 500; color: #374151; font-size: 0.875rem;">Centre de santé:</span>
+            <select id="global-filter-centre" style="padding: 0.625rem; border: 1px solid #d1d5db; border-radius: 0.375rem; font-size: 0.875rem; background: white;">
+              <option value="all">Tous les centres</option>
+            </select>
+          </label>
+          <label style="display: flex; flex-direction: column; gap: 0.5rem;">
+            <span style="font-weight: 500; color: #374151; font-size: 0.875rem;">Période:</span>
+            <select id="global-filter-periode" style="padding: 0.625rem; border: 1px solid #d1d5db; border-radius: 0.375rem; font-size: 0.875rem; background: white;">
+              <option value="week">Cette semaine</option>
+              <option value="month" selected>Ce mois</option>
+              <option value="quarter">Ce trimestre</option>
+              <option value="year">Cette année</option>
+              <option value="all">Toutes les périodes</option>
+            </select>
+          </label>
+        </div>
+        <div style="display: flex; gap: 0.75rem; align-items: center; justify-content: space-between; padding-top: 0.75rem; border-top: 1px solid #e2e8f0;">
+          <div id="filter-summary" style="font-size: 0.875rem; color: #64748b; font-style: italic; flex: 1;">
+            <span id="filter-summary-text">Aucun filtre actif</span>
+          </div>
+          <div style="display: flex; gap: 0.5rem;">
+            <button id="download-data-btn" class="btn-primary" style="padding: 0.5rem 1rem; font-size: 0.875rem; display: flex; align-items: center; gap: 0.5rem;">
+              <span>📥</span>
+              <span>Télécharger</span>
+            </button>
+            <button id="reset-global-filters" class="btn-secondary" style="padding: 0.5rem 1rem; font-size: 0.875rem;">
+              🔄 Réinitialiser
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <!-- Formulaire de profil professionnel -->
+      <section class="card registration-form-card hidden" id="professional-profile-form-card">
+        <div class="card-header-with-icon">
+          <span class="card-icon" id="card-icon-professional"></span>
+          <h2>Créer votre profil professionnel</h2>
+        </div>
+        <div class="registration-content">
+          <p class="registration-intro">Pour commencer, veuillez remplir vos informations professionnelles. Ces données permettront de personnaliser votre tableau de bord.</p>
+          <form id="professional-profile-form" class="registration-form">
+            <div class="form-section">
+              <h3>Informations personnelles</h3>
+              <div class="form-row">
+                <label>
+                  Prénom <span class="required">*</span>
+                  <input type="text" id="prof-prenom" placeholder="Votre prénom" required />
+                </label>
+                <label>
+                  Nom <span class="required">*</span>
+                  <input type="text" id="prof-nom" placeholder="Votre nom" required />
+                </label>
+        </div>
+            <label>
+                Téléphone <span class="required">*</span>
+                <input type="tel" id="prof-telephone" placeholder="Ex: +22370000000" required />
+            </label>
+            <label>
+                Email
+                <input type="email" id="prof-email" placeholder="votre.email@example.com" />
+              </label>
+            </div>
+
+            <div class="form-section">
+              <h3>Informations professionnelles</h3>
+              
+              <!-- Codes de synchronisation - Section mise en évidence -->
+              <div style="background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%); padding: 1.5rem; border-radius: 0.75rem; border: 2px solid #0ea5e9; margin-bottom: 1.5rem;">
+                <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.75rem;">
+                  <span style="font-size: 1.5rem;">🔗</span>
+                  <h4 style="margin: 0; color: #0369a1; font-size: 1rem; font-weight: 600;">Établissements de santé</h4>
+                  <span class="required" style="color: #ef4444; font-size: 1rem;">*</span>
+                </div>
+                <p style="color: #64748b; font-size: 0.875rem; margin-bottom: 1rem; text-align: center;">
+                  Vous pouvez vous connecter à plusieurs établissements. Ajoutez au moins un code de synchronisation.
+                </p>
+                
+                <!-- Liste des établissements ajoutés -->
+                <div id="establishments-list" style="margin-bottom: 1rem; max-height: 200px; overflow-y: auto;">
+                  <!-- Les établissements seront affichés ici dynamiquement -->
+                </div>
+                
+                <!-- Formulaire d'ajout d'établissement -->
+                <div id="add-establishment-form" style="background: white; padding: 1rem; border-radius: 0.5rem; border: 1px dashed #0ea5e9;">
+                  <label style="display: block; margin-bottom: 0.5rem;">
+                    <span style="font-size: 0.875rem; color: #374151; font-weight: 500;">Code de synchronisation</span>
+                    <input 
+                      type="text" 
+                      id="prof-sync-code" 
+                      placeholder="ETAB-XXXX-XXXX" 
+                      style="font-family: 'Courier New', monospace; letter-spacing: 0.15em; text-transform: uppercase; font-size: 1rem; font-weight: 600; text-align: center; padding: 0.75rem; width: 100%; border: 2px solid #0ea5e9; border-radius: 0.5rem; background: white; color: #0369a1; margin-top: 0.25rem;" 
+                    />
+                  </label>
+                  <div id="sync-code-validation" style="margin-top: 0.5rem; text-align: center; min-height: 1.5rem; font-size: 0.875rem;"></div>
+                  <button type="button" id="add-establishment-btn" style="width: 100%; padding: 0.75rem; background: #0ea5e9; color: white; border: none; border-radius: 0.5rem; font-weight: 600; cursor: pointer; margin-top: 0.75rem;">
+                    ➕ Ajouter cet établissement
+                  </button>
+                </div>
+                
+                <small style="color: #64748b; font-size: 0.8rem; display: block; margin-top: 1rem; text-align: center;">
+                  💡 <strong>Astuce :</strong> Demandez les codes à vos établissements de santé. Vous pourrez basculer entre eux depuis votre tableau de bord.
+                </small>
+              </div>
+
+              <label>
+                Profession <span class="required">*</span>
+                <select id="prof-profession" required>
+                  <option value="">Sélectionner...</option>
+                  <option value="sage_femme">Sage-femme</option>
+                  <option value="medecin">Médecin</option>
+                  <option value="superviseur">Superviseur</option>
+                  <option value="infirmier">Infirmier/Infirmière</option>
+                </select>
+            </label>
+            <label>
+                Centre de santé <span class="required">*</span>
+                <input type="text" id="prof-centre" placeholder="Nom du centre de santé" required />
+            </label>
+            <label>
+                Adresse du centre
+                <input type="text" id="prof-adresse-centre" placeholder="Adresse complète" />
+            </label>
+            <label>
+                Ville
+                <input type="text" id="prof-ville" placeholder="Ex: Bamako" />
+            </label>
+        </div>
+
+            <div class="form-actions">
+              <button type="submit" class="btn-primary" id="submit-profile-btn">Créer mon profil</button>
+              </div>
+            <div id="professional-profile-message" class="message"></div>
+          </form>
+        </div>
+      </section>
+
+      <!-- Indicateurs de suivi -->
+      <section class="dashboard-stats-section">
+        <div class="card stats-card">
+          <div class="card-header-with-icon">
+            <span class="card-icon" id="card-icon-stats"></span>
+            <h2>Indicateurs de suivi</h2>
+          </div>
+          <div id="dashboard-stats-content" class="stats-grid">
+            <div class="loading-state" style="text-align: center; padding: 2rem; color: #6b7280;">
+              <p>Chargement des indicateurs...</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Grille d'outils professionnel -->
+      <section class="tools-grid-section">
+        <div class="tools-grid">
+          <!-- Mes patientes -->
+          <a href="mes-patientes.html" class="tool-card" id="tool-patientes">
+            <div class="tool-icon-wrapper">
+              <div class="tool-icon-circle" style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);">
+                <span class="tool-icon">👥</span>
+              </div>
+            </div>
+            <div class="tool-content">
+              <h3 class="tool-title">Mes patientes</h3>
+              <p class="tool-subtitle">Liste des patientes suivies</p>
+            </div>
+            <div class="tool-audio-icon">🔊</div>
+          </a>
+
+          <!-- Messagerie -->
+          <a href="messages.html" class="tool-card" id="tool-messages">
+            <div class="tool-icon-wrapper">
+              <div class="tool-icon-circle" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
+                <span class="tool-icon">💬</span>
+              </div>
+            </div>
+            <div class="tool-content">
+              <h3 class="tool-title">Messagerie</h3>
+              <p class="tool-subtitle">Échanger avec mes patientes</p>
+            </div>
+            <div class="tool-audio-icon">🔊</div>
+          </a>
+
+          <!-- Prédiction de risque -->
+          <a href="estimation.html" class="tool-card" id="tool-prediction">
+            <div class="tool-icon-wrapper">
+              <div class="tool-icon-circle" style="background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);">
+                <span class="tool-icon">📊</span>
+              </div>
+            </div>
+            <div class="tool-content">
+              <h3 class="tool-title">Estimation</h3>
+              <p class="tool-subtitle">Estimer les risques et prédictions</p>
+              <span class="tool-badge">Nouveau</span>
+            </div>
+            <div class="tool-audio-icon">🔊</div>
+          </a>
+
+          <!-- Alertes -->
+          <a href="alertes.html" class="tool-card" id="tool-alerts">
+            <div class="tool-icon-wrapper">
+              <div class="tool-icon-circle" style="background: linear-gradient(135deg, #fa709a 0%, #fee140 100%);">
+                <span class="tool-icon">⚠️</span>
+              </div>
+            </div>
+            <div class="tool-content">
+              <h3 class="tool-title">Alertes</h3>
+              <p class="tool-subtitle">Cas prioritaires à suivre</p>
+            </div>
+            <div class="tool-audio-icon">🔊</div>
+          </a>
+
+          <!-- Géovisualisation -->
+          <a href="geovisualisation.html" class="tool-card" id="tool-map">
+            <div class="tool-icon-wrapper">
+              <div class="tool-icon-circle" style="background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 100%);">
+                <span class="tool-icon">📍</span>
+              </div>
+            </div>
+            <div class="tool-content">
+              <h3 class="tool-title">Géovisualisation</h3>
+              <p class="tool-subtitle">Carte des patientes</p>
+            </div>
+            <div class="tool-audio-icon">🔊</div>
+          </a>
+
+          <!-- Performance -->
+          <a href="statistiques.html#performance" class="tool-card" id="tool-performance">
+            <div class="tool-icon-wrapper">
+              <div class="tool-icon-circle" style="background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);">
+                <span class="tool-icon">📊</span>
+              </div>
+            </div>
+            <div class="tool-content">
+              <h3 class="tool-title">Performance</h3>
+              <p class="tool-subtitle">Statistiques de suivi</p>
+            </div>
+            <div class="tool-audio-icon">🔊</div>
+          </a>
+
+          <!-- Mon Profil -->
+          <a href="profil-professionnel.html" class="tool-card" id="tool-profile">
+            <div class="tool-icon-wrapper">
+              <div class="tool-icon-circle" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
+                <span class="tool-icon">👤</span>
+              </div>
+            </div>
+            <div class="tool-content">
+              <h3 class="tool-title">Mon Profil</h3>
+              <p class="tool-subtitle">Gérer mes informations</p>
+            </div>
+            <div class="tool-audio-icon">🔊</div>
+          </a>
+        </div>
+      </section>
+
+    </main>
+
+    <!-- Modal pour ajouter une patiente -->
+    <div id="add-patiente-modal" class="modal hidden">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h2>Ajouter une nouvelle patiente</h2>
+          <button id="close-modal-btn" type="button" class="close-btn">&times;</button>
+        </div>
+        <form id="add-patiente-form">
+          <div class="form-section">
+            <h3>Informations de connexion</h3>
+            <label>
+              ID du patient <span class="required">*</span>
+              <input type="number" id="patiente-id" placeholder="Ex: 1001" min="1" required />
+              <small style="color: #6b7280; font-size: 0.875rem;">Identifiant unique de la patiente (obligatoire)</small>
+            </label>
+            <label>
+              Téléphone <span class="required">*</span>
+              <input type="tel" id="patiente-telephone" placeholder="Ex: +22370000000" required />
+            </label>
+            <label>
+              Mot de passe <span class="required">*</span>
+              <input type="password" id="patiente-password" minlength="6" placeholder="Minimum 6 caractères" required />
+            </label>
+          </div>
+
+          <div class="form-section">
+            <h3>Informations personnelles</h3>
+            <div class="form-row">
+            <label>
+                Prénom
+                <input type="text" id="patiente-prenom" />
+            </label>
+            <label>
+                Nom
+                <input type="text" id="patiente-nom" />
+            </label>
+            </div>
+            <label>
+              Âge <span class="required">*</span>
+              <input type="number" id="patiente-age" min="1" max="60" required />
+            </label>
+            <div class="form-row">
+            <label>
+                Gestité
+                <input type="number" id="patiente-gestite" min="1" value="1" />
+            </label>
+            <label>
+                Parité
+                <input type="number" id="patiente-parite" min="0" value="0" />
+            </label>
+        </div>
+          <label>
+              Niveau d'instruction
+              <select id="patiente-niveau-instruction">
+                <option value="">Sélectionner...</option>
+                <option value="aucun">Aucun</option>
+                <option value="primaire">Primaire</option>
+                <option value="secondaire">Secondaire</option>
+                <option value="superieur">Supérieur</option>
+              </select>
+          </label>
+          <label>
+              Langue préférée
+              <select id="patiente-langue">
+              <option value="fr">Français</option>
+              <option value="bambara">Bambara</option>
+              <option value="wolof">Wolof</option>
+            </select>
+          </label>
+          </div>
+
+          <div class="form-section">
+            <h3>Localisation</h3>
+            <label>
+              Pays <span class="required">*</span>
+              <select id="patiente-pays" required>
+                <option value="">Choisir un pays...</option>
+                <option value="Côte d'Ivoire" selected>Côte d'Ivoire</option>
+                <option value="Mali">Mali</option>
+                <option value="Burkina Faso">Burkina Faso</option>
+                <option value="Sénégal">Sénégal</option>
+                <option value="Guinée">Guinée</option>
+                <option value="Niger">Niger</option>
+                <option value="Bénin">Bénin</option>
+                <option value="Togo">Togo</option>
+                <option value="Ghana">Ghana</option>
+              </select>
+            </label>
+            <label>
+              Ville <span class="required">*</span>
+              <select id="patiente-ville" required>
+                <option value="">Choisir une ville...</option>
+                <!-- Les options seront remplies dynamiquement selon le pays sélectionné -->
+              </select>
+              <small style="color: #6b7280; font-size: 0.875rem;">Sélectionnez d'abord le pays pour voir les villes disponibles</small>
+            </label>
+            <label>
+              Centre de santé <span class="required">*</span>
+              <select id="patiente-centre-sante" required>
+                <option value="">Choisir un centre de santé...</option>
+                <!-- Les options seront remplies dynamiquement selon la ville sélectionnée -->
+              </select>
+              <small style="color: #6b7280; font-size: 0.875rem;">Sélectionnez d'abord la ville pour voir les centres disponibles</small>
+            </label>
+            <label>
+              Adresse
+              <input type="text" id="patiente-adresse" />
+            </label>
+            <div class="form-row">
+              <label>
+                Distance au centre (km)
+                <input type="number" id="patiente-distance" step="0.1" min="0" />
+              </label>
+              <label>
+                Moyen de transport
+                <select id="patiente-transport">
+                  <option value="">Sélectionner...</option>
+                  <option value="pieds">Pieds</option>
+                  <option value="velo">Vélo</option>
+                  <option value="moto">Moto</option>
+                  <option value="voiture">Voiture</option>
+                  <option value="transport_public">Transport public</option>
+                </select>
+              </label>
+            </div>
+          </div>
+
+          <div class="form-section">
+            <h3>Période de suivi</h3>
+            <label>
+              Période de suivi <span class="required">*</span>
+              <select id="patiente-periode" required>
+                <option value="">Choisir une période...</option>
+                <option value="week">Semaine</option>
+                <option value="month" selected>Mois</option>
+                <option value="quarter">Trimestre</option>
+                <option value="year">Année</option>
+              </select>
+              <small style="color: #6b7280; font-size: 0.875rem;">Période de suivi prénatal de la patiente</small>
+            </label>
+          </div>
+
+          <div class="form-section">
+            <h3>Informations médicales</h3>
+            <label>
+              Date des dernières règles
+              <input type="date" id="patiente-dernieres-regles" />
+            </label>
+            <label>
+              Date d'accouchement prévue
+              <input type="date" id="patiente-accouchement-prevue" />
+            </label>
+            <label>
+              Antécédents médicaux
+              <textarea id="patiente-antecedents-medicaux" rows="3"></textarea>
+            </label>
+            <label>
+              Antécédents obstétricaux
+              <textarea id="patiente-antecedents-obstetricaux" rows="3"></textarea>
+            </label>
+            <label>
+              Allergies
+              <textarea id="patiente-allergies" rows="2"></textarea>
+            </label>
+          </div>
+
+          <div class="form-section">
+            <h3>Contact d'urgence</h3>
+            <label>
+              Nom du contact
+              <input type="text" id="patiente-contact-nom" />
+          </label>
+          <label>
+              Téléphone d'urgence
+              <input type="tel" id="patiente-contact-telephone" />
+          </label>
+          </div>
+
+          <div class="form-actions">
+            <button type="button" id="cancel-patiente-btn" class="btn-secondary">Annuler</button>
+            <button type="submit" class="btn-primary">Créer la patiente</button>
+          </div>
+          <div id="patiente-message" class="message"></div>
+        </form>
+      </div>
+    </div>
+
+    <footer role="contentinfo">
+      <small>Prototype MAMA+ – Amélioration du suivi prénatal</small>
+    </footer>
+
+    <!-- Système d'authentification -->
+    <script src="utils/auth.js"></script>
+    <script>
+      // Protéger la page - vérifier la connexion
+      if (!window.protectPage || !window.protectPage('professionnel')) {
+        // Redirection en cours
+      }
+    </script>
+    <!-- Système d'icônes -->
+    <script src="utils/icons.js"></script>
+    <!-- Système de code de synchronisation -->
+    <script src="utils/sync-code-etablissement.js"></script>
+    <!-- Système multi-établissements -->
+    <script src="utils/multi-establishment.js"></script>
+    <!-- Badge de messages non lus -->
+    <script src="utils/messages-badge.js"></script>
+    <script>
+      // Gestion des établissements multiples
+      let professionalEstablishments = [];
+      
+      // Initialiser le sélecteur d'établissement dans le tableau de bord
+      function initEstablishmentSelector() {
+        const selectorCard = document.getElementById('establishment-selector-card');
+        const selectElement = document.getElementById('current-establishment-select');
+        const manageBtn = document.getElementById('manage-establishments-btn');
+        
+        if (!window.getProfessionalEstablishments) return;
+        
+        const establishments = window.getProfessionalEstablishments();
+        const currentId = window.getCurrentEstablishmentId ? window.getCurrentEstablishmentId() : null;
+        
+        if (establishments.length === 0) {
+          if (selectorCard) selectorCard.style.display = 'none';
+          return;
+        }
+        
+        if (selectorCard) selectorCard.style.display = 'block';
+        
+        if (selectElement) {
+          selectElement.innerHTML = establishments.map(est => 
+            `<option value="${est.etablissementId}" ${est.etablissementId === currentId ? 'selected' : ''}>
+              ${est.nom || 'Établissement'} ${est.isActive ? '(Actif)' : ''}
+            </option>`
+          ).join('');
+          
+          selectElement.addEventListener('change', function() {
+            const selectedId = this.value;
+            if (selectedId && window.setCurrentEstablishment) {
+              window.setCurrentEstablishment(selectedId);
+              // Rafraîchir les données
+              if (window.loadDashboardData) {
+                window.loadDashboardData();
+              }
+              if (window.renderDashboardStats) {
+                const patientes = window.getPatientes ? window.getPatientes() : [];
+                window.renderDashboardStats(patientes);
+              }
+              // Recharger la liste des patientes si on est sur la page mes-patientes
+              if (window.renderPatientes) {
+                window.renderPatientes();
+              }
+              // Mettre à jour le sélecteur
+              initEstablishmentSelector();
+            }
+          });
+        }
+        
+        if (manageBtn) {
+          manageBtn.addEventListener('click', function() {
+            // Rediriger vers la page de gestion des établissements
+            window.location.href = 'etablissements-professionnel.html';
+          });
+        }
+      }
+      
+      // Appeler lors du chargement et lors du retour sur la page
+      function initializeEstablishmentSelector() {
+        setTimeout(initEstablishmentSelector, 100);
+      }
+      
+      document.addEventListener('DOMContentLoaded', initializeEstablishmentSelector);
+      
+      // Réinitialiser lors du retour sur la page (si on revient de la page de gestion)
+      window.addEventListener('focus', function() {
+        setTimeout(initEstablishmentSelector, 100);
+      });
+      
+      // Écouter les changements dans le localStorage (si plusieurs onglets)
+      window.addEventListener('storage', function(e) {
+        if (e.key === 'mama_professional_establishments' || e.key === 'mama_current_professional_establishment') {
+          setTimeout(initEstablishmentSelector, 100);
+        }
+      });
+    </script>
+    <script>
+      // Charger les établissements existants
+      function loadEstablishmentsList() {
+        if (window.getProfessionalEstablishments) {
+          professionalEstablishments = window.getProfessionalEstablishments();
+          renderEstablishmentsList();
+        }
+      }
+      
+      // Afficher la liste des établissements
+      function renderEstablishmentsList() {
+        const listDiv = document.getElementById('establishments-list');
+        if (!listDiv) return;
+        
+        if (professionalEstablishments.length === 0) {
+          listDiv.innerHTML = '<p style="text-align: center; color: #6b7280; font-size: 0.875rem; padding: 1rem;">Aucun établissement ajouté. Ajoutez votre premier établissement ci-dessous.</p>';
+          return;
+        }
+        
+        // Vider la liste
+        listDiv.innerHTML = '';
+        
+        // Créer les éléments DOM pour chaque établissement
+        professionalEstablishments.forEach((est) => {
+          const estDiv = document.createElement('div');
+          estDiv.style.cssText = 'background: white; padding: 0.75rem; border-radius: 0.5rem; margin-bottom: 0.5rem; border: 2px solid ' + (est.isActive ? '#059669' : '#e5e7eb') + '; display: flex; justify-content: space-between; align-items: center;';
+          
+          const infoDiv = document.createElement('div');
+          infoDiv.style.flex = '1';
+          
+          const nameDiv = document.createElement('div');
+          nameDiv.style.cssText = 'font-weight: 600; color: #1f2937; margin-bottom: 0.25rem;';
+          nameDiv.innerHTML = (est.nom || 'Établissement') + (est.isActive ? ' <span style="background: #059669; color: white; padding: 0.125rem 0.5rem; border-radius: 0.25rem; font-size: 0.75rem; margin-left: 0.5rem;">ACTIF</span>' : '');
+          
+          const codeDiv = document.createElement('div');
+          codeDiv.style.cssText = 'font-size: 0.75rem; color: #6b7280; font-family: monospace;';
+          codeDiv.textContent = est.syncCode || 'Code non disponible';
+          
+          infoDiv.appendChild(nameDiv);
+          infoDiv.appendChild(codeDiv);
+          
+          const actionsDiv = document.createElement('div');
+          actionsDiv.style.cssText = 'display: flex; gap: 0.5rem;';
+          
+          if (!est.isActive) {
+            const activateBtn = document.createElement('button');
+            activateBtn.textContent = '✓';
+            activateBtn.style.cssText = 'padding: 0.5rem; background: #3b82f6; color: white; border: none; border-radius: 0.25rem; cursor: pointer; font-size: 0.75rem;';
+            activateBtn.title = 'Définir comme actif';
+            activateBtn.onclick = function() { setActiveEstablishment(est.etablissementId); };
+            actionsDiv.appendChild(activateBtn);
+          }
+          
+          const removeBtn = document.createElement('button');
+          removeBtn.textContent = '🗑️';
+          removeBtn.style.cssText = 'padding: 0.5rem; background: #ef4444; color: white; border: none; border-radius: 0.25rem; cursor: pointer; font-size: 0.75rem;';
+          removeBtn.title = 'Supprimer';
+          removeBtn.onclick = function() { removeEstablishment(est.etablissementId); };
+          actionsDiv.appendChild(removeBtn);
+          
+          estDiv.appendChild(infoDiv);
+          estDiv.appendChild(actionsDiv);
+          
+          listDiv.appendChild(estDiv);
+        });
+      }
+      
+      // Ajouter un établissement
+      function addEstablishment() {
+        const syncCodeInput = document.getElementById('prof-sync-code');
+        const validationDiv = document.getElementById('sync-code-validation');
+        
+        if (!syncCodeInput) return;
+        
+        const code = syncCodeInput.value.trim().toUpperCase();
+        
+        if (!code) {
+          validationDiv.innerHTML = '<span style="color: #dc2626;">Veuillez entrer un code</span>';
+          return;
+        }
+        
+        // Vérifier le format
+        if (!/^ETAB-[A-Z0-9]{4}-[A-Z0-9]{4}$/.test(code)) {
+          validationDiv.innerHTML = '<span style="color: #dc2626;">Format invalide</span>';
+          return;
+        }
+        
+        // Afficher un message de chargement
+        validationDiv.innerHTML = '<span style="color: #0ea5e9;">⏳ Validation en cours...</span>';
+        addBtn.disabled = true;
+        
+        // Utiliser la nouvelle fonction de validation avec API si disponible
+        if (window.addEstablishmentWithValidation) {
+          // Fonction asynchrone pour gérer l'ajout
+          (async () => {
+            try {
+              const result = await window.addEstablishmentWithValidation(code);
+              
+              if (result.success) {
+                loadEstablishmentsList();
+                syncCodeInput.value = '';
+                validationDiv.innerHTML = '<span style="color: #059669;">✅ Établissement ajouté !</span>';
+                setTimeout(() => {
+                  validationDiv.innerHTML = '';
+                }, 2000);
+              } else {
+                validationDiv.innerHTML = `<span style="color: #dc2626;">❌ ${result.message}</span>`;
+              }
+            } catch (error) {
+              console.error('Erreur lors de l\'ajout:', error);
+              validationDiv.innerHTML = '<span style="color: #dc2626;">❌ Erreur lors de l\'ajout. Veuillez réessayer.</span>';
+            } finally {
+              addBtn.disabled = false;
+            }
+          })();
+        } else {
+          // Fallback : méthode ancienne
+          // Vérifier si déjà ajouté
+          const exists = professionalEstablishments.find(e => e.syncCode === code);
+          if (exists) {
+            validationDiv.innerHTML = '<span style="color: #dc2626;">Cet établissement est déjà ajouté</span>';
+            addBtn.disabled = false;
+            return;
+          }
+          
+          // Valider le code (chercher dans les établissements)
+          let establishmentInfo = null;
+          if (window.validateEstablishmentSyncCodeForProfessional) {
+            establishmentInfo = window.validateEstablishmentSyncCodeForProfessional(code);
+          }
+          
+          // Si pas trouvé, créer un établissement temporaire (sera validé plus tard)
+          if (!establishmentInfo || !establishmentInfo.etablissementId) {
+            establishmentInfo = {
+              etablissementId: `etab_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
+              nom: `Établissement ${code}`,
+              type: 'centre_sante',
+              syncCode: code
+            };
+          }
+          
+          // Ajouter l'établissement
+          if (window.addProfessionalEstablishment) {
+            const result = window.addProfessionalEstablishment({
+              ...establishmentInfo,
+              syncCode: code
+            });
+            
+            if (result.success) {
+              loadEstablishmentsList();
+              syncCodeInput.value = '';
+              validationDiv.innerHTML = '<span style="color: #059669;">✅ Établissement ajouté !</span>';
+              setTimeout(() => {
+                validationDiv.innerHTML = '';
+              }, 2000);
+            } else {
+              validationDiv.innerHTML = `<span style="color: #dc2626;">${result.message}</span>`;
+            }
+          }
+          addBtn.disabled = false;
+        }
+      }
+      
+      // Supprimer un établissement
+      window.removeEstablishment = function(etablissementId) {
+        if (confirm('Êtes-vous sûr de vouloir supprimer cet établissement ?')) {
+          if (window.removeProfessionalEstablishment) {
+            window.removeProfessionalEstablishment(etablissementId);
+            loadEstablishmentsList();
+          }
+        }
+      };
+      
+      // Définir l'établissement actif
+      window.setActiveEstablishment = function(etablissementId) {
+        if (window.setCurrentEstablishment) {
+          window.setCurrentEstablishment(etablissementId);
+          loadEstablishmentsList();
+          // Rafraîchir le tableau de bord si nécessaire
+          if (window.loadDashboardData) {
+            window.loadDashboardData();
+          }
+        }
+      };
+      
+      // Validation en temps réel du code
+      document.addEventListener('DOMContentLoaded', function() {
+        loadEstablishmentsList();
+        
+        const syncCodeInput = document.getElementById('prof-sync-code');
+        const validationDiv = document.getElementById('sync-code-validation');
+        const addBtn = document.getElementById('add-establishment-btn');
+        
+        if (addBtn) {
+          addBtn.addEventListener('click', addEstablishment);
+        }
+        
+        if (syncCodeInput && validationDiv) {
+          syncCodeInput.addEventListener('input', function() {
+            const code = this.value.trim().toUpperCase();
+            
+            if (code.length === 0) {
+              validationDiv.innerHTML = '';
+              this.style.borderColor = '#0ea5e9';
+              return;
+            }
+            
+            // Vérifier le format
+            const formatValid = /^ETAB-[A-Z0-9]{4}-[A-Z0-9]{4}$/.test(code);
+            
+            if (!formatValid) {
+              validationDiv.innerHTML = '<span style="color: #dc2626;">❌ Format invalide</span>';
+              this.style.borderColor = '#dc2626';
+              return;
+            }
+            
+            // Vérifier si déjà ajouté
+            const exists = professionalEstablishments.find(e => e.syncCode === code);
+            if (exists) {
+              validationDiv.innerHTML = '<span style="color: #f59e0b;">⚠️ Déjà ajouté</span>';
+              this.style.borderColor = '#f59e0b';
+              return;
+            }
+            
+            // Vérifier si le code est valide
+            if (window.validateEstablishmentSyncCodeForProfessional) {
+              const establishmentInfo = window.validateEstablishmentSyncCodeForProfessional(code);
+              
+              if (establishmentInfo && establishmentInfo.nom) {
+                validationDiv.innerHTML = `<span style="color: #059669;">✅ Code valide - ${establishmentInfo.nom}</span>`;
+                this.style.borderColor = '#059669';
+              } else if (establishmentInfo && establishmentInfo.isValidFormat) {
+                validationDiv.innerHTML = '<span style="color: #0ea5e9;">✓ Format correct (sera validé lors de l\'ajout)</span>';
+                this.style.borderColor = '#0ea5e9';
+              } else {
+                validationDiv.innerHTML = '<span style="color: #0ea5e9;">✓ Format correct</span>';
+                this.style.borderColor = '#0ea5e9';
+              }
+            } else {
+              validationDiv.innerHTML = '<span style="color: #0ea5e9;">✓ Format correct</span>';
+              this.style.borderColor = '#0ea5e9';
+            }
+          });
+          
+          // Permettre l'ajout avec Enter
+          syncCodeInput.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+              e.preventDefault();
+              addEstablishment();
+            }
+          });
+        }
+        
+        // Activer/désactiver le bouton de soumission selon le nombre d'établissements
+        const submitBtn = document.getElementById('submit-profile-btn');
+        if (submitBtn) {
+          const checkSubmitButton = function() {
+            if (window.getProfessionalEstablishments) {
+              const establishments = window.getProfessionalEstablishments();
+              submitBtn.disabled = establishments.length === 0;
+              if (establishments.length === 0) {
+                submitBtn.title = 'Veuillez ajouter au moins un établissement';
+                submitBtn.style.opacity = '0.5';
+                submitBtn.style.cursor = 'not-allowed';
+              } else {
+                submitBtn.title = '';
+                submitBtn.style.opacity = '1';
+                submitBtn.style.cursor = 'pointer';
+              }
+            }
+          };
+          
+          // Vérifier toutes les 500ms
+          setInterval(checkSubmitButton, 500);
+          checkSubmitButton();
+        }
+      });
+    </script>
+    <script>
+      // Initialiser les icônes au chargement
+      document.addEventListener('DOMContentLoaded', function() {
+        if (window.getIcon) {
+          const homeIconLink = document.querySelector('#home-icon-link');
+          if (homeIconLink) {
+            homeIconLink.innerHTML = window.getIcon('home', 24, 'white');
+          }
+          
+          const headerIcon = document.querySelector('#header-icon-placeholder');
+          if (headerIcon) {
+            headerIcon.innerHTML = window.getIcon('doctor', 28, 'white');
+          }
+          
+          const cardIconProfessional = document.querySelector('#card-icon-professional');
+          if (cardIconProfessional) {
+            cardIconProfessional.innerHTML = window.getIcon('doctor', 24, '#3b82f6');
+          }
+          
+          const cardIconStats = document.querySelector('#card-icon-stats');
+          if (cardIconStats) {
+            cardIconStats.innerHTML = window.getIcon('stats', 24, '#3b82f6');
+          }
+        }
+      });
+    </script>
+    <!-- Navigation mobile -->
+    <script src="utils/icons.js"></script>
+    <script src="utils/mobile-nav.js" defer></script>
+    <!-- Utilitaires pour les micro-graphiques -->
+    <script src="utils/sparklines.js"></script>
+    <!-- Liste des centres de santé de Côte d'Ivoire -->
+    <script src="utils/health-centers-ci.js"></script>
+    <!-- Système de filtres globaux -->
+    <script src="utils/global-filters.js"></script>
+    <!-- Améliorations du tableau de bord -->
+    <script src="utils/dashboard-enhancements.js"></script>
+    <!-- Version simplifiée - Fonctionne sans serveur backend -->
+    <script src="app-professionnel-simple.js" defer></script>
+    <!-- Version complète avec backend (décommenter si vous avez un serveur backend) -->
+    <!-- <script src="app-professionnel.js" defer></script> -->
+  </body>
+</html>

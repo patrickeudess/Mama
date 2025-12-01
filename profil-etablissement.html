@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
+    <title>MAMA+ – Profil Établissement</title>
+    <link rel="stylesheet" href="styles.css" />
+    <link rel="stylesheet" href="styles-icons.css" />
+    <link rel="stylesheet" href="styles-mobile-nav.css" />
+    <style>
+        .profile-container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+        .profile-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+        }
+        .profile-actions {
+            display: flex;
+            gap: 1rem;
+        }
+        .btn-edit {
+            background: #3b82f6;
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.5rem;
+            cursor: pointer;
+            font-weight: 500;
+        }
+        .btn-edit:hover {
+            background: #2563eb;
+        }
+        .profile-info {
+            background: white;
+            border-radius: 1rem;
+            padding: 2rem;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            margin-bottom: 1.5rem;
+        }
+        .info-section {
+            margin-bottom: 2rem;
+        }
+        .info-section:last-child {
+            margin-bottom: 0;
+        }
+        .info-section h3 {
+            color: #3b82f6;
+            margin-bottom: 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid #e5e7eb;
+        }
+        .info-row {
+            display: grid;
+            grid-template-columns: 200px 1fr;
+            gap: 1rem;
+            padding: 0.75rem 0;
+            border-bottom: 1px solid #f3f4f6;
+        }
+        .info-row:last-child {
+            border-bottom: none;
+        }
+        .info-label {
+            font-weight: 600;
+            color: #6b7280;
+        }
+        .info-value {
+            color: #1f2937;
+        }
+        .info-value.empty {
+            color: #9ca3af;
+            font-style: italic;
+        }
+        .form-section {
+            margin-bottom: 2rem;
+        }
+        .form-section h3 {
+            color: #3b82f6;
+            margin-bottom: 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid #e5e7eb;
+        }
+        .form-actions {
+            display: flex;
+            gap: 1rem;
+            justify-content: flex-end;
+            margin-top: 2rem;
+        }
+        @media (max-width: 768px) {
+            .info-row {
+                grid-template-columns: 1fr;
+                gap: 0.5rem;
+            }
+            .profile-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header role="banner" class="tools-header">
+        <div class="header-left">
+            <a href="index-etablissement.html" style="color: #fff; text-decoration: none; font-size: 1.5rem; margin-right: 1rem; display: inline-flex; align-items: center;" title="Retour au tableau de bord" id="back-icon-link"></a>
+            <span class="header-icon" id="header-icon"></span>
+            <h1>MAMA+ – Profil Établissement</h1>
+        </div>
+        <div id="auth-section" role="navigation">
+            <div id="user-info" class="hidden" aria-live="polite">
+                <span id="user-name" aria-label="Nom de l'utilisateur"></span>
+                <button id="logout-button" type="button" aria-label="Se déconnecter">Déconnexion</button>
+            </div>
+        </div>
+    </header>
+
+    <main role="main">
+        <div class="profile-container">
+            <!-- Vue lecture -->
+            <div id="profile-view" class="profile-info">
+                <div class="profile-header">
+                    <h2>Informations de l'établissement</h2>
+                    <div class="profile-actions">
+                        <button id="edit-btn" class="btn-edit">✏️ Modifier</button>
+                    </div>
+                </div>
+
+                <div class="info-section">
+                    <h3>Informations de l'établissement</h3>
+                    <div class="info-row">
+                        <span class="info-label">Nom de l'établissement</span>
+                        <span class="info-value" id="view-nom">-</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-label">Type d'établissement</span>
+                        <span class="info-value" id="view-type">-</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-label">Adresse</span>
+                        <span class="info-value" id="view-adresse">-</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-label">Ville</span>
+                        <span class="info-value" id="view-ville">-</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-label">Pays</span>
+                        <span class="info-value" id="view-pays">-</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-label">Téléphone</span>
+                        <span class="info-value" id="view-telephone">-</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-label">Email</span>
+                        <span class="info-value" id="view-email">-</span>
+                    </div>
+                </div>
+
+                <div class="info-section">
+                    <h3>Responsable</h3>
+                    <div class="info-row">
+                        <span class="info-label">Prénom</span>
+                        <span class="info-value" id="view-resp-prenom">-</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-label">Nom</span>
+                        <span class="info-value" id="view-resp-nom">-</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-label">Fonction</span>
+                        <span class="info-value" id="view-resp-fonction">-</span>
+                    </div>
+                </div>
+
+                <div class="info-section" style="background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%); padding: 1.5rem; border-radius: 0.5rem; border: 2px solid #0ea5e9;">
+                    <h3 style="color: #0369a1;">🔗 Code de synchronisation</h3>
+                    <p style="color: #64748b; font-size: 0.9rem; margin-bottom: 1rem;">
+                        Partagez ce code avec vos professionnels de santé pour qu'ils puissent synchroniser leurs données avec votre établissement.
+                    </p>
+                    <div class="info-row" style="background: white; padding: 1rem; border-radius: 0.5rem; border: 2px dashed #0ea5e9;">
+                        <span class="info-label" style="font-size: 0.9rem;">Code de synchronisation</span>
+                        <div style="display: flex; align-items: center; gap: 1rem;">
+                            <span class="info-value" id="view-sync-code" style="font-family: 'Courier New', monospace; font-size: 1.2rem; font-weight: 700; color: #0369a1; letter-spacing: 0.1em;">-</span>
+                            <button id="copy-sync-code-btn" class="btn-secondary" style="padding: 0.5rem 1rem; font-size: 0.875rem;">📋 Copier</button>
+                            <button id="regenerate-sync-code-btn" class="btn-secondary" style="padding: 0.5rem 1rem; font-size: 0.875rem; background: #f59e0b; color: white;">🔄 Régénérer</button>
+                        </div>
+                    </div>
+                    <div id="sync-code-message" class="message" style="margin-top: 1rem;"></div>
+                </div>
+            </div>
+
+            <!-- Formulaire d'édition -->
+            <div id="profile-edit" class="profile-info hidden">
+                <div class="profile-header">
+                    <h2>Modifier le profil</h2>
+                </div>
+
+                <form id="edit-profile-form">
+                    <div class="form-section">
+                        <h3>Informations de l'établissement</h3>
+                        <label>
+                            Nom de l'établissement <span class="required">*</span>
+                            <input type="text" id="edit-nom" required />
+                        </label>
+                        <label>
+                            Type d'établissement <span class="required">*</span>
+                            <select id="edit-type" required>
+                                <option value="">Sélectionner...</option>
+                                <option value="hopital">Hôpital</option>
+                                <option value="centre_sante">Centre de santé</option>
+                                <option value="clinique">Clinique</option>
+                                <option value="dispensaire">Dispensaire</option>
+                                <option value="csref">Centre de santé de référence (CSREF)</option>
+                                <option value="csu">Centre de santé urbain (CSU)</option>
+                            </select>
+                        </label>
+                        <label>
+                            Adresse <span class="required">*</span>
+                            <input type="text" id="edit-adresse" required />
+                        </label>
+                        <div class="form-row">
+                            <label>
+                                Ville <span class="required">*</span>
+                                <input type="text" id="edit-ville" required />
+                            </label>
+                            <label>
+                                Pays <span class="required">*</span>
+                                <select id="edit-pays" required>
+                                    <option value="">Choisir...</option>
+                                    <option value="Côte d'Ivoire">Côte d'Ivoire</option>
+                                    <option value="Mali">Mali</option>
+                                    <option value="Burkina Faso">Burkina Faso</option>
+                                    <option value="Sénégal">Sénégal</option>
+                                    <option value="Guinée">Guinée</option>
+                                    <option value="Niger">Niger</option>
+                                    <option value="Bénin">Bénin</option>
+                                    <option value="Togo">Togo</option>
+                                    <option value="Ghana">Ghana</option>
+                                </select>
+                            </label>
+                        </div>
+                        <label>
+                            Téléphone <span class="required">*</span>
+                            <input type="tel" id="edit-telephone" required />
+                        </label>
+                        <label>
+                            Email
+                            <input type="email" id="edit-email" />
+                        </label>
+                    </div>
+
+                    <div class="form-section">
+                        <h3>Responsable</h3>
+                        <div class="form-row">
+                            <label>
+                                Prénom <span class="required">*</span>
+                                <input type="text" id="edit-resp-prenom" required />
+                            </label>
+                            <label>
+                                Nom <span class="required">*</span>
+                                <input type="text" id="edit-resp-nom" required />
+                            </label>
+                        </div>
+                        <label>
+                            Fonction
+                            <input type="text" id="edit-resp-fonction" />
+                        </label>
+                    </div>
+
+                    <div class="form-actions">
+                        <button type="button" id="cancel-btn" class="btn-secondary">Annuler</button>
+                        <button type="submit" class="btn-primary">Enregistrer</button>
+                    </div>
+                    <div id="profile-message" class="message"></div>
+                </form>
+            </div>
+        </div>
+    </main>
+
+    <footer role="contentinfo">
+        <small>Prototype MAMA+ – Amélioration du suivi prénatal</small>
+    </footer>
+
+    <!-- Système d'authentification -->
+    <script src="utils/auth.js"></script>
+    <script>
+        // Protéger la page - vérifier la connexion et le profil
+        if (!window.protectPage || !window.protectPage('etablissement')) {
+            // Redirection en cours
+        }
+        
+        // Vérifier que le profil établissement existe
+        document.addEventListener('DOMContentLoaded', function() {
+          const profile = localStorage.getItem('mama_establishment_profile');
+          if (!profile) {
+            window.location.href = 'creer-profil-etablissement.html';
+          }
+        });
+    </script>
+    <!-- Système d'icônes -->
+    <script src="utils/icons.js"></script>
+    <!-- Système de code de synchronisation -->
+    <script src="utils/sync-code-etablissement.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            if (window.getIcon) {
+                const backIconLink = document.querySelector('#back-icon-link');
+                if (backIconLink) {
+                    backIconLink.innerHTML = window.getIcon('back', 24, 'white');
+                }
+                
+                const headerIcon = document.querySelector('#header-icon');
+                if (headerIcon) {
+                    headerIcon.innerHTML = window.getIcon('users', 28, 'white') || window.getIcon('doctor', 28, 'white');
+                }
+            }
+        });
+    </script>
+    <script src="app-profil-etablissement.js" defer></script>
+</body>
+</html>
+

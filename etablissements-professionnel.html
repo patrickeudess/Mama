@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes" />
+    <title>MAMA+ – Mes établissements</title>
+    <link rel="stylesheet" href="styles.css" />
+    <link rel="stylesheet" href="styles-icons.css" />
+    <link rel="stylesheet" href="styles-mobile-nav.css" />
+  </head>
+  <body>
+    <header role="banner" class="tools-header">
+      <div class="header-left">
+        <a href="index-professionnel.html" style="color: #fff; text-decoration: none; font-size: 1.5rem; margin-right: 1rem; display: inline-flex; align-items: center;" title="Retour" id="back-icon-link"></a>
+        <span class="header-icon" id="header-icon"></span>
+        <h1>MAMA+ – Mes établissements</h1>
+      </div>
+      <div id="auth-section" role="navigation">
+        <div id="user-info" aria-live="polite">
+          <span id="user-name" aria-label="Nom de l'utilisateur"></span>
+          <button id="logout-button" type="button" aria-label="Se déconnecter" class="btn-secondary" style="margin-left: 1rem; padding: 0.5rem 1rem;">Déconnexion</button>
+        </div>
+      </div>
+    </header>
+
+    <main role="main" style="padding: 1rem; max-width: 1000px; margin: 0 auto;">
+      <!-- Section d'ajout d'établissement -->
+      <section class="card" style="margin-bottom: 1.5rem;">
+        <div class="card-header-with-icon">
+          <span class="card-icon">➕</span>
+          <h2>Ajouter un établissement</h2>
+        </div>
+        <div style="padding: 1rem;">
+          <p style="color: #6b7280; font-size: 0.9rem; margin-bottom: 1rem;">
+            Entrez le code de synchronisation fourni par votre établissement de santé pour le lier à votre compte.
+          </p>
+          <div style="background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%); padding: 1.5rem; border-radius: 0.75rem; border: 2px solid #0ea5e9;">
+            <label style="display: block; margin-bottom: 0.75rem;">
+              <span style="font-weight: 500; color: #374151; font-size: 0.875rem; display: block; margin-bottom: 0.5rem;">Code de synchronisation</span>
+              <input 
+                type="text" 
+                id="add-sync-code-input" 
+                placeholder="ETAB-XXXX-XXXX" 
+                style="font-family: 'Courier New', monospace; letter-spacing: 0.15em; text-transform: uppercase; font-size: 1.1rem; font-weight: 600; text-align: center; padding: 1rem; width: 100%; border: 2px solid #0ea5e9; border-radius: 0.5rem; background: white; color: #0369a1;" 
+              />
+            </label>
+            <div id="add-sync-code-validation" style="margin-top: 0.75rem; text-align: center; min-height: 1.5rem; font-size: 0.875rem;"></div>
+            <button id="add-establishment-btn" class="btn-primary" style="width: 100%; margin-top: 1rem; padding: 0.75rem;">
+              ➕ Ajouter cet établissement
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <!-- Liste des établissements -->
+      <section class="card">
+        <div class="card-header-with-icon">
+          <span class="card-icon">🏥</span>
+          <h2>Mes établissements</h2>
+        </div>
+        <div id="establishments-list-container" style="padding: 1rem;">
+          <div class="loading-state" style="text-align: center; padding: 2rem; color: #6b7280;">
+            <p>Chargement...</p>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer role="contentinfo">
+      <small>Prototype MAMA+ – Amélioration du suivi prénatal</small>
+    </footer>
+
+    <!-- Système d'authentification -->
+    <script src="utils/auth.js"></script>
+    <!-- Système d'icônes -->
+    <script src="utils/icons.js"></script>
+    <!-- Système de code de synchronisation -->
+    <script src="utils/sync-code-etablissement.js"></script>
+    <!-- Système multi-établissements -->
+    <script src="utils/multi-establishment.js"></script>
+    <script src="app-etablissements-professionnel.js" defer></script>
+    <script>
+      document.addEventListener('DOMContentLoaded', function() {
+        if (window.getIcon) {
+          const backIconLink = document.querySelector('#back-icon-link');
+          if (backIconLink) {
+            backIconLink.innerHTML = window.getIcon('back', 24, 'white') || '←';
+          }
+          
+          const headerIcon = document.querySelector('#header-icon');
+          if (headerIcon) {
+            headerIcon.innerHTML = window.getIcon('hospital', 28, 'white') || '🏥';
+          }
+        }
+      });
+    </script>
+  </body>
+</html>
+
+
+
+
+
+
+
+
+
+
+

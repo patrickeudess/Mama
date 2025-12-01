@@ -1,0 +1,768 @@
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes" />
+    <title>MAMA+ – Bienvenue</title>
+    <link rel="stylesheet" href="styles.css" />
+    <link rel="stylesheet" href="styles-icons.css" />
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: "Segoe UI", Arial, sans-serif;
+        background-color: #10b981;
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: flex-start;
+        padding: 1rem;
+        color: #1f2933;
+        overflow-x: hidden;
+        overflow-y: auto;
+        -webkit-overflow-scrolling: touch;
+      }
+
+      .welcome-container {
+        width: 100%;
+        max-width: 1200px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 1.5rem;
+        padding: 0.5rem;
+        box-sizing: border-box;
+      }
+
+      .welcome-header {
+        text-align: center;
+        color: white;
+        margin-bottom: 0.5rem;
+        width: 100%;
+        padding: 0 0.5rem;
+        box-sizing: border-box;
+      }
+
+      .header-icon {
+        width: 48px;
+        height: 48px;
+        margin: 0 auto 1rem auto;
+        background-color: #fef3c7;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+      }
+
+      .welcome-header h1 {
+        font-size: 2.5rem;
+        font-weight: 700;
+        margin-bottom: 0.5rem;
+        color: white;
+      }
+
+      .welcome-header p {
+        font-size: 1.1rem;
+        color: white;
+        font-weight: 400;
+        opacity: 0.95;
+      }
+
+      .profile-cards-container {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+        gap: 1.5rem;
+        width: 100%;
+        margin-bottom: 1.5rem;
+        box-sizing: border-box;
+      }
+
+      @media screen and (max-width: 1200px) {
+        .profile-cards-container {
+          grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+          gap: 1.25rem;
+        }
+      }
+
+      @media screen and (max-width: 768px) {
+        body {
+          padding: 0.75rem;
+          justify-content: flex-start;
+        }
+        
+        .welcome-container {
+          gap: 1.25rem;
+          padding: 0.25rem;
+        }
+        
+        .profile-cards-container {
+          grid-template-columns: 1fr;
+          gap: 1rem;
+          margin-bottom: 1rem;
+        }
+        
+        .welcome-header {
+          margin-bottom: 0.5rem;
+          padding: 0 0.25rem;
+        }
+        
+        .welcome-header h1 {
+          font-size: 1.75rem;
+          line-height: 1.3;
+          margin-bottom: 0.5rem;
+        }
+        
+        .welcome-header p {
+          font-size: 0.95rem;
+          line-height: 1.4;
+        }
+        
+        .header-icon {
+          width: 40px;
+          height: 40px;
+          margin-bottom: 0.75rem;
+        }
+        
+        .profile-card {
+          padding: 1.25rem;
+          margin: 0;
+        }
+        
+        .profile-icon-container {
+          width: 60px;
+          height: 60px;
+          margin-bottom: 1rem;
+        }
+        
+        .profile-card h2 {
+          font-size: 1.3rem;
+          margin-bottom: 0.5rem;
+        }
+        
+        .profile-description {
+          font-size: 0.875rem;
+          margin-bottom: 1rem;
+        }
+        
+        .features-list {
+          margin-top: 0.75rem;
+        }
+        
+        .features-list li {
+          padding: 0.4rem 0;
+          font-size: 0.85rem;
+        }
+        
+        .check-icon {
+          width: 20px;
+          height: 20px;
+          font-size: 0.75rem;
+        }
+      }
+
+      @media screen and (max-width: 480px) {
+        body {
+          padding: 0.5rem;
+        }
+        
+        .welcome-container {
+          gap: 1rem;
+          padding: 0;
+        }
+        
+        .welcome-header {
+          padding: 0;
+        }
+        
+        .welcome-header h1 {
+          font-size: 1.5rem;
+          line-height: 1.2;
+          margin-bottom: 0.4rem;
+        }
+        
+        .welcome-header p {
+          font-size: 0.875rem;
+          line-height: 1.3;
+          padding: 0 0.5rem;
+        }
+        
+        .header-icon {
+          width: 36px;
+          height: 36px;
+          margin-bottom: 0.5rem;
+        }
+        
+        .profile-cards-container {
+          gap: 0.875rem;
+          margin-bottom: 0.875rem;
+        }
+        
+        .profile-card {
+          padding: 1rem;
+          border-radius: 0.75rem;
+        }
+        
+        .profile-icon-container {
+          width: 56px;
+          height: 56px;
+          margin-bottom: 0.875rem;
+        }
+        
+        .profile-card h2 {
+          font-size: 1.15rem;
+          margin-bottom: 0.4rem;
+        }
+        
+        .profile-description {
+          font-size: 0.8rem;
+          margin-bottom: 0.875rem;
+          line-height: 1.4;
+        }
+        
+        .features-list {
+          margin-top: 0.5rem;
+        }
+        
+        .features-list li {
+          padding: 0.35rem 0;
+          font-size: 0.8rem;
+          gap: 0.5rem;
+        }
+        
+        .check-icon {
+          width: 18px;
+          height: 18px;
+          font-size: 0.7rem;
+          flex-shrink: 0;
+        }
+        
+        .navigation-section {
+          width: 100%;
+          max-width: 100%;
+          padding: 0 0.5rem;
+        }
+        
+        .continue-button {
+          padding: 0.875rem 1.25rem;
+          font-size: 0.9rem;
+          border-radius: 1.5rem;
+        }
+        
+        .back-link {
+          font-size: 0.85rem;
+        }
+      }
+
+      /* Très petits écrans (iPhone SE, petits Android) */
+      @media screen and (max-width: 360px) {
+        body {
+          padding: 0.4rem;
+        }
+        
+        .welcome-header h1 {
+          font-size: 1.35rem;
+        }
+        
+        .welcome-header p {
+          font-size: 0.8rem;
+        }
+        
+        .profile-card {
+          padding: 0.875rem;
+        }
+        
+        .profile-icon-container {
+          width: 50px;
+          height: 50px;
+        }
+        
+        .profile-card h2 {
+          font-size: 1.1rem;
+        }
+        
+        .profile-description {
+          font-size: 0.75rem;
+        }
+        
+        .features-list li {
+          font-size: 0.75rem;
+          padding: 0.3rem 0;
+        }
+        
+        .check-icon {
+          width: 16px;
+          height: 16px;
+        }
+        
+        .continue-button {
+          padding: 0.75rem 1rem;
+          font-size: 0.85rem;
+        }
+      }
+
+      /* Mode paysage sur mobile */
+      @media screen and (max-width: 768px) and (orientation: landscape) {
+        body {
+          padding: 0.5rem;
+        }
+        
+        .welcome-container {
+          gap: 1rem;
+        }
+        
+        .welcome-header h1 {
+          font-size: 1.5rem;
+        }
+        
+        .welcome-header p {
+          font-size: 0.85rem;
+        }
+        
+        .profile-cards-container {
+          grid-template-columns: repeat(3, 1fr);
+          gap: 0.75rem;
+        }
+        
+        .profile-card {
+          padding: 1rem;
+        }
+        
+        .profile-icon-container {
+          width: 50px;
+          height: 50px;
+          margin-bottom: 0.5rem;
+        }
+        
+        .profile-card h2 {
+          font-size: 1rem;
+        }
+        
+        .profile-description {
+          font-size: 0.75rem;
+          margin-bottom: 0.5rem;
+        }
+        
+        .features-list {
+          margin-top: 0.5rem;
+        }
+        
+        .features-list li {
+          font-size: 0.7rem;
+          padding: 0.25rem 0;
+        }
+      }
+
+      .profile-card {
+        background: white;
+        border-radius: 1rem;
+        padding: 2rem;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        cursor: pointer;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        width: 100%;
+        box-sizing: border-box;
+        min-height: auto;
+      }
+
+      .profile-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 15px 40px rgba(0, 0, 0, 0.2);
+      }
+
+      .profile-icon-container {
+        width: 80px;
+        height: 80px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 1.5rem;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      }
+
+      .profile-card.patiente .profile-icon-container {
+        background-color: #fef3c7;
+      }
+
+      .profile-card.professionnel .profile-icon-container {
+        background-color: #e9d5ff;
+      }
+
+      .profile-card.etablissement .profile-icon-container {
+        background-color: #dbeafe;
+      }
+
+      .profile-icon-container svg {
+        width: 100%;
+        height: 100%;
+      }
+
+      .profile-icon {
+        font-size: 3rem;
+      }
+
+      .profile-card h2 {
+        font-size: 1.5rem;
+        font-weight: 700;
+        margin-bottom: 0.75rem;
+        color: #1f2933;
+      }
+
+      .profile-description {
+        font-size: 0.95rem;
+        color: #6b7280;
+        margin-bottom: 1.5rem;
+        line-height: 1.5;
+      }
+
+      .features-list {
+        list-style: none;
+        width: 100%;
+        text-align: left;
+        margin-top: 1rem;
+      }
+
+      .features-list li {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        padding: 0.5rem 0;
+        font-size: 0.9rem;
+        color: #374151;
+      }
+
+      .check-icon {
+        width: 24px;
+        height: 24px;
+        border-radius: 50%;
+        background-color: #10b981;
+        color: white;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 700;
+        font-size: 0.875rem;
+        flex-shrink: 0;
+      }
+
+      .navigation-section {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 0.875rem;
+        width: 100%;
+        max-width: 400px;
+        padding: 0 0.5rem;
+        box-sizing: border-box;
+      }
+
+      .continue-button {
+        width: 100%;
+        padding: 1rem 2rem;
+        background-color: #10b981;
+        color: white;
+        border: none;
+        border-radius: 2rem;
+        font-size: 1rem;
+        font-weight: 600;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.5rem;
+        transition: background-color 0.3s ease, transform 0.2s ease, opacity 0.2s ease;
+        text-decoration: none;
+      }
+
+      .continue-button:hover:not(:disabled) {
+        background-color: #059669;
+        transform: translateY(-2px);
+        opacity: 0.95;
+      }
+
+      .continue-button:active {
+        transform: translateY(0);
+      }
+
+      .continue-button:disabled {
+        background-color: #9ca3af;
+        cursor: not-allowed;
+        transform: none;
+        opacity: 0.6;
+      }
+
+      .back-link {
+        color: white;
+        text-decoration: none;
+        font-size: 0.9rem;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        transition: opacity 0.2s ease;
+        font-weight: 500;
+      }
+
+      .back-link:hover {
+        opacity: 0.8;
+      }
+
+      .arrow-icon {
+        font-size: 1rem;
+      }
+
+      .selected-profile {
+        border: 3px solid #10b981;
+        box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.1);
+      }
+    </style>
+  </head>
+  <body>
+    <div class="welcome-container">
+      <div class="welcome-header">
+        <div class="header-icon" id="header-icon-container"></div>
+        <h1>Bienvenue sur MAMA+</h1>
+        <p>Choisissez votre profil pour accéder à votre interface personnalisée</p>
+      </div>
+
+      <div class="profile-cards-container">
+        <!-- Carte Patiente -->
+        <div class="profile-card patiente" id="patiente-card" data-type="patiente" role="button" tabindex="0" aria-label="Sélectionner le profil patiente">
+          <div class="profile-icon-container" id="patiente-icon-container">
+            <span class="profile-icon" id="patiente-icon" style="display: none;">👩</span>
+          </div>
+          <h2>Patiente</h2>
+          <p class="profile-description">Je suis une femme enceinte qui souhaite suivre ma grossesse</p>
+          <ul class="features-list">
+            <li>
+              <span class="check-icon">✓</span>
+              <span>Suivi de ma grossesse</span>
+            </li>
+            <li>
+              <span class="check-icon">✓</span>
+              <span>Consultation de mon dossier médical</span>
+            </li>
+            <li>
+              <span class="check-icon">✓</span>
+              <span>Gestion de mes rendez-vous CPN</span>
+            </li>
+            <li>
+              <span class="check-icon">✓</span>
+              <span>Conseils personnalisés</span>
+            </li>
+            <li>
+              <span class="check-icon">✓</span>
+              <span>Chatbot d'aide intelligent</span>
+            </li>
+          </ul>
+        </div>
+
+        <!-- Carte Professionnel -->
+        <div class="profile-card professionnel" id="professionnel-card" data-type="professionnel" role="button" tabindex="0" aria-label="Sélectionner le profil professionnel">
+          <div class="profile-icon-container" id="professionnel-icon-container">
+            <span class="profile-icon" id="professionnel-icon" style="display: none;">👨‍⚕️</span>
+          </div>
+          <h2>Professionnel de santé</h2>
+          <p class="profile-description">Je suis un professionnel de santé qui suit plusieurs patientes</p>
+          <ul class="features-list">
+            <li>
+              <span class="check-icon">✓</span>
+              <span>Gestion de plusieurs patientes</span>
+            </li>
+            <li>
+              <span class="check-icon">✓</span>
+              <span>Tableaux de bord personnalisés</span>
+            </li>
+            <li>
+              <span class="check-icon">✓</span>
+              <span>Analyses et statistiques</span>
+            </li>
+            <li>
+              <span class="check-icon">✓</span>
+              <span>Rapports de suivi</span>
+            </li>
+            <li>
+              <span class="check-icon">✓</span>
+              <span>Suivi de performance</span>
+            </li>
+          </ul>
+        </div>
+
+        <!-- Carte Établissement de santé -->
+        <div class="profile-card etablissement" id="etablissement-card" data-type="etablissement" role="button" tabindex="0" aria-label="Sélectionner le profil établissement de santé">
+          <div class="profile-icon-container" id="etablissement-icon-container">
+            <span class="profile-icon" id="etablissement-icon" style="display: none;">🏥</span>
+          </div>
+          <h2>Établissement de santé</h2>
+          <p class="profile-description">Je suis un centre de santé, un hôpital ou une structure médicale</p>
+          <ul class="features-list">
+            <li>
+              <span class="check-icon">✓</span>
+              <span>Gestion des professionnels</span>
+            </li>
+            <li>
+              <span class="check-icon">✓</span>
+              <span>Statistiques institutionnelles</span>
+            </li>
+            <li>
+              <span class="check-icon">✓</span>
+              <span>Rapports consolidés</span>
+            </li>
+            <li>
+              <span class="check-icon">✓</span>
+              <span>Gestion des ressources</span>
+            </li>
+            <li>
+              <span class="check-icon">✓</span>
+              <span>Coordination d'équipe</span>
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="navigation-section">
+        <button type="button" id="continue-button" class="continue-button" disabled>
+          <span>→</span>
+          <span>Continuer</span>
+        </button>
+        <a href="index.html" class="back-link" id="back-link">
+          <span class="arrow-icon">←</span>
+          <span>Retour à l'accueil</span>
+        </a>
+      </div>
+    </div>
+
+    <!-- Système d'icônes -->
+    <script src="utils/icons.js"></script>
+    <script>
+      // Initialiser les icônes au chargement
+      document.addEventListener('DOMContentLoaded', function() {
+        if (window.getIcon) {
+          // Icône du header (petite icône jaune stylisée)
+          const headerIconContainer = document.querySelector('#header-icon-container');
+          if (headerIconContainer) {
+            // Utiliser une icône simple et stylisée (comme une feuille ou un symbole médical)
+            headerIconContainer.innerHTML = window.getIcon('pregnant-woman', 32, '#f59e0b');
+          }
+          
+          const patienteIconContainer = document.querySelector('#patiente-icon-container');
+          if (patienteIconContainer) {
+            patienteIconContainer.innerHTML = window.getIcon('pregnant-woman', 60, '#f59e0b');
+          }
+          
+          const professionnelIconContainer = document.querySelector('#professionnel-icon-container');
+          if (professionnelIconContainer) {
+            // Utiliser l'icône doctor pour représenter le professionnel
+            professionnelIconContainer.innerHTML = window.getIcon('doctor', 60, '#8b5cf6');
+          }
+          
+          const etablissementIconContainer = document.querySelector('#etablissement-icon-container');
+          if (etablissementIconContainer) {
+            // Utiliser l'icône hospital pour représenter l'établissement
+            // Si l'icône hospital n'existe pas, utiliser users ou doctor
+            etablissementIconContainer.innerHTML = window.getIcon('users', 60, '#3b82f6') || window.getIcon('doctor', 60, '#3b82f6');
+          }
+        } else {
+          // Fallback si les icônes ne sont pas chargées - afficher les emojis
+          const headerIconContainer = document.querySelector('#header-icon-container');
+          if (headerIconContainer) {
+            headerIconContainer.innerHTML = '<span style="font-size: 1.5rem;">🌿</span>';
+          }
+          const patienteIcon = document.querySelector('#patiente-icon');
+          const professionnelIcon = document.querySelector('#professionnel-icon');
+          const etablissementIcon = document.querySelector('#etablissement-icon');
+          if (patienteIcon) patienteIcon.style.display = 'block';
+          if (professionnelIcon) professionnelIcon.style.display = 'block';
+          if (etablissementIcon) etablissementIcon.style.display = 'block';
+        }
+
+        // Gestion de la sélection de profil
+        let selectedProfile = null;
+        const patienteCard = document.getElementById('patiente-card');
+        const professionnelCard = document.getElementById('professionnel-card');
+        const etablissementCard = document.getElementById('etablissement-card');
+        const continueButton = document.getElementById('continue-button');
+
+        // Vérifier que les éléments existent
+        if (!patienteCard || !professionnelCard || !etablissementCard || !continueButton) {
+          console.error('Éléments de sélection de profil non trouvés');
+          return;
+        }
+
+        function selectProfile(card, type) {
+          // Retirer la sélection précédente
+          if (selectedProfile) {
+            selectedProfile.classList.remove('selected-profile');
+          }
+          
+          // Ajouter la sélection
+          card.classList.add('selected-profile');
+          selectedProfile = card;
+          
+          // Activer le bouton continuer
+          continueButton.disabled = false;
+          continueButton.setAttribute('data-profile-type', type);
+          
+          // Améliorer l'accessibilité
+          card.setAttribute('aria-pressed', 'true');
+          if (selectedProfile !== card) {
+            const previousCard = selectedProfile || (card === patienteCard ? professionnelCard : patienteCard);
+            previousCard.setAttribute('aria-pressed', 'false');
+          }
+        }
+
+        // Gestion des clics sur les cartes
+        patienteCard.addEventListener('click', () => selectProfile(patienteCard, 'patiente'));
+        professionnelCard.addEventListener('click', () => selectProfile(professionnelCard, 'professionnel'));
+        etablissementCard.addEventListener('click', () => selectProfile(etablissementCard, 'etablissement'));
+
+        // Gestion des touches clavier
+        patienteCard.addEventListener('keydown', (e) => {
+          if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault();
+            selectProfile(patienteCard, 'patiente');
+          }
+        });
+
+        professionnelCard.addEventListener('keydown', (e) => {
+          if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault();
+            selectProfile(professionnelCard, 'professionnel');
+          }
+        });
+
+        etablissementCard.addEventListener('keydown', (e) => {
+          if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault();
+            selectProfile(etablissementCard, 'etablissement');
+          }
+        });
+
+        // Gestion du bouton continuer
+        continueButton.addEventListener('click', () => {
+          if (continueButton.disabled) return;
+          
+          const profileType = continueButton.getAttribute('data-profile-type');
+          if (profileType === 'patiente') {
+            window.location.href = 'login.html?type=patiente';
+          } else if (profileType === 'professionnel') {
+            window.location.href = 'login.html?type=professionnel';
+          } else if (profileType === 'etablissement') {
+            window.location.href = 'login.html?type=etablissement';
+          } else {
+            console.error('Type de profil non défini');
+          }
+        });
+      });
+    </script>
+  </body>
+</html>

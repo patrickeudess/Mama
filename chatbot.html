@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes" />
+    <title>MAMA+ – Chatbot IA</title>
+    <link rel="stylesheet" href="styles.css" />
+    <link rel="stylesheet" href="styles-icons.css" />
+    <link rel="stylesheet" href="styles-mobile-nav.css" />
+  </head>
+  <body>
+    <header role="banner">
+      <div style="display: flex; align-items: center; gap: 1rem;">
+        <a href="index-patriente.html" style="color: #fff; text-decoration: none; font-size: 1.5rem;">←</a>
+        <h1 style="margin: 0;">MAMA+ – Chatbot IA</h1>
+      </div>
+      <div id="auth-section" role="navigation">
+        <div id="user-info" class="hidden" aria-live="polite">
+          <span id="user-name" aria-label="Nom de l'utilisateur"></span>
+          <button id="logout-button" type="button" aria-label="Se déconnecter">Déconnexion</button>
+        </div>
+      </div>
+    </header>
+
+    <main role="main">
+      <section class="card chatbot-card">
+        <div class="card-header-with-icon">
+          <span class="card-icon">🤖</span>
+          <h2>Chatbot IA - Votre assistant virtuel</h2>
+        </div>
+        <div class="chatbot-container">
+          <div id="chatbot-messages" class="chatbot-messages">
+            <div class="chatbot-message bot">
+              <div class="message-avatar">🤖</div>
+              <div class="message-content">
+                <p>Bonjour ! Je suis votre assistant virtuel MAMA+. Je peux répondre à vos questions sur la grossesse, la nutrition, les signes d'alerte, et bien plus encore. Comment puis-je vous aider aujourd'hui ?</p>
+              </div>
+            </div>
+          </div>
+          <div class="chatbot-input-container">
+            <input 
+              type="text" 
+              id="chatbot-input" 
+              placeholder="Tapez votre question ici..." 
+              class="chatbot-input"
+            />
+            <button id="chatbot-send-btn" class="btn-primary">Envoyer</button>
+          </div>
+          <div class="chatbot-suggestions">
+            <p class="suggestions-title">Questions fréquentes :</p>
+            <div class="suggestions-list">
+              <button class="suggestion-btn" data-question="Quels sont les aliments recommandés pendant la grossesse ?">
+                🍎 Nutrition
+              </button>
+              <button class="suggestion-btn" data-question="Quels sont les signes d'alerte à surveiller ?">
+                ⚠️ Signes d'alerte
+              </button>
+              <button class="suggestion-btn" data-question="Quand dois-je consulter un médecin ?">
+                🏥 Consultation
+              </button>
+              <button class="suggestion-btn" data-question="Quels exercices puis-je faire pendant la grossesse ?">
+                💪 Exercices
+              </button>
+              <button class="suggestion-btn symptom-btn" id="symptom-btn" data-action="show-symptoms">
+                🚨 Je ressens un symptôme
+              </button>
+            </div>
+          </div>
+          
+          <!-- Liste des symptômes (masquée par défaut) -->
+          <div id="symptoms-list" class="symptoms-list hidden" style="margin-top: 1rem; padding: 1rem; background: #fef2f2; border-radius: 0.5rem; border: 1px solid #fecaca;">
+            <p style="margin: 0 0 0.75rem 0; font-weight: 600; color: #991b1b; font-size: 0.875rem;">Sélectionnez votre symptôme :</p>
+            <div style="display: grid; gap: 0.5rem;">
+              <button class="symptom-item-btn" data-symptom="saignement" style="padding: 0.75rem; background: white; border: 1px solid #fecaca; border-radius: 0.375rem; text-align: left; cursor: pointer; transition: background 0.2s; display: flex; align-items: center; gap: 0.5rem; color: #000000;">
+                <span style="font-size: 1.25rem;">🤰</span>
+                <span>Saignement</span>
+              </button>
+              <button class="symptom-item-btn" data-symptom="maux-tete" style="padding: 0.75rem; background: white; border: 1px solid #fecaca; border-radius: 0.375rem; text-align: left; cursor: pointer; transition: background 0.2s; display: flex; align-items: center; gap: 0.5rem; color: #000000;">
+                <span style="font-size: 1.25rem;">🤕</span>
+                <span>Maux de tête fort</span>
+              </button>
+              <button class="symptom-item-btn" data-symptom="fievre" style="padding: 0.75rem; background: white; border: 1px solid #fecaca; border-radius: 0.375rem; text-align: left; cursor: pointer; transition: background 0.2s; display: flex; align-items: center; gap: 0.5rem; color: #000000;">
+                <span style="font-size: 1.25rem;">🤒</span>
+                <span>Fièvre</span>
+              </button>
+              <button class="symptom-item-btn" data-symptom="vomissements" style="padding: 0.75rem; background: white; border: 1px solid #fecaca; border-radius: 0.375rem; text-align: left; cursor: pointer; transition: background 0.2s; display: flex; align-items: center; gap: 0.5rem; color: #000000;">
+                <span style="font-size: 1.25rem;">🤢</span>
+                <span>Vomissements persistants</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer role="contentinfo">
+      <small>Prototype MAMA+ – Amélioration du suivi prénatal</small>
+    </footer>
+
+    <!-- Navigation mobile -->
+    <script src="utils/icons.js"></script>
+    <script src="utils/mobile-nav.js" defer></script>
+    <script src="app-chatbot.js" defer></script>
+  </body>
+</html>
+

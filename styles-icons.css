@@ -1,0 +1,375 @@
+/* ==================== STYLES POUR LES ICÔNES SVG ==================== */
+
+.icon {
+  display: inline-block;
+  vertical-align: middle;
+  flex-shrink: 0;
+  transition: all 0.2s ease;
+}
+
+/* Tailles d'icônes */
+.icon-xs {
+  width: 16px;
+  height: 16px;
+}
+
+.icon-sm {
+  width: 20px;
+  height: 20px;
+}
+
+.icon-md {
+  width: 24px;
+  height: 24px;
+}
+
+.icon-lg {
+  width: 32px;
+  height: 32px;
+}
+
+.icon-xl {
+  width: 40px;
+  height: 40px;
+}
+
+.icon-2xl {
+  width: 48px;
+  height: 48px;
+}
+
+/* Icônes dans les boutons d'action */
+.action-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  padding: 0;
+  border: none;
+  border-radius: 0.5rem;
+  background: transparent;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.action-btn .icon {
+  width: 20px;
+  height: 20px;
+}
+
+.action-btn:hover {
+  background: rgba(0, 0, 0, 0.05);
+  transform: translateY(-2px);
+}
+
+.action-btn:active {
+  transform: translateY(0);
+}
+
+.action-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.action-btn:disabled:hover {
+  transform: none;
+  background: transparent;
+}
+
+/* Couleurs spécifiques par type de bouton */
+.action-btn.call-btn .icon {
+  color: #10b981;
+}
+
+.action-btn.call-btn:hover {
+  background: rgba(16, 185, 129, 0.1);
+}
+
+.action-btn.edit-btn .icon {
+  color: #f59e0b;
+}
+
+.action-btn.edit-btn:hover {
+  background: rgba(245, 158, 11, 0.1);
+}
+
+.action-btn.view-btn .icon {
+  color: #3b82f6;
+}
+
+.action-btn.view-btn:hover {
+  background: rgba(59, 130, 246, 0.1);
+}
+
+.action-btn.delete-btn .icon {
+  color: #ef4444;
+}
+
+.action-btn.delete-btn:hover {
+  background: rgba(239, 68, 68, 0.1);
+}
+
+/* Icônes dans les en-têtes */
+.header-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  margin-right: 0.75rem;
+}
+
+.header-icon .icon {
+  width: 28px;
+  height: 28px;
+  color: white;
+}
+
+/* Icônes dans les cartes */
+.card-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  margin-right: 0.75rem;
+  background: rgba(59, 130, 246, 0.1);
+  border-radius: 0.5rem;
+  padding: 0.5rem;
+}
+
+.card-icon .icon {
+  width: 24px;
+  height: 24px;
+  color: #3b82f6;
+}
+
+/* Icônes dans les statistiques */
+.stat-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 48px;
+  border-radius: 0.75rem;
+  margin-bottom: 0.5rem;
+}
+
+.stat-icon .icon {
+  width: 28px;
+  height: 28px;
+}
+
+/* Icônes de recherche */
+.search-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.search-icon .icon {
+  width: 20px;
+  height: 20px;
+  color: #6b7280;
+}
+
+/* Icônes de tri */
+.sort-icon {
+  display: inline-flex;
+  align-items: center;
+  margin-left: 0.5rem;
+}
+
+.sort-icon .icon {
+  width: 16px;
+  height: 16px;
+  color: #6b7280;
+}
+
+/* Icônes dans les toasts */
+.toast-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.toast-icon .icon {
+  width: 20px;
+  height: 20px;
+}
+
+.toast-success .toast-icon .icon {
+  color: #10b981;
+}
+
+.toast-error .toast-icon .icon {
+  color: #ef4444;
+}
+
+.toast-warning .toast-icon .icon {
+  color: #f59e0b;
+}
+
+.toast-info .toast-icon .icon {
+  color: #3b82f6;
+}
+
+/* Icônes de risque */
+.risk-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+}
+
+.risk-icon-high {
+  background: rgba(239, 68, 68, 0.1);
+}
+
+.risk-icon-high .icon {
+  color: #ef4444;
+  width: 16px;
+  height: 16px;
+}
+
+.risk-icon-medium {
+  background: rgba(245, 158, 11, 0.1);
+}
+
+.risk-icon-medium .icon {
+  color: #f59e0b;
+  width: 16px;
+  height: 16px;
+}
+
+.risk-icon-low {
+  background: rgba(16, 185, 129, 0.1);
+}
+
+.risk-icon-low .icon {
+  color: #10b981;
+  width: 16px;
+  height: 16px;
+}
+
+/* Badges de risque avec icônes */
+.risk-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  padding: 0.25rem 0.5rem;
+  border-radius: 0.375rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+}
+
+.risk-badge-high {
+  background: rgba(239, 68, 68, 0.1);
+  color: #dc2626;
+}
+
+.risk-badge-high .icon {
+  width: 14px;
+  height: 14px;
+  color: #dc2626;
+}
+
+.risk-badge-medium {
+  background: rgba(245, 158, 11, 0.1);
+  color: #d97706;
+}
+
+.risk-badge-medium .icon {
+  width: 14px;
+  height: 14px;
+  color: #d97706;
+}
+
+.risk-badge-low {
+  background: rgba(16, 185, 129, 0.1);
+  color: #059669;
+}
+
+.risk-badge-low .icon {
+  width: 14px;
+  height: 14px;
+  color: #059669;
+}
+
+/* Icônes dans les outils */
+.tool-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.tool-icon-circle .icon {
+  width: 32px;
+  height: 32px;
+  color: white;
+}
+
+/* Icônes animées */
+.icon-spin {
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.icon-pulse {
+  animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}
+
+/* Responsive */
+@media screen and (max-width: 768px) {
+  .action-btn {
+    width: 32px;
+    height: 32px;
+  }
+  
+  .action-btn .icon {
+    width: 18px;
+    height: 18px;
+  }
+  
+  .card-icon {
+    width: 36px;
+    height: 36px;
+  }
+  
+  .card-icon .icon {
+    width: 20px;
+    height: 20px;
+  }
+}
+
+/* Amélioration de l'accessibilité */
+.icon[aria-hidden="true"] {
+  display: inline-block;
+}
+
+.icon:focus {
+  outline: 2px solid #3b82f6;
+  outline-offset: 2px;
+  border-radius: 0.25rem;
+}
+

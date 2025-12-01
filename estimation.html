@@ -1,0 +1,479 @@
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>MAMA+ – Estimation des risques</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <header role="banner" class="tools-header">
+      <div class="header-left">
+        <a href="index-professionnel.html" style="color: #fff; text-decoration: none; font-size: 1.5rem; margin-right: 1rem;">←</a>
+        <span class="header-icon">📊</span>
+        <h1>MAMA+ – Estimation des risques</h1>
+      </div>
+      <div id="auth-section" role="navigation">
+        <div id="user-info" class="hidden" aria-live="polite">
+          <span id="user-name" aria-label="Nom de l'utilisateur"></span>
+          <button id="logout-button" type="button" aria-label="Se déconnecter">Déconnexion</button>
+        </div>
+      </div>
+    </header>
+
+    <main role="main" style="padding: 2rem;">
+      <section class="card">
+        <div class="card-header-with-icon">
+          <span class="card-icon">📊</span>
+          <h2>Estimation des risques - Modèle XGBoost</h2>
+        </div>
+        <div id="prediction-content" style="padding: 1rem;">
+          <p style="margin-bottom: 1.5rem; color: #6b7280;">
+            Renseignez les paramètres ci-dessous pour obtenir une prédiction de risque de non-observance basée sur le modèle XGBoost.
+          </p>
+          
+          <!-- Formulaire de prédiction -->
+          <form id="prediction-form" class="prediction-form">
+            <div class="form-section">
+              <h3>Informations personnelles</h3>
+              <div class="form-row">
+                <label>
+                  Âge <span class="required">*</span>
+                  <input type="number" id="prediction-age" min="1" max="60" required placeholder="Ex: 25" />
+                </label>
+                <label>
+                  Gestité <span class="required">*</span>
+                  <input type="number" id="prediction-gestite" min="1" required placeholder="Nombre de grossesses" />
+                </label>
+                <label>
+                  Parité <span class="required">*</span>
+                  <input type="number" id="prediction-parite" min="0" required placeholder="Nombre d'accouchements" />
+                </label>
+              </div>
+            </div>
+
+            <div class="form-section">
+              <h3>Localisation et accessibilité</h3>
+              <div class="form-row">
+                <label>
+                  Distance au centre (km) <span class="required">*</span>
+                  <input type="number" id="prediction-distance" min="0" step="0.1" required placeholder="Ex: 5.5" />
+                </label>
+                <label>
+                  Niveau d'instruction <span class="required">*</span>
+                  <select id="prediction-niveau-instruction" required>
+                    <option value="">Sélectionner...</option>
+                    <option value="aucun">Aucun</option>
+                    <option value="primaire">Primaire</option>
+                    <option value="secondaire">Secondaire</option>
+                    <option value="superieur">Supérieur</option>
+                  </select>
+                </label>
+                <label>
+                  Moyen de transport <span class="required">*</span>
+                  <select id="prediction-moyen-transport" required>
+                    <option value="">Sélectionner...</option>
+                    <option value="pieds">À pied</option>
+                    <option value="velo">Vélo</option>
+                    <option value="moto">Moto</option>
+                    <option value="voiture">Voiture</option>
+                    <option value="transport_public">Transport public</option>
+                    <option value="autre">Autre</option>
+                  </select>
+                </label>
+              </div>
+            </div>
+
+            <div class="form-section">
+              <h3>Historique des CPN</h3>
+              <div class="form-row">
+                <label>
+                  CPN complétées
+                  <input type="number" id="prediction-cpn-completes" min="0" value="0" placeholder="0" />
+                </label>
+                <label>
+                  CPN manquées
+                  <input type="number" id="prediction-cpn-manquees" min="0" value="0" placeholder="0" />
+                </label>
+                <label>
+                  Total CPN (optionnel)
+                  <input type="number" id="prediction-cpn-total" min="0" placeholder="Calculé automatiquement" />
+                  <small style="color: #6b7280; font-size: 0.85rem;">Laissé vide pour calcul automatique</small>
+                </label>
+              </div>
+            </div>
+
+            <div class="form-actions">
+              <button type="submit" class="btn-primary" id="predict-btn">
+                📊 Calculer la prédiction
+              </button>
+              <button type="reset" class="btn-secondary" id="reset-btn">
+                🔄 Réinitialiser
+              </button>
+            </div>
+            <div id="prediction-message" class="message"></div>
+          </form>
+
+          <!-- Résultats de la prédiction -->
+          <div id="prediction-results" style="margin-top: 2rem; display: none;">
+            <div class="prediction-result-card">
+              <h3 style="margin-top: 0; margin-bottom: 1rem;">Résultat de la prédiction</h3>
+              <div id="prediction-display"></div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer role="contentinfo">
+      <small>Prototype MAMA+ – Amélioration du suivi prénatal</small>
+    </footer>
+
+    <script src="app-professionnel.js" defer></script>
+    <script>
+      const API_BASE = "http://localhost:8000/api";
+      
+      // Fonction pour obtenir les headers par défaut
+      function defaultHeaders() {
+        const headers = { "Content-Type": "application/json" };
+        const authToken = localStorage.getItem("mama_token");
+        if (authToken) {
+          headers["Authorization"] = `Bearer ${authToken}`;
+        }
+        return headers;
+      }
+      
+      // Mode démonstration avec données mockées
+      const USE_MOCK = window.USE_MOCK_DATA !== false; // Par défaut activé
+      
+      // Données mockées pour la prédiction
+      function getMockPrediction(requestData) {
+        // Simuler une prédiction basée sur les paramètres
+        let riskScore = 0.3; // Par défaut faible
+        
+        // Ajuster le score selon les paramètres
+        if (requestData.distance_centre > 10) riskScore += 0.2;
+        if (requestData.niveau_instruction === "aucun") riskScore += 0.15;
+        if (requestData.moyen_transport === "pieds" && requestData.distance_centre > 5) riskScore += 0.15;
+        if (requestData.cpn_manquees > requestData.cpn_completes) riskScore += 0.2;
+        if (requestData.age < 18 || requestData.age > 35) riskScore += 0.1;
+        
+        // Limiter entre 0 et 1
+        riskScore = Math.min(1, Math.max(0, riskScore));
+        
+        let riskLevel = "faible";
+        let recommendations = [];
+        
+        if (riskScore < 0.33) {
+          riskLevel = "faible";
+          recommendations = [
+            "Risque faible de non-observance",
+            "Continuer le suivi standard",
+            "Rappels normaux suffisants"
+          ];
+        } else if (riskScore < 0.66) {
+          riskLevel = "moyen";
+          recommendations = [
+            "Risque moyen de non-observance",
+            "Renforcer les rappels (SMS + WhatsApp)",
+            "Vérifier l'accessibilité au centre de santé",
+            "Sensibiliser sur l'importance des CPN"
+          ];
+        } else {
+          riskLevel = "élevé";
+          recommendations = [
+            "Risque élevé de non-observance",
+            "Rappels multiples (SMS, WhatsApp, USSD)",
+            "Contact direct recommandé",
+            "Évaluer les barrières d'accès (transport, distance)",
+            "Impliquer le contact d'urgence si disponible"
+          ];
+        }
+        
+        return {
+          risk_score: Math.round(riskScore * 1000) / 1000,
+          risk_level: riskLevel,
+          confidence: 0.85,
+          recommendations: recommendations,
+          available: false, // Indique que c'est une prédiction mockée
+          features_used: {
+            age: requestData.age,
+            gestite: requestData.gestite,
+            parite: requestData.parite,
+            distance_centre: requestData.distance_centre,
+            niveau_instruction: requestData.niveau_instruction,
+            moyen_transport: requestData.moyen_transport,
+            cpn_completes: requestData.cpn_completes,
+            cpn_manquees: requestData.cpn_manquees,
+            cpn_total: requestData.cpn_total || (requestData.cpn_completes + requestData.cpn_manquees),
+            taux_observance: requestData.cpn_total || (requestData.cpn_completes + requestData.cpn_manquees) > 0 
+              ? requestData.cpn_completes / (requestData.cpn_total || (requestData.cpn_completes + requestData.cpn_manquees))
+              : 1.0
+          }
+        };
+      }
+      
+      // Fonction pour faire une requête API
+      async function fetchJSON(path, options = {}) {
+        try {
+          const response = await fetch(`${API_BASE}${path}`, {
+            ...options,
+            headers: { ...defaultHeaders(), ...(options.headers || {}) },
+            mode: "cors",
+          });
+          
+          if (!response.ok) {
+            const errorData = await response.json().catch(() => ({ detail: `HTTP ${response.status}` }));
+            throw new Error(errorData.detail || `HTTP ${response.status}`);
+          }
+          
+          return await response.json();
+        } catch (error) {
+          // Si erreur de connexion et mode mock activé, utiliser les données mockées
+          if (USE_MOCK && (error instanceof TypeError || error.message.includes("fetch") || error.message.includes("Failed to fetch"))) {
+            console.log(`[Mode démonstration] Utilisation de données mockées pour ${path}`);
+            
+            // Si c'est une requête de prédiction, retourner une prédiction mockée
+            if (path === "/prediction/predict" && options.method === "POST") {
+              const requestData = JSON.parse(options.body || "{}");
+              return getMockPrediction(requestData);
+            }
+            
+            throw new Error("Mode démonstration : Le serveur backend n'est pas accessible. Veuillez démarrer le serveur pour utiliser le modèle XGBoost réel.");
+          }
+          
+          console.error(`Erreur API ${path}:`, error);
+          throw error;
+        }
+      }
+      
+      // Fonction pour afficher la prédiction
+      function displayPredictionResult(prediction) {
+        const resultsDiv = document.getElementById("prediction-results");
+        const displayDiv = document.getElementById("prediction-display");
+        
+        if (!resultsDiv || !displayDiv) return;
+        
+        const riskLevel = prediction.risk_level;
+        const riskScore = (prediction.risk_score * 100).toFixed(1);
+        const confidence = (prediction.confidence * 100).toFixed(1);
+        
+        // Classes CSS selon le niveau de risque
+        let riskClass = "";
+        let riskColor = "";
+        let riskEmoji = "";
+        
+        if (riskLevel === "faible") {
+          riskClass = "risk-low";
+          riskColor = "#10b981";
+          riskEmoji = "🟢";
+        } else if (riskLevel === "moyen") {
+          riskClass = "risk-medium";
+          riskColor = "#f59e0b";
+          riskEmoji = "🟠";
+        } else {
+          riskClass = "risk-high";
+          riskColor = "#ef4444";
+          riskEmoji = "🔴";
+        }
+        
+        const recommendationsHTML = prediction.recommendations
+          .map(rec => `<li>${rec}</li>`)
+          .join("");
+        
+        displayDiv.innerHTML = `
+          <div class="prediction-card ${riskClass}">
+            <div class="prediction-header">
+              <h4 style="margin: 0; display: flex; align-items: center; gap: 0.5rem;">
+                <span>${riskEmoji}</span>
+                <span>Niveau de risque: ${riskLevel.toUpperCase()}</span>
+              </h4>
+              <div class="prediction-badge-large" style="background: ${riskColor}20; color: ${riskColor};">
+                ${riskScore}%
+              </div>
+            </div>
+            
+            <div class="prediction-details">
+              <div style="margin: 1rem 0;">
+                <strong>Score de risque:</strong> ${riskScore}% (${prediction.risk_score.toFixed(3)})
+              </div>
+              <div style="margin: 1rem 0;">
+                <strong>Confiance:</strong> ${confidence}%
+              </div>
+            </div>
+            
+            <div class="prediction-recommendations">
+              <h4>💡 Recommandations:</h4>
+              <ul>${recommendationsHTML}</ul>
+            </div>
+          </div>
+        `;
+        
+        resultsDiv.style.display = "block";
+        resultsDiv.scrollIntoView({ behavior: "smooth", block: "nearest" });
+      }
+      
+      // Gestion du formulaire
+      document.addEventListener("DOMContentLoaded", () => {
+        const form = document.getElementById("prediction-form");
+        const messageDiv = document.getElementById("prediction-message");
+        const predictBtn = document.getElementById("predict-btn");
+        
+        if (!form) return;
+        
+        form.addEventListener("submit", async (e) => {
+          e.preventDefault();
+          
+          // Désactiver le bouton pendant le chargement
+          if (predictBtn) {
+            predictBtn.disabled = true;
+            predictBtn.textContent = "⏳ Calcul en cours...";
+          }
+          
+          // Effacer les messages précédents
+          if (messageDiv) {
+            messageDiv.textContent = "";
+            messageDiv.className = "message";
+          }
+          
+          try {
+            // Récupérer les valeurs du formulaire
+            const age = parseInt(document.getElementById("prediction-age").value);
+            const gestite = parseInt(document.getElementById("prediction-gestite").value);
+            const parite = parseInt(document.getElementById("prediction-parite").value);
+            const distance_centre = parseFloat(document.getElementById("prediction-distance").value);
+            const niveau_instruction = document.getElementById("prediction-niveau-instruction").value;
+            const moyen_transport = document.getElementById("prediction-moyen-transport").value;
+            const cpn_completes = parseInt(document.getElementById("prediction-cpn-completes").value) || 0;
+            const cpn_manquees = parseInt(document.getElementById("prediction-cpn-manquees").value) || 0;
+            const cpn_total = document.getElementById("prediction-cpn-total").value 
+              ? parseInt(document.getElementById("prediction-cpn-total").value) 
+              : null;
+            
+            // Validation
+            if (!age || !gestite || parite === null || !distance_centre || !niveau_instruction || !moyen_transport) {
+              throw new Error("Veuillez remplir tous les champs obligatoires");
+            }
+            
+            // Préparer la requête
+            const requestData = {
+              age,
+              gestite,
+              parite,
+              distance_centre,
+              niveau_instruction,
+              moyen_transport,
+              cpn_completes,
+              cpn_manquees,
+            };
+            
+            if (cpn_total !== null) {
+              requestData.cpn_total = cpn_total;
+            }
+            
+            // Envoyer la requête
+            const prediction = await fetchJSON("/prediction/predict", {
+              method: "POST",
+              body: JSON.stringify(requestData),
+            });
+            
+            // Afficher le résultat
+            displayPredictionResult(prediction);
+            
+            // Afficher un message de succès
+            if (messageDiv) {
+              messageDiv.textContent = "✅ Prédiction calculée avec succès !";
+              messageDiv.className = "message success";
+            }
+            
+          } catch (error) {
+            console.error("Erreur lors de la prédiction:", error);
+            
+            // Afficher l'erreur avec plus de détails
+            let errorMessage = error.message || "Une erreur est survenue";
+            
+            // Messages d'erreur plus explicites
+            if (errorMessage.includes("Failed to fetch") || errorMessage.includes("fetch")) {
+              errorMessage = "Impossible de se connecter au serveur backend. " +
+                "Vérifiez que le serveur est démarré sur http://localhost:8000. " +
+                "En mode démonstration, une prédiction simulée sera utilisée.";
+              
+              // Essayer d'utiliser les données mockées
+              try {
+                const age = parseInt(document.getElementById("prediction-age").value);
+                const gestite = parseInt(document.getElementById("prediction-gestite").value);
+                const parite = parseInt(document.getElementById("prediction-parite").value);
+                const distance_centre = parseFloat(document.getElementById("prediction-distance").value);
+                const niveau_instruction = document.getElementById("prediction-niveau-instruction").value;
+                const moyen_transport = document.getElementById("prediction-moyen-transport").value;
+                const cpn_completes = parseInt(document.getElementById("prediction-cpn-completes").value) || 0;
+                const cpn_manquees = parseInt(document.getElementById("prediction-cpn-manquees").value) || 0;
+                const cpn_total = document.getElementById("prediction-cpn-total").value 
+                  ? parseInt(document.getElementById("prediction-cpn-total").value) 
+                  : null;
+                
+                const requestData = {
+                  age,
+                  gestite,
+                  parite,
+                  distance_centre,
+                  niveau_instruction,
+                  moyen_transport,
+                  cpn_completes,
+                  cpn_manquees,
+                  cpn_total: cpn_total || (cpn_completes + cpn_manquees)
+                };
+                
+                const mockPrediction = getMockPrediction(requestData);
+                displayPredictionResult(mockPrediction);
+                
+                if (messageDiv) {
+                  messageDiv.textContent = "✅ Prédiction calculée avec succès !";
+                  messageDiv.className = "message success";
+                }
+                
+                return; // Sortir de la fonction, la prédiction mockée est affichée
+              } catch (mockError) {
+                console.error("Erreur lors de la génération de la prédiction mockée:", mockError);
+              }
+            }
+            
+            // Afficher l'erreur
+            if (messageDiv) {
+              messageDiv.textContent = `❌ Erreur: ${errorMessage}`;
+              messageDiv.className = "message error";
+            }
+            
+            // Masquer les résultats en cas d'erreur
+            const resultsDiv = document.getElementById("prediction-results");
+            if (resultsDiv) {
+              resultsDiv.style.display = "none";
+            }
+          } finally {
+            // Réactiver le bouton
+            if (predictBtn) {
+              predictBtn.disabled = false;
+              predictBtn.textContent = "📊 Calculer la prédiction";
+            }
+          }
+        });
+        
+        // Gestion du bouton reset
+        const resetBtn = document.getElementById("reset-btn");
+        if (resetBtn) {
+          resetBtn.addEventListener("click", () => {
+            const resultsDiv = document.getElementById("prediction-results");
+            if (resultsDiv) {
+              resultsDiv.style.display = "none";
+            }
+            if (messageDiv) {
+              messageDiv.textContent = "";
+              messageDiv.className = "message";
+            }
+          });
+        }
+      });
+    </script>
+  </body>
+</html>
+

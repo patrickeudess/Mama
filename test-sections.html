@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Test Sections</title>
+    <style>
+        .detail-section {
+            padding: 2rem;
+            background: #f0f0f0;
+            margin: 1rem 0;
+            border: 2px solid #333;
+        }
+        .detail-section.hidden {
+            display: none !important;
+        }
+        button {
+            padding: 1rem;
+            margin: 0.5rem;
+            font-size: 1.2rem;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <h1>Test d'affichage des sections</h1>
+    
+    <button onclick="testSection('add-patiente-section')">Test: Enregistrer</button>
+    <button onclick="testSection('patientes-list-section')">Test: Mes patientes</button>
+    <button onclick="testSection('stats-section')">Test: Statistiques</button>
+    
+    <section id="add-patiente-section" class="detail-section hidden">
+        <h2>Section Enregistrer</h2>
+        <p>Cette section devrait s'afficher quand vous cliquez sur le bouton.</p>
+    </section>
+    
+    <section id="patientes-list-section" class="detail-section hidden">
+        <h2>Section Mes patientes</h2>
+        <p>Cette section devrait s'afficher quand vous cliquez sur le bouton.</p>
+    </section>
+    
+    <section id="stats-section" class="detail-section hidden">
+        <h2>Section Statistiques</h2>
+        <p>Cette section devrait s'afficher quand vous cliquez sur le bouton.</p>
+    </section>
+    
+    <script>
+        function testSection(sectionId) {
+            console.log("Test de la section:", sectionId);
+            
+            // Masquer toutes les sections
+            document.querySelectorAll(".detail-section").forEach(s => {
+                s.classList.add("hidden");
+                s.style.display = "none";
+            });
+            
+            // Afficher la section sélectionnée
+            const section = document.getElementById(sectionId);
+            if (section) {
+                section.classList.remove("hidden");
+                section.style.display = "block";
+                section.style.visibility = "visible";
+                console.log("Section affichée:", {
+                    id: section.id,
+                    display: section.style.display,
+                    computedDisplay: window.getComputedStyle(section).display,
+                    hasHidden: section.classList.contains("hidden")
+                });
+            } else {
+                console.error("Section non trouvée:", sectionId);
+                alert("Section non trouvée: " + sectionId);
+            }
+        }
+    </script>
+</body>
+</html>
+
